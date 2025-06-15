@@ -21,7 +21,8 @@ body{
     display: flex;
     align-items: center;
     justify-content: center;
-    padding-top:160px ;
+    padding-top: 150px;
+    
 }
 
 .msg{
@@ -32,7 +33,7 @@ body{
 }
 .msg h3{
     color: #FFFFFF;
-    font-size: 15px;
+    font-size: 20px;
     font-family: "Montserrat";
     font-weight: 400;
     
@@ -40,9 +41,40 @@ body{
 
 .msg h5{
     color: #FFFFFF;
-    font-size: 15px;
+    font-size: 20px;
     font-family: "Montserrat";
     font-weight: 200;
+}
+
+.imgFondo {
+    position: fixed;
+    top: -150px;
+    left: 50px;
+    width: 500px;
+    height: 500px;
+    background-image: url('../img/32.png');
+    background-repeat: no-repeat;
+    background-position: center,center;
+    background-size: cover;
+    opacity: 0.2;
+    z-index: -1;
+
+}
+
+.imgFondo2 {
+    position: fixed;
+    bottom: -150px;
+    right: 50px;
+    width: 500px;
+    height: 500px;
+    background-image: url('../img/32.png');
+    background-repeat: no-repeat;
+    background-position: center,center;
+    background-size: cover;
+    opacity: 0.2;
+    z-index: -1;
+    transform:scale(-1) ;
+
 }
 
 

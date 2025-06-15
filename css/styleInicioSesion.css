@@ -1,0 +1,355 @@
+body{
+ margin: 0;
+    min-height: 100vh;    
+    background: linear-gradient(
+        to bottom,  /* Cambiado de "to top" a "to bottom" */
+        #6A040F 0%,
+        #170000 100%
+        
+
+    );
+
+    /* Versión para compatibilidad con navegadores WebKit (Safari, Chrome antiguo) */
+    background: -webkit-linear-gradient(
+        bottom,  /* Invertido para coincidir con la dirección */
+        #6A040F 0%,
+        #170000 100%
+    
+    );
+}
+
+.logoH2C {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top:50px ;
+    
+}
+
+.logoH2C img{
+    height: 200px;
+    width: 200px;
+}
+
+.imgFondo {
+    position: fixed;
+    top: -130px;
+    right: -30px;
+    width: 500px;
+    height: 500px;
+    background-image: url('../img/34.png');
+    background-repeat: no-repeat;
+    background-position: center,center;
+    background-size: cover;
+    opacity: 0.1;
+    z-index: -1;
+
+}
+
+.txtIn{
+    display: flex;
+    justify-content:center ;
+    align-items: center;
+    padding-top: 20px;
+    color: aliceblue;
+    flex-direction: column;
+}
+.txtIn h5{
+    font-size: 30px;
+    font-weight: 350;
+    font-family: "Montserrat";
+}
+
+.txtIn p {
+    font-weight: 200;
+}
+
+.inputs{
+    padding-top: 20px;
+    padding-left: 35px;
+    display: flex;
+    flex-direction: column;
+}
+
+
+
+.formUser {
+    width: 100%;
+    height: 50px;
+    max-width: 400px;
+    position: relative;
+    overflow: hidden;
+}
+
+.formUser input{
+    width: 100%;
+    height: 100%;
+    background:none;
+    color: #fff;
+    padding-top: 20px;
+    border: none;
+    outline: 0px;
+}
+
+.formUser .lblUser{
+position: absolute;
+bottom: 0;
+left: 0;
+width: 350px;
+height: 200px;
+pointer-events: none;
+border-bottom: 1px solid #fff;
+}
+
+.formUser .lblUser::after{
+content: '';
+position: absolute;
+left: 0;
+bottom: -1;
+width: 350px;
+height: 200px;
+border-bottom: 3px solid #BC3233;
+transform: translateX(-100%);
+transition: all 0.3s ease;
+}
+
+.text-User{
+    position: absolute;
+    bottom: 5px;
+    left: 0;
+    transition: all 0.3s ease;
+    color: #fff;
+
+}
+
+.formUser input:focus + .lblUser .text-User, .formUser input:valid + .lblUser .text-User{
+    transform: translateY(-150%);
+    font-size: 12px;
+    color: #fff;
+
+}
+
+.formUser input:focus + .lblUser:after{
+    transform: translateX(0%);
+}
+
+.inputs span{
+    color: white;
+    font-weight: 200;
+    font-size: 15px;
+    font-family: "Montserrat";
+}
+
+.password{
+    margin-top: 30px;
+}
+
+.formPassword {
+    width: 100%;
+    height: 50px;
+    max-width: 400px;
+    position: relative;
+    overflow: hidden;
+}
+
+.formPassword input{
+    width: 100%;
+    height: 100%;
+    background:none;
+    color: #fff;
+    padding-top: 20px;
+    border: none;
+    outline: 0px;
+}
+
+.formPassword .lblPassword{
+position: absolute;
+bottom: 0;
+left: 0;
+width: 350px;
+height: 200px;
+pointer-events: none;
+border-bottom: 1px solid #fff;
+}
+
+.formPassword .lblPassword:after{
+content: '';
+position: absolute;
+left: 0;
+bottom: -1;
+width: 350px;
+height: 200px;
+border-bottom: 3px solid #BC3233;
+transform: translateX(-100%);
+transition: all 0.3s ease;
+}
+
+.text-Password{
+    position: absolute;
+    bottom: 5px;
+    left: 0;
+    transition: all 0.3s ease;
+    color: #fff;
+
+}
+
+.formPassword input:focus + .lblPassword .text-Password, .formPassword input:valid + .lblPassword .text-Password{
+    transform: translateY(-150%);
+    font-size: 12px;
+    color: #fff;
+
+}
+
+.formPassword input:focus + .lblPassword:after{
+    transform: translateX(0%);
+}
+
+.RememberMe{
+    padding-top: 10px;
+    padding-left: 10px;
+    display: flex;
+    flex-direction:row;
+    justify-content: space-around;
+}
+
+.RememberMe a{
+    text-decoration: none;
+    color: #F48C06;
+    font-weight: 300;
+    font-size: 12px;
+    font-family: "Montserrat";
+}
+
+.checkbox{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-weight: 90;
+  font-size: 12px;
+  font-family: "Montserrat";
+  color: #fff; 
+  user-select: none; /* Evita selección de texto */
+
+}
+
+.checkbox input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Checkbox personalizado */
+.checkMark {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 1px solid #fff; /* Borde rojo oscuro */
+  border-radius: 5px;
+  background-color: transparent; /* Sin fondo */
+  transition: all 0.3s;
+}
+
+/* Cambia el estilo al seleccionar */
+.checkbox input:checked ~ .checkMark {
+  background-color: transparent;
+  border-color: #fff; /* Mantiene el borde */
+}
+
+/*  (check) personalizada */
+.checkMark:after {
+  content: "";
+  display: none;
+  position: relative;
+  left: 5px;
+  top: 1px;
+  width: 5px;
+  height: 10px;
+  border: 1px solid #fff; /* Color de la palomita */
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.checkbox input:checked ~ .checkMark:after {
+  display: block;
+}
+
+.buttons {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding-top: 25px;
+    gap: 15px; /* Espacio entre botones si hay más */
+}
+
+.buttons button {
+    color: #fff;
+    background-color: #222222;
+    border-radius:10px;
+    width: 350px;
+    padding: 8px 20px; 
+    display: flex; 
+    align-items: center;
+    justify-content: center; 
+    gap: 15px; /* Separa logo y texto */
+    border: 1px solid #fff;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+    font-family: "Montserrat";
+    font-weight: 250;
+}
+
+.buttons button:hover {
+    background-color: #333; 
+}
+
+.buttons img {
+    height: 25px;
+    width: 25px;
+    order: -1; 
+}
+
+
+.buttons2 {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding-top: 25px;
+}
+
+.buttons2 button {
+    color: #fff;
+    background-image: linear-gradient(to right, #BC3233, #F48C06);
+    border-radius:10px;
+    width: 350px;
+    padding: 8px 20px; 
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+    font-family: "Montserrat";
+    font-weight: 250;
+    border: none;
+}
+
+.singIn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding-top: 40px;
+}
+
+.singIn p{
+    color: #fff;
+    font-size: 15px;
+    font-family: "Montserrat";
+    font-weight: 200;
+}
+
+.singIn a{
+    color: #F48C06;
+    font-size: 15px;
+    font-family: "Montserrat";
+    font-weight: 400;
+}
