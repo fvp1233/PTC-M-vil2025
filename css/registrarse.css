@@ -18,26 +18,13 @@ body{
     );
 }
 
-.logoH2C {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding-top:50px ;
-    
-}
-
-.logoH2C img{
-    height: 200px;
-    width: 200px;
-}
-
 .imgFondo {
     position: fixed;
-    top: -1px;
-    right: -30px;
+    top: -30px;
+    right: -50px;
     width: 500px;
     height: 500px;
-    background-image: url('../img/34.png');
+    background-image: url('../img/33.png');
     background-repeat: no-repeat;
     background-position: center,center;
     background-size: cover;
@@ -46,21 +33,22 @@ body{
 
 }
 
-.txtIn{
+.welcome{
     display: flex;
-    justify-content:center ;
     align-items: center;
-    padding-top: 20px;
-    color: aliceblue;
+    justify-content: center;
     flex-direction: column;
+    color: #fff;
+    padding-top: 65px;
 }
-.txtIn h5{
+
+.welcome h5{
     font-size: 30px;
     font-weight: 350;
     font-family: "Montserrat";
 }
 
-.txtIn p {
+.welcome p{
     font-weight: 250;
     font-family: "Montserrat";
 }
@@ -70,6 +58,7 @@ body{
     padding-left: 35px;
     display: flex;
     flex-direction: column;
+    
 }
 
 
@@ -134,12 +123,71 @@ transition: all 0.3s ease;
     transform: translateX(0%);
 }
 
-.inputs span{
-    color: white;
-    font-weight: 200;
-    font-size: 15px;
-    font-family: "Montserrat";
+
+.email{
+    margin-top: 30px;
 }
+
+.formEmail {
+    width: 100%;
+    height: 50px;
+    max-width: 400px;
+    position: relative;
+    overflow: hidden;
+}
+
+.formEmail input{
+    width: 100%;
+    height: 100%;
+    background:none;
+    color: #fff;
+    padding-top: 20px;
+    border: none;
+    outline: 0px;
+}
+
+.formEmail .lblEmail{
+position: absolute;
+bottom: 0;
+left: 0;
+width: 350px;
+height: 200px;
+pointer-events: none;
+border-bottom: 1px solid #fff;
+}
+
+.formEmail .lblEmail::after{
+content: '';
+position: absolute;
+left: 0;
+bottom: -1;
+width: 350px;
+height: 200px;
+border-bottom: 3px solid #BC3233;
+transform: translateX(-100%);
+transition: all 0.3s ease;
+}
+
+.text-Email{
+    position: absolute;
+    bottom: 5px;
+    left: 0;
+    transition: all 0.3s ease;
+    color: #fff;
+
+}
+
+.formEmail input:focus + .lblEmail .text-Email, .formEmail input:valid + .lblEmail .text-Email{
+    transform: translateY(-150%);
+    font-size: 12px;
+    color: #fff;
+
+}
+
+.formEmail input:focus + .lblEmail:after{
+    transform: translateX(0%);
+}
+
 
 .password{
     margin-top: 30px;
@@ -205,82 +253,134 @@ transition: all 0.3s ease;
     transform: translateX(0%);
 }
 
-.RememberMe{
-    padding-top: 10px;
-    padding-left: 10px;
-    display: flex;
-    flex-direction:row;
-    justify-content: space-around;
+
+.num{
+    color: #fff;
+    padding-left: 35px;
+    padding-top: 30px;
 }
 
-.RememberMe a{
-    text-decoration: none;
-    color: #F48C06;
-    font-weight: 300;
-    font-size: 12px;
+.num h5{
     font-family: "Montserrat";
+    font-weight: 250;
+    font-size: 15px;
 }
 
-.checkbox{
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-  font-weight: 90;
-  font-size: 12px;
-  font-family: "Montserrat";
-  color: #fff; 
-  user-select: none; /* Evita selección de texto */
 
+
+
+/* Estilos para el campo de teléfono */
+.numPhone {
+    
+    padding-left: 35px;
 }
 
-.checkbox input {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
+.formNum {
+    width: 100%;
+    height: 50px;
+    max-width: 400px;
+    position: relative;
+    overflow: hidden;
 }
 
-/* Checkbox personalizado */
-.checkMark {
-  display: inline-block;
-  width: 18px;
-  height: 18px;
-  border: 1px solid #fff; /* Borde rojo oscuro */
-  border-radius: 5px;
-  background-color: transparent; /* Sin fondo */
-  transition: all 0.3s;
+.formNum input {
+    width: 100%;
+    height: 100%;
+    background: none;
+    color: #fff;
+    padding-top: 20px;
+    border: none;
+    outline: 0px;
+    padding-left: 0px; /* Espacio para la bandera */
 }
 
-/* Cambia el estilo al seleccionar */
-.checkbox input:checked ~ .checkMark {
-  background-color: transparent;
-  border-color: #fff; /* Mantiene el borde */
+.lblNum {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 350px;
+    height: 200px;
+    pointer-events: none;
+    border-bottom: 1px solid #fff;
+    display: flex;
+    align-items: center;
 }
 
-/*  (check) personalizada */
-.checkMark:after {
-  content: "";
-  display: none;
-  position: relative;
-  left: 5px;
-  top: 1px;
-  width: 5px;
-  height: 10px;
-  border: 1px solid #fff; /* Color de la palomita */
-  border-width: 0 2px 2px 0;
-  transform: rotate(45deg);
+.lblNum::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    width: 350px;
+    height: 200px;
+    border-bottom: 3px solid #BC3233;
+    transform: translateX(-100%);
+    transition: all 0.3s ease;
 }
 
-.checkbox input:checked ~ .checkMark:after {
-  display: block;
+.flag-icon {
+    position: absolute;
+    left: 0;
+    bottom: 5px;
+    font-size: 20px;
+    transition: all 0.3s ease;
 }
+
+.text-Phone {
+    position: absolute;
+    bottom: 5px;
+    left: 30px; /* Espacio después de la bandera */
+    transition: all 0.3s ease;
+    color: #fff;
+}
+
+
+/* Efectos de focus */
+.formNum input:focus + .lblNum .text-Phone,
+.formNum input:valid + .lblNum .text-Phone,
+.formNum input:focus + .lblNum .country-code,
+.formNum input:valid + .lblNum .country-code {
+    transform: translateY(-150%);
+    font-size: 12px;
+    color: #fff;
+}
+
+.formNum input:focus + .lblNum .flag-icon,
+.formNum input:valid + .lblNum .flag-icon {
+    transform: translateY(-150%) scale(0.8);
+}
+
+.formNum input:focus + .lblNum:after {
+    transform: translateX(0%);
+}
+
+.buttons2 {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding-top: 25px;
+}
+
+.buttons2 button {
+    color: #fff;
+    background-image: linear-gradient(to right, #BC3233, #F48C06);
+    border-radius:10px;
+    width: 350px;
+    padding: 8px 20px; 
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+    font-family: "Montserrat";
+    font-weight: 250;
+    border: none;
+}
+
 
 .buttons {
     display: flex;
     align-items: center;
     flex-direction: column;
-    padding-top: 25px;
-    gap: 15px; /* Espacio entre botones si hay más */
+    
 }
 
 .buttons button {
@@ -311,46 +411,25 @@ transition: all 0.3s ease;
     order: -1; 
 }
 
-
-.buttons2 {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    padding-top: 25px;
-}
-
-.buttons2 button {
-    color: #fff;
-    background-image: linear-gradient(to right, #BC3233, #F48C06);
-    border-radius:10px;
-    width: 350px;
-    padding: 8px 20px; 
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s;
-    font-family: "Montserrat";
-    font-weight: 250;
-    border: none;
-}
-
-.singIn{
+.inicioSesion{
+    padding-top: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    padding-top: 40px;
 }
 
-.singIn p{
-    color: #fff;
-    font-size: 15px;
+.inicioSesion p{
+    color: white;
     font-family: "Montserrat";
-    font-weight: 200;
+    font-weight: 250;
+    font-size: 15px;
 }
 
-.singIn a{
-    color: #F48C06;
+.inicioSesion a{
+    color:#F48C06;
+     font-family: "Montserrat";
+    font-weight: 300;
     font-size: 15px;
-    font-family: "Montserrat";
-    font-weight: 400;
+
 }
