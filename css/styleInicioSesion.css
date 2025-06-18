@@ -124,7 +124,7 @@ body{
     
 }
 
-.formPassword input[type="text"] {
+.formPassword input[type="password"] {
     width: 100%;
     background-color: transparent;
     border: none;
@@ -229,10 +229,7 @@ body{
     pointer-events: all; /* Permitir clics en el icono */
 }
 
-.RememberMe {
-    color: #fff;
-    font-size: .7rem;
-}
+
 
 .link {
     font-size:  .7rem;
@@ -246,7 +243,7 @@ body{
     align-items: center;
     gap: 8px;
     cursor: pointer;
-    font-weight: 90; /* Consider increasing this for better readability, e.g., 400 or 500 */
+    font-weight: 100; /* Consider increasing this for better readability, e.g., 400 or 500 */
     font-size: 12px;
     font-family: "Montserrat";
     color: #fff;
@@ -295,13 +292,13 @@ body{
     display: block;
 }
 
-.buttons{
+.btn-enter{
     width: 90%;
     margin-bottom: 1vh;
     margin-inline: -.5vh;
 }
 
-.buttons button{
+.btn-enter button{
     color: #fff;
     background-color: #222222;
     border-radius: 10px;
@@ -316,22 +313,22 @@ body{
 
 }
 
-.buttons button:hover{
+.btn-enter button:hover{
     background-color: #333;
 }
 
-.buttons img{
+.btn-enter img{
     height: 3vh;
     width: 3vh;
     order: -1;
 }
 
-.buttons2{
+.btn-google{
     width: 100%;
     margin-bottom: 2vh;
     margin-inline: -.5vh;
 }
-.buttons2 button{
+.btn-google button{
     color: #fff;
     background-image: linear-gradient(to right, #BC3233, #F48C06);
     border-radius: 10px;
@@ -348,7 +345,7 @@ body{
 
 }
 
-.buttons2 button:hover{
+.btn-google button:hover{
     background-color: #333;
 }
 
