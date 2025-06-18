@@ -3,8 +3,9 @@ body{
     min-height: 100vh;    
     background: linear-gradient(
         to bottom,  /* Cambiado de "to top" a "to bottom" */
-        #6A040F 0%,
-        #170000 100%
+        #6c040f 0%,
+        #220004 50%,
+        #230104 100%
         
 
     );
@@ -12,335 +13,344 @@ body{
     /* Versión para compatibilidad con navegadores WebKit (Safari, Chrome antiguo) */
     background: -webkit-linear-gradient(
         bottom,  /* Invertido para coincidir con la dirección */
-        #6A040F 0%,
-        #170000 100%
+         #6c040f 0%,
+        #220004 50%,
+        #230104 100%
     
     );
 }
 
-.logoH2C {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding-top:50px ;
+.imgFondo {
+    position: absolute;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    pointer-events: none;
+    z-index: -1;
+    opacity: 0.05;
+    top: -10vh;
+    background-image: url('../img/34.png');
+    width: 100%;
+    overflow: hidden;
+    height: 60vh;
+}
+
+.logoH2C{
+    margin-top: 3vh;
+    margin-bottom: 3vh;
+}
+.logoH2C img {
+    width: clamp(200px, 30vw, 300px);
+    height: clamp(200px, 30vw, 300px);
+}
+
+.txtIn h5{
+    color: #FFFFFF;
+    font-size: 2.0rem;
+    font-family: "Montserrat";
+    font-weight: 400;
+}
+
+.txtIn p{
+     color: #FFFFFF;
+    font-size: 1rem;
+    font-family: "Montserrat";
+    font-weight: 250;
+}
+
+
+
+.formUser{
+    position: relative;
+    width: 100%;
+    margin-bottom: 3vh;
+    margin-inline: -.5vh;
     
 }
 
-.logoH2C img{
-    height: 200px;
-    width: 200px;
-}
-
-.imgFondo {
-    position: fixed;
-    top: -130px;
-    right: -30px;
-    width: 500px;
-    height: 500px;
-    background-image: url('../img/34.png');
-    background-repeat: no-repeat;
-    background-position: center,center;
-    background-size: cover;
-    opacity: 0.1;
-    z-index: -1;
-
-}
-
-.txtIn{
-    display: flex;
-    justify-content:center ;
-    align-items: center;
-    padding-top: 20px;
-    color: aliceblue;
-    flex-direction: column;
-}
-.txtIn h5{
-    font-size: 30px;
-    font-weight: 350;
-    font-family: "Montserrat";
-}
-
-.txtIn p {
-    font-weight: 200;
-}
-
-.inputs{
-    padding-top: 20px;
-    padding-left: 35px;
-    display: flex;
-    flex-direction: column;
-}
-
-
-
-.formUser {
+.formUser input[type="text"] {
     width: 100%;
-    height: 50px;
-    max-width: 400px;
-    position: relative;
-    overflow: hidden;
-}
-
-.formUser input{
-    width: 100%;
-    height: 100%;
-    background:none;
-    color: #fff;
-    padding-top: 20px;
+    background-color: transparent;
     border: none;
-    outline: 0px;
-}
-
-.formUser .lblUser{
-position: absolute;
-bottom: 0;
-left: 0;
-width: 350px;
-height: 200px;
-pointer-events: none;
-border-bottom: 1px solid #fff;
-}
-
-.formUser .lblUser::after{
-content: '';
-position: absolute;
-left: 0;
-bottom: -1;
-width: 350px;
-height: 200px;
-border-bottom: 3px solid #BC3233;
-transform: translateX(-100%);
-transition: all 0.3s ease;
-}
-
-.text-User{
-    position: absolute;
-    bottom: 5px;
-    left: 0;
-    transition: all 0.3s ease;
-    color: #fff;
-
-}
-
-.formUser input:focus + .lblUser .text-User, .formUser input:valid + .lblUser .text-User{
-    transform: translateY(-150%);
-    font-size: 12px;
-    color: #fff;
-
-}
-
-.formUser input:focus + .lblUser:after{
-    transform: translateX(0%);
-}
-
-.inputs span{
-    color: white;
-    font-weight: 200;
-    font-size: 15px;
+    border-bottom: 1px solid #FFFFFF;
+    outline: none;
+    box-sizing: border-box;
+    font-size: 1.1rem;
+    color: #FFFFFF;
     font-family: "Montserrat";
-}
-
-.password{
-    margin-top: 30px;
-}
-
-.formPassword {
-    width: 100%;
-    height: 50px;
-    max-width: 400px;
-    position: relative;
-    overflow: hidden;
-}
-
-.formPassword input{
-    width: 100%;
-    height: 100%;
-    background:none;
-    color: #fff;
-    padding-top: 20px;
-    border: none;
-    outline: 0px;
-}
-
-.formPassword .lblPassword{
-position: absolute;
-bottom: 0;
-left: 0;
-width: 350px;
-height: 200px;
-pointer-events: none;
-border-bottom: 1px solid #fff;
-}
-
-.formPassword .lblPassword:after{
-content: '';
-position: absolute;
-left: 0;
-bottom: -1;
-width: 350px;
-height: 200px;
-border-bottom: 3px solid #BC3233;
-transform: translateX(-100%);
-transition: all 0.3s ease;
-}
-
-.text-Password{
-    position: absolute;
-    bottom: 5px;
-    left: 0;
-    transition: all 0.3s ease;
-    color: #fff;
-
-}
-
-.formPassword input:focus + .lblPassword .text-Password, .formPassword input:valid + .lblPassword .text-Password{
-    transform: translateY(-150%);
-    font-size: 12px;
-    color: #fff;
-
-}
-
-.formPassword input:focus + .lblPassword:after{
-    transform: translateX(0%);
-}
-
-.RememberMe{
-    padding-top: 10px;
-    padding-left: 10px;
-    display: flex;
-    flex-direction:row;
-    justify-content: space-around;
-}
-
-.RememberMe a{
-    text-decoration: none;
-    color: #F48C06;
     font-weight: 300;
-    font-size: 12px;
-    font-family: "Montserrat";
+
 }
 
-.checkbox{
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-  font-weight: 90;
-  font-size: 12px;
-  font-family: "Montserrat";
-  color: #fff; 
-  user-select: none; /* Evita selección de texto */
+.lblUser{
+    position: absolute;
+    bottom: 5px; /* Esto lo posiciona inicialmente */
+    left: 0;
+    color: #FFFFFF;
+    pointer-events: none;
+    transition: all 0.3 ease;
+    font-size: 1.0rem;
+    font-family: "Montserrat";
+    font-weight: 250;
+}
 
+.lblUser .text-User{
+    display: inline-block;
+}
+
+/* --- EFECTO DE ANIMACIÓN: Cuando el INPUT está enfocado o ya tiene texto --- */
+
+.formUser input:focus + .lblUser .text-User,
+.formUser input:valid + .lblUser .text-User {
+    transform: translateY(-150%); /* Aquí es donde ajustamos la subida */
+    font-size: 12px;
+    color: #fff;
+}
+
+.text-User {
+    position: absolute;
+    bottom: 5px; /* Posición inicial del texto */
+    transition: all 0.3s ease;
+    color: #fff;
+}
+
+
+.formPassword{
+    position: relative;
+    width: 100%;
+    margin-inline: -.5vh;
+
+    
+    
+}
+
+.formPassword input[type="password"] {
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid #FFFFFF;
+    outline: none;
+    box-sizing: border-box;
+    font-size: 1.1rem;
+    color: #FFFFFF;
+    font-family: "Montserrat";
+    font-weight: 300;
+}
+
+.lblPassword{
+    position: absolute;
+    bottom: 5px; /* Esto lo posiciona inicialmente */
+    left: 0;
+    color: #FFFFFF;
+    pointer-events: none;
+    transition: all 0.3 ease;
+    font-size: 1.0rem;
+    font-family: "Montserrat";
+    font-weight: 250;
+}
+
+.lblPassword .text-Password{
+    display: inline-block;
+    
+}
+
+/* --- EFECTO DE ANIMACIÓN: Cuando el INPUT está enfocado o ya tiene texto --- */
+
+.formPassword input:focus + .lblPassword .text-Password,
+.formPassword input:valid + .lblPassword .text-Password {
+    transform: translateY(-150%); /* Aquí es donde ajustamos la subida */
+    font-size: 12px;
+    color: #fff;
+}
+
+.text-Password {
+    position: absolute;
+    bottom: 5px; /* Posición inicial del texto */
+    left: 0;
+    transition: all 0.3s ease;
+    color: #fff;
+    
+}
+
+
+
+
+/* Asegúrate de que el input de contraseña tenga suficiente padding-right para que el texto no se superponga con el icono */
+.formPassword input {
+    width: 100%;
+    height: 100%;
+    background: none;
+    color: #fff;
+    padding-top: 20px;
+    padding-right: 35px; /* AÑADE O AJUSTA ESTO: Dale espacio al icono */
+    border: none;
+    outline: 0px;
+}
+
+/* Estilos para el contenedor del label (lblPassword) */
+.formPassword .lblPassword {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%; /* Ajusta el ancho para que el icono se posicione bien al final */
+    height: 100%; /* Esto es importante para que el icono se centre verticalmente */
+    pointer-events: none;
+    border-bottom: 1px solid #fff; /* La línea base */
+    /* Asegúrate de que el lblPassword no tenga un overflow:hidden que corte el icono si se sale de él */
+}
+
+
+/* Estilos para el texto del label (Contraseña) */
+.text-Password {
+    position: absolute;
+    bottom: 5px; /* Posición inicial del texto, ajusta si es necesario */
+    left: 0;
+    transition: all 0.3s ease;
+    color: #fff;
+}
+
+/* Animación del texto del label */
+.formPassword input:focus + .lblPassword .text-Password,
+.formPassword input:valid + .lblPassword .text-Password {
+    transform: translateY(-150%); /* El valor que ya usas, ajústalo si no sube suficiente */
+    font-size: 12px;
+    color: #fff;
+}
+
+/* ESTILOS CLAVE PARA EL ICONO DEL OJO */
+.eye-icon {
+    position: absolute;
+    right: 5px; /* DISTANCIA DESDE EL BORDE DERECHO DEL INPUT */
+    bottom: 10px; /* Ajusta este valor para que se alinee con la línea de entrada */
+    color: #fff; /* Color del icono */
+    cursor: pointer;
+    font-size: 1.2rem; /* Tamaño del icono. Ajusta si el icono de tu imagen es diferente */
+    z-index: 10; /* Asegura que esté por encima */
+    pointer-events: all; /* Permitir clics en el icono */
+}
+
+
+
+.link {
+    font-size:  .7rem;
+}
+.link a{
+    color: #F48C06;
+}
+
+.checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-weight: 100; /* Consider increasing this for better readability, e.g., 400 or 500 */
+    font-size: 12px;
+    font-family: "Montserrat";
+    color: #fff;
+    user-select: none; /* Evita selección de texto */
 }
 
 .checkbox input {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
 }
 
-/* Checkbox personalizado */
+/* Checkbox personalizado (el cuadro visible) */
 .checkMark {
-  display: inline-block;
-  width: 18px;
-  height: 18px;
-  border: 1px solid #fff; /* Borde rojo oscuro */
-  border-radius: 5px;
-  background-color: transparent; /* Sin fondo */
-  transition: all 0.3s;
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border: 1px solid #fff; /* Borde blanco */
+    border-radius: 5px;
+    background-color: transparent; /* Fondo transparente */
+    transition: all 0.3s;
 }
 
-/* Cambia el estilo al seleccionar */
+/* Cambia el estilo al seleccionar el checkbox */
 .checkbox input:checked ~ .checkMark {
-  background-color: transparent;
-  border-color: #fff; /* Mantiene el borde */
+    background-color: transparent; /* Mantiene el fondo transparente al seleccionar */
+    border-color: #fff; /* Mantiene el borde blanco al seleccionar */
 }
 
-/*  (check) personalizada */
+/* Palomita (checkmark) personalizada */
 .checkMark:after {
-  content: "";
-  display: none;
-  position: relative;
-  left: 5px;
-  top: 1px;
-  width: 5px;
-  height: 10px;
-  border: 1px solid #fff; /* Color de la palomita */
-  border-width: 0 2px 2px 0;
-  transform: rotate(45deg);
+    content: "";
+    display: none; /* Oculta la palomita por defecto */
+    position: relative;
+    left: 5px; /* Ajusta la posición horizontal de la palomita */
+    top: 1px; /* Ajusta la posición vertical de la palomita */
+    width: 5px;
+    height: 10px;
+    border: solid #fff; /* Palomita blanca */
+    border-width: 0 2px 2px 0; /* Grosor de la palomita */
+    transform: rotate(45deg); /* Gira para formar la "v" */
 }
 
+/* Muestra la palomita cuando el checkbox está seleccionado */
 .checkbox input:checked ~ .checkMark:after {
-  display: block;
+    display: block;
 }
 
-.buttons {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    padding-top: 25px;
-    gap: 15px; /* Espacio entre botones si hay más */
+.btn-enter{
+    width: 90%;
+    margin-bottom: 1vh;
+    margin-inline: -.5vh;
 }
 
-.buttons button {
+.btn-enter button{
     color: #fff;
     background-color: #222222;
-    border-radius:10px;
-    width: 350px;
-    padding: 8px 20px; 
-    display: flex; 
-    align-items: center;
-    justify-content: center; 
-    gap: 15px; /* Separa logo y texto */
+    border-radius: 10px;
+    width: 100%;
+    padding: 8px 20px;
+    gap: 7vh;
     border: 1px solid #fff;
-    cursor: pointer;
-    font-size: 16px;
+    font-size: 1rem;
     transition: background-color 0.3s;
     font-family: "Montserrat";
     font-weight: 250;
+
 }
 
-.buttons button:hover {
-    background-color: #333; 
+.btn-enter button:hover{
+    background-color: #333;
 }
 
-.buttons img {
-    height: 25px;
-    width: 25px;
-    order: -1; 
+.btn-enter img{
+    height: 3vh;
+    width: 3vh;
+    order: -1;
 }
 
-
-.buttons2 {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    padding-top: 25px;
+.btn-google{
+    width: 100%;
+    margin-bottom: 2vh;
+    margin-inline: -.5vh;
 }
-
-.buttons2 button {
+.btn-google button{
     color: #fff;
     background-image: linear-gradient(to right, #BC3233, #F48C06);
-    border-radius:10px;
-    width: 350px;
-    padding: 8px 20px; 
-    cursor: pointer;
-    font-size: 16px;
+    border-radius: 10px;
+    width: 100%;
+    padding: 8px 20px;
+    gap: 7vh;
+    border: none;
+    font-size: 1rem;
     transition: background-color 0.3s;
     font-family: "Montserrat";
     font-weight: 250;
-    border: none;
+    height: 5vh;
+    min-height: 48px; 
+
 }
 
-.singIn{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    padding-top: 40px;
+.btn-google button:hover{
+    background-color: #333;
 }
 
 .singIn p{
+    margin-top: 5vh;
     color: #fff;
     font-size: 15px;
     font-family: "Montserrat";
