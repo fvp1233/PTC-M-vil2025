@@ -292,61 +292,62 @@ body{
     display: block;
 }
 
-.btn-enter{
-    width: 90%;
+
+.btn-enter {
+    width: 100%; 
+    margin-bottom: 2vh; 
+    margin-inline: -.5vh; 
+}
+
+.btn-enter button {
+    color: #fff;
+    background-image: linear-gradient(to right, #BC3233, #F48C06); 
+    border-radius: 10px;
+    width: 100%;
+    padding: 8px 20px;
+    gap: 7vh;
+    border: none; 
+    font-size: 1rem;
+    transition: background-color 0.3s; 
+    font-family: "Montserrat";
+    font-weight: 250;
+    height: 5vh; 
+    min-height: 48px; 
+}
+
+.btn-enter button:hover {
+    background-color: #333; 
+}
+
+.btn-google {
+    width: 90%; 
     margin-bottom: 1vh;
     margin-inline: -.5vh;
 }
 
-.btn-enter button{
+.btn-google button {
     color: #fff;
-    background-color: #222222;
+    background-color: #222222; 
     border-radius: 10px;
     width: 100%;
     padding: 8px 20px;
     gap: 7vh;
-    border: 1px solid #fff;
+    border: 1px solid #fff; 
     font-size: 1rem;
     transition: background-color 0.3s;
     font-family: "Montserrat";
     font-weight: 250;
-
 }
 
-.btn-enter button:hover{
+.btn-google button:hover {
+    /* Hover de Enter */
     background-color: #333;
 }
 
-.btn-enter img{
+.btn-google img {
     height: 3vh;
     width: 3vh;
     order: -1;
-}
-
-.btn-google{
-    width: 100%;
-    margin-bottom: 2vh;
-    margin-inline: -.5vh;
-}
-.btn-google button{
-    color: #fff;
-    background-image: linear-gradient(to right, #BC3233, #F48C06);
-    border-radius: 10px;
-    width: 100%;
-    padding: 8px 20px;
-    gap: 7vh;
-    border: none;
-    font-size: 1rem;
-    transition: background-color 0.3s;
-    font-family: "Montserrat";
-    font-weight: 250;
-    height: 5vh;
-    min-height: 48px; 
-
-}
-
-.btn-google button:hover{
-    background-color: #333;
 }
 
 .singIn p{

@@ -3,8 +3,9 @@ body{
     min-height: 100vh;    
     background: linear-gradient(
         to bottom,  /* Cambiado de "to top" a "to bottom" */
-        #6A040F 0%,
-        #170000 100%
+        #6c040f 0%,
+        #220004 50%,
+        #230104 100%
         
 
     );
@@ -12,424 +13,420 @@ body{
     /* Versión para compatibilidad con navegadores WebKit (Safari, Chrome antiguo) */
     background: -webkit-linear-gradient(
         bottom,  /* Invertido para coincidir con la dirección */
-        #6A040F 0%,
-        #170000 100%
+         #6c040f 0%,
+        #220004 50%,
+        #230104 100%
     
     );
 }
 
 .imgFondo {
-    position: fixed;
-    top: -30px;
-    right: -50px;
-    width: 500px;
-    height: 500px;
-    background-image: url('../img/33.png');
+    position: absolute;
     background-repeat: no-repeat;
-    background-position: center,center;
     background-size: cover;
-    opacity: 0.1;
+    background-position: center;
+    pointer-events: none;
     z-index: -1;
-
+    opacity: 0.05;
+    top: -5vh;
+    right: -.5vh;
+    background-image: url('../img/33.png');
+    width: 100%;
+    overflow: hidden;
+    height: 70vh;
 }
 
-.welcome{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    color: #fff;
-    padding-top: 65px;
+.welcome {
+    padding-top: 10vh;
+    color: #ffff;
 }
 
 .welcome h5{
-    font-size: 30px;
-    font-weight: 350;
+    font-size: 1.5rem;
+    font-weight: 300;
     font-family: "Montserrat";
 }
 
 .welcome p{
+    font-size: .8rem;
     font-weight: 250;
     font-family: "Montserrat";
 }
 
-.inputs{
-    padding-top: 20px;
-    padding-left: 35px;
-    display: flex;
-    flex-direction: column;
+.formUser{
+    position: relative;
+    width: 100%;
+    margin-bottom: 3vh;
+    margin-inline: -.5vh;
+    
+}
+
+.formUser input[type="text"] {
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid #FFFFFF;
+    outline: none;
+    box-sizing: border-box;
+    font-size: 1.1rem;
+    color: #FFFFFF;
+    font-family: "Montserrat";
+    font-weight: 300;
+
+}
+
+.lblUser{
+    position: absolute;
+    bottom: 5px; /* Esto lo posiciona inicialmente */
+    left: 0;
+    color: #FFFFFF;
+    pointer-events: none;
+    transition: all 0.3 ease;
+    font-size: 1.0rem;
+    font-family: "Montserrat";
+    font-weight: 250;
+}
+
+.lblUser .text-User{
+    display: inline-block;
+}
+
+/* --- EFECTO DE ANIMACIÓN: Cuando el INPUT está enfocado o ya tiene texto --- */
+
+.formUser input:focus + .lblUser .text-User,
+.formUser input:valid + .lblUser .text-User {
+    transform: translateY(-150%); /* Aquí es donde ajustamos la subida */
+    font-size: 12px;
+    color: #fff;
+}
+
+.text-User {
+    position: absolute;
+    bottom: 5px; /* Posición inicial del texto */
+    transition: all 0.3s ease;
+    color: #fff;
+}
+
+
+.formEmail{
+    position: relative;
+    width: 100%;
+    margin-bottom: 3vh;
+    margin-inline: -.5vh;
+    
+}
+
+.formEmail input[type="text"] {
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid #FFFFFF;
+    outline: none;
+    box-sizing: border-box;
+    font-size: 1.1rem;
+    color: #FFFFFF;
+    font-family: "Montserrat";
+    font-weight: 300;
+
+}
+
+.lblEmail{
+    position: absolute;
+    bottom: 5px; /* Esto lo posiciona inicialmente */
+    left: 0;
+    color: #FFFFFF;
+    pointer-events: none;
+    transition: all 0.3 ease;
+    font-size: 1.0rem;
+    font-family: "Montserrat";
+    font-weight: 250;
+}
+
+.lblEmail .text-Email{
+    display: inline-block;
+}
+
+/* --- EFECTO DE ANIMACIÓN: Cuando el INPUT está enfocado o ya tiene texto --- */
+
+.formEmail input:focus + .lblEmail .text-Email,
+.formEmail input:valid + .lblEmail .text-Email {
+    transform: translateY(-150%); /* Aquí es donde ajustamos la subida */
+    font-size: 12px;
+    color: #fff;
+}
+
+.text-Email {
+    position: absolute;
+    bottom: 5px; /* Posición inicial del texto */
+    transition: all 0.3s ease;
+    color: #fff;
+    white-space: nowrap;
+}
+
+
+
+.formPassword{
+    position: relative;
+    width: 100%;
+    margin-inline: -.5vh;
+
+    
+    
+}
+
+.formPassword input[type="password"] {
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid #FFFFFF;
+    outline: none;
+    box-sizing: border-box;
+    font-size: 1.1rem;
+    color: #FFFFFF;
+    font-family: "Montserrat";
+    font-weight: 300;
+}
+
+.lblPassword{
+    position: absolute;
+    bottom: 5px; /* Esto lo posiciona inicialmente */
+    left: 0;
+    color: #FFFFFF;
+    pointer-events: none;
+    transition: all 0.3 ease;
+    font-size: 1.0rem;
+    font-family: "Montserrat";
+    font-weight: 250;
+}
+
+.lblPassword .text-Password{
+    display: inline-block;
+    
+}
+
+/* --- EFECTO DE ANIMACIÓN: Cuando el INPUT está enfocado o ya tiene texto --- */
+
+.formPassword input:focus + .lblPassword .text-Password,
+.formPassword input:valid + .lblPassword .text-Password {
+    transform: translateY(-150%); /* Aquí es donde ajustamos la subida */
+    font-size: 12px;
+    color: #fff;
+}
+
+.text-Password {
+    position: absolute;
+    bottom: 5px; /* Posición inicial del texto */
+    left: 0;
+    transition: all 0.3s ease;
+    color: #fff;
     
 }
 
 
 
-.formUser {
-    width: 100%;
-    height: 50px;
-    max-width: 400px;
-    position: relative;
-    overflow: hidden;
-}
 
-.formUser input{
-    width: 100%;
-    height: 100%;
-    background:none;
-    color: #fff;
-    padding-top: 20px;
-    border: none;
-    outline: 0px;
-}
-
-.formUser .lblUser{
-position: absolute;
-bottom: 0;
-left: 0;
-width: 350px;
-height: 200px;
-pointer-events: none;
-border-bottom: 1px solid #fff;
-}
-
-.formUser .lblUser::after{
-content: '';
-position: absolute;
-left: 0;
-bottom: -1;
-width: 350px;
-height: 200px;
-border-bottom: 3px solid #BC3233;
-transform: translateX(-100%);
-transition: all 0.3s ease;
-}
-
-.text-User{
-    position: absolute;
-    bottom: 5px;
-    left: 0;
-    transition: all 0.3s ease;
-    color: #fff;
-
-}
-
-.formUser input:focus + .lblUser .text-User, .formUser input:valid + .lblUser .text-User{
-    transform: translateY(-150%);
-    font-size: 12px;
-    color: #fff;
-
-}
-
-.formUser input:focus + .lblUser:after{
-    transform: translateX(0%);
-}
-
-
-.email{
-    margin-top: 30px;
-}
-
-.formEmail {
-    width: 100%;
-    height: 50px;
-    max-width: 400px;
-    position: relative;
-    overflow: hidden;
-}
-
-.formEmail input{
-    width: 100%;
-    height: 100%;
-    background:none;
-    color: #fff;
-    padding-top: 20px;
-    border: none;
-    outline: 0px;
-}
-
-.formEmail .lblEmail{
-position: absolute;
-bottom: 0;
-left: 0;
-width: 350px;
-height: 200px;
-pointer-events: none;
-border-bottom: 1px solid #fff;
-}
-
-.formEmail .lblEmail::after{
-content: '';
-position: absolute;
-left: 0;
-bottom: -1;
-width: 350px;
-height: 200px;
-border-bottom: 3px solid #BC3233;
-transform: translateX(-100%);
-transition: all 0.3s ease;
-}
-
-.text-Email{
-    position: absolute;
-    bottom: 5px;
-    left: 0;
-    transition: all 0.3s ease;
-    color: #fff;
-
-}
-
-.formEmail input:focus + .lblEmail .text-Email, .formEmail input:valid + .lblEmail .text-Email{
-    transform: translateY(-150%);
-    font-size: 12px;
-    color: #fff;
-
-}
-
-.formEmail input:focus + .lblEmail:after{
-    transform: translateX(0%);
-}
-
-
-.password{
-    margin-top: 30px;
-}
-
-.formPassword {
-    width: 100%;
-    height: 50px;
-    max-width: 400px;
-    position: relative;
-    overflow: hidden;
-}
-
-.formPassword input{
-    width: 100%;
-    height: 100%;
-    background:none;
-    color: #fff;
-    padding-top: 20px;
-    border: none;
-    outline: 0px;
-}
-
-.formPassword .lblPassword{
-position: absolute;
-bottom: 0;
-left: 0;
-width: 350px;
-height: 200px;
-pointer-events: none;
-border-bottom: 1px solid #fff;
-}
-
-.formPassword .lblPassword:after{
-content: '';
-position: absolute;
-left: 0;
-bottom: -1;
-width: 350px;
-height: 200px;
-border-bottom: 3px solid #BC3233;
-transform: translateX(-100%);
-transition: all 0.3s ease;
-}
-
-.text-Password{
-    position: absolute;
-    bottom: 5px;
-    left: 0;
-    transition: all 0.3s ease;
-    color: #fff;
-
-}
-
-.formPassword input:focus + .lblPassword .text-Password, .formPassword input:valid + .lblPassword .text-Password{
-    transform: translateY(-150%);
-    font-size: 12px;
-    color: #fff;
-
-}
-
-.formPassword input:focus + .lblPassword:after{
-    transform: translateX(0%);
-}
-
-
-.num{
-    color: #fff;
-    padding-left: 35px;
-    padding-top: 30px;
-}
-
-.num h5{
-    font-family: "Montserrat";
-    font-weight: 250;
-    font-size: 15px;
-}
-
-
-
-
-/* Estilos para el campo de teléfono */
-.numPhone {
-    
-    padding-left: 35px;
-}
-
-.formNum {
-    width: 100%;
-    height: 50px;
-    max-width: 400px;
-    position: relative;
-    overflow: hidden;
-}
-
-.formNum input {
+/* Asegúrate de que el input de contraseña tenga suficiente padding-right para que el texto no se superponga con el icono */
+.formPassword input {
     width: 100%;
     height: 100%;
     background: none;
     color: #fff;
     padding-top: 20px;
+    padding-right: 35px; /* AÑADE O AJUSTA ESTO: Dale espacio al icono */
     border: none;
     outline: 0px;
-    padding-left: 0px; /* Espacio para la bandera */
 }
 
-.lblNum {
+/* Estilos para el contenedor del label (lblPassword) */
+.formPassword .lblPassword {
     position: absolute;
     bottom: 0;
     left: 0;
-    width: 350px;
-    height: 200px;
+    width: 100%; /* Ajusta el ancho para que el icono se posicione bien al final */
+    height: 100%; /* Esto es importante para que el icono se centre verticalmente */
     pointer-events: none;
-    border-bottom: 1px solid #fff;
-    display: flex;
-    align-items: center;
+    border-bottom: 1px solid #fff; /* La línea base */
+    /* Asegúrate de que el lblPassword no tenga un overflow:hidden que corte el icono si se sale de él */
 }
 
-.lblNum::after {
-    content: '';
+
+/* Estilos para el texto del label (Contraseña) */
+.text-Password {
     position: absolute;
+    bottom: 5px; /* Posición inicial del texto, ajusta si es necesario */
     left: 0;
-    bottom: -1px;
-    width: 350px;
-    height: 200px;
-    border-bottom: 3px solid #BC3233;
-    transform: translateX(-100%);
-    transition: all 0.3s ease;
-}
-
-.flag-icon {
-    position: absolute;
-    left: 0;
-    bottom: 5px;
-    font-size: 20px;
-    transition: all 0.3s ease;
-}
-
-.text-Phone {
-    position: absolute;
-    bottom: 5px;
-    left: 30px; /* Espacio después de la bandera */
     transition: all 0.3s ease;
     color: #fff;
 }
 
-
-/* Efectos de focus */
-.formNum input:focus + .lblNum .text-Phone,
-.formNum input:valid + .lblNum .text-Phone,
-.formNum input:focus + .lblNum .country-code,
-.formNum input:valid + .lblNum .country-code {
-    transform: translateY(-150%);
+/* Animación del texto del label */
+.formPassword input:focus + .lblPassword .text-Password,
+.formPassword input:valid + .lblPassword .text-Password {
+    transform: translateY(-150%); /* El valor que ya usas, ajústalo si no sube suficiente */
     font-size: 12px;
     color: #fff;
 }
 
-.formNum input:focus + .lblNum .flag-icon,
-.formNum input:valid + .lblNum .flag-icon {
-    transform: translateY(-150%) scale(0.8);
-}
-
-.formNum input:focus + .lblNum:after {
-    transform: translateX(0%);
-}
-
-.buttons2 {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    padding-top: 25px;
-}
-
-.buttons2 button {
-    color: #fff;
-    background-image: linear-gradient(to right, #BC3233, #F48C06);
-    border-radius:10px;
-    width: 350px;
-    padding: 8px 20px; 
+/* ESTILOS CLAVE PARA EL ICONO DEL OJO */
+.eye-icon {
+    position: absolute;
+    right: 5px; /* DISTANCIA DESDE EL BORDE DERECHO DEL INPUT */
+    bottom: 10px; /* Ajusta este valor para que se alinee con la línea de entrada */
+    color: #fff; /* Color del icono */
     cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s;
+    font-size: 1.2rem; /* Tamaño del icono. Ajusta si el icono de tu imagen es diferente */
+    z-index: 10; /* Asegura que esté por encima */
+    pointer-events: all; /* Permitir clics en el icono */
+}
+
+.formPhone p{
+    color: #fff;
     font-family: "Montserrat";
-    font-weight: 250;
+    font-weight: 200;
+    font-size: 1rem;
+}
+
+.formPhone .phone-label-static {
+    color: #fff;
+    font-family: "Montserrat";
+    font-weight: 300;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.formPhone .input-group-text {
+    background-color: transparent;
     border: none;
-}
-
-
-.buttons {
+    border-bottom: 1px solid #FFFFFF;
+    color: #FFFFFF;
+    font-family: "Montserrat";
+    font-weight: 300;
+    padding: 0.375rem 0.75rem;
     display: flex;
     align-items: center;
-    flex-direction: column;
-    
+    padding-left: 0;
+    padding-right: 5px; /* Pequeño espacio entre prefijo y input */
 }
 
-.buttons button {
+/* ESTILO PARA EL ICONO DE ICONIFY (FLAG-ICON) */
+.formPhone .flag-icon {
+    font-size: 1.5rem; /* Ajusta este valor para controlar el tamaño de la bandera */
+    margin-right: 8px; /* Espacio entre la bandera y el +503 */
+    vertical-align: middle; /* Ayuda a alinear si hay problemas */
+    display: inline-block; /* Asegura que tome el tamaño de font-size correctamente */
+}
+
+.formPhone .form-control {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    color: #FFFFFF;
+    font-family: "Montserrat";
+    font-weight: 300;
+    font-size: 1.1rem;
+    padding-left: 5px;
+    padding-right: 0;
+    height: auto;
+}
+
+.formPhone .input-group {
+    border-bottom: 1px solid #FFFFFF;
+    align-items: flex-end;
+}
+
+.formPhone .input-group:focus-within {
+    border-color: #fff;
+    box-shadow: 0 1px 0 0 #fff;
+}
+
+.formPhone .form-control {
+    border-bottom: none; 
+}
+
+.formPhone .input-group-text {
+    border-bottom: none;
+}
+
+.btn-enter {
+    width: 100%; 
+    margin-bottom: 2vh; 
+    margin-inline: -.5vh; 
+}
+
+.btn-enter button {
     color: #fff;
-    background-color: #222222;
-    border-radius:10px;
-    width: 350px;
-    padding: 8px 20px; 
-    display: flex; 
-    align-items: center;
-    justify-content: center; 
-    gap: 15px; /* Separa logo y texto */
-    border: 1px solid #fff;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s;
+    background-image: linear-gradient(to right, #BC3233, #F48C06); 
+    border-radius: 10px;
+    width: 100%;
+    padding: 8px 20px;
+    gap: 7vh;
+    border: none; 
+    font-size: 1rem;
+    transition: background-color 0.3s; 
     font-family: "Montserrat";
     font-weight: 250;
+    height: 5vh; 
+    min-height: 48px; 
 }
 
-.buttons button:hover {
+.btn-enter button:hover {
     background-color: #333; 
 }
 
-.buttons img {
-    height: 25px;
-    width: 25px;
-    order: -1; 
+.border-top{
+    width: 12vh;
+    opacity: 0.5;
 }
 
-.inicioSesion{
-    padding-top: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
+.txtRegistro{
+    color: #fff;
+    font-size: 1rem;
+    white-space: nowrap;
+    font-weight: 200;
 }
 
-.inicioSesion p{
-    color: white;
+.btn-google {
+    width: 90%; 
+    margin-bottom: 1vh;
+    margin-inline: -.5vh;
+}
+
+.btn-google button {
+    color: #fff;
+    background-color: #222222; 
+    border-radius: 10px;
+    width: 100%;
+    padding: 8px 20px;
+    gap: 7vh;
+    border: 1px solid #fff; 
+    font-size: 1rem;
+    transition: background-color 0.3s;
     font-family: "Montserrat";
     font-weight: 250;
-    font-size: 15px;
 }
 
-.inicioSesion a{
-    color:#F48C06;
-     font-family: "Montserrat";
-    font-weight: 300;
-    font-size: 15px;
+.btn-google button:hover {
+    /* Hover de Enter */
+    background-color: #333;
+}
 
+.btn-google img {
+    height: 3vh;
+    width: 3vh;
+    order: -1;
+}
+
+.txtInfo p{
+    color: #fff;
+    font-size: 1rem;
+    font-family: "Montserrat";
+    font-weight: 250;
+}
+
+.txtInfo a{
+    font-family: "Montserrat";
+    font-size: 1rem;
+    font-weight: 250;
+    color: #F48C06;
 }
