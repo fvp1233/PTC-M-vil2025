@@ -1,11 +1,12 @@
 body{
  margin: 0;
-    min-height: 100vh;    
+    min-height: 100vh;   
     background: linear-gradient(
         to bottom,  /* Cambiado de "to top" a "to bottom" */
         #6c040f 0%,
         #220004 50%,
         #230104 100%
+        
         
 
     );
@@ -28,13 +29,13 @@ body{
     pointer-events: none;
     z-index: -1;
     opacity: 0.05;
-    top: -5vh;
-    right: -.5vh;
+    top: 0;
+    right: 0;
     background-image: url('../img/33.png');
     width: 100%;
-    overflow: hidden;
-    height: 70vh;
+    height: 55vh;
 }
+
 
 .welcome {
     padding-top: 10vh;
@@ -53,11 +54,12 @@ body{
     font-family: "Montserrat";
 }
 
+
 .formUser{
     position: relative;
     width: 100%;
     margin-bottom: 3vh;
-    margin-inline: -.5vh;
+    
     
 }
 
@@ -112,7 +114,6 @@ body{
     position: relative;
     width: 100%;
     margin-bottom: 3vh;
-    margin-inline: -.5vh;
     
 }
 
@@ -168,10 +169,6 @@ body{
 .formPassword{
     position: relative;
     width: 100%;
-    margin-inline: -.5vh;
-
-    
-    
 }
 
 .formPassword input[type="password"] {
@@ -351,7 +348,6 @@ body{
 .btn-enter {
     width: 100%; 
     margin-bottom: 2vh; 
-    margin-inline: -.5vh; 
 }
 
 .btn-enter button {
@@ -389,7 +385,6 @@ body{
 .btn-google {
     width: 90%; 
     margin-bottom: 1vh;
-    margin-inline: -.5vh;
 }
 
 .btn-google button {
