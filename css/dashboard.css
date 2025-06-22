@@ -1,0 +1,37 @@
+body{
+ margin: 0;
+    min-height: 100vh;    
+    background: linear-gradient(
+        to bottom,  /* Cambiado de "to top" a "to bottom" */
+        #6c040f 0%,
+        #220004 50%,
+        #230104 100%
+        
+
+    );
+
+    /* Versión para compatibilidad con navegadores WebKit (Safari, Chrome antiguo) */
+    background: -webkit-linear-gradient(
+        bottom,  /* Invertido para coincidir con la dirección */
+         #6c040f 0%,
+        #220004 50%,
+        #230104 100%
+    
+    );
+}
+
+.imgFondo {
+    position: absolute;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    pointer-events: none;
+    z-index: -1;
+    opacity: 0.05;
+    top: -10vh;
+    right: -.5vh;
+    background-image: url('../img/35.png');
+    width: 100%;
+    overflow: hidden;
+    height: 70vh;
+}
