@@ -81,13 +81,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 var options = {
                     series: [ticket.ticketProgress || 0],
                     chart: {
-                        height: 70,
+                        height: 85,
                         type: 'radialBar',
                     },
                     plotOptions: {
                         radialBar: {
                             hollow: {
-                                size: '30%',
+                                size: '35%',
                             },
                             dataLabels: {
                                 show: true,
