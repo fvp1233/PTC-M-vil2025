@@ -1,0 +1,173 @@
+.imgFondo {
+   position: absolute;
+  top: -10vh;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 70vh;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-image: url('../img/35.png');
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.05; /* La subí un poquito para que no se pierda */
+}
+
+main, .container, .row {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: linear-gradient(
+        to bottom,
+        #6c040f 0%,
+        #220004 50%,
+        #230104 100%
+    );
+    background: -webkit-linear-gradient(
+        bottom,
+        #6c040f 0%,
+        #220004 50%,
+        #230104 100%
+    );
+    overflow-x: hidden;
+    display: flex; /* Body es el contenedor flex */
+    flex-direction: column; /* Hijos apilados verticalmente */
+    /* overflow-y: auto; Si tu contenido excede la altura de la pantalla, permitirá el scroll solo dentro del body */
+}
+
+header{
+    padding-top: 45px;
+    padding-bottom: 40px;
+    
+}
+
+.back {
+    height: 40px;
+    width: 40px;
+    margin-left: 10px;
+}
+
+.headerText {
+    font-family: "Montserrat";
+    color: white;
+    font-size: 23px;
+    padding-right: 30px;
+    
+}
+
+main {
+ background-color: #f7f7f7;
+  flex: 1;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
+  position:static;
+  z-index: 1;
+  max-width: 3000px;        /* o el ancho que prefieras */
+  margin: 0 auto;          /* centra horizontalmente */
+  width: 99%;              /* ocupa el 90% en móviles */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* para que parezca una tarjeta */
+  
+ 
+}
+
+.filter-btn.active {
+  background-color: white;
+  color: #6c040f;
+  font-weight: bold;
+  border: none;
+}
+
+.ticketsFilter {
+    border: 2px solid white;
+    margin-bottom: 50px ;
+    background-color: #8d272f;
+    border-radius: 10px;
+}
+
+.btnfilter {
+    color: white;
+    font-family: "Montserrat";
+    padding-left: 20px ;
+}
+
+.filter-btn {
+  margin-left: 0px ;
+  margin-right: 0px;
+  padding-top: 9px;
+  padding-bottom: 9px;
+  font-size: 20px;
+  background: none;
+  color: white;
+ 
+}
+
+.filter-btn:hover {
+  background-color: white;
+  color: #6c040f;
+}
+
+.ticket-id {
+  padding-top: 15px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700; /* Negrita para el ID (#0001) */
+  font-size: 30px;
+  color: #000; /* Negro intenso */
+}
+
+.ticket-date {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400; /* Regular para la fecha */ 
+  color: #888; /* Gris clarito */
+}
+
+.ticket-subject {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  color: #777;
+}
+
+hr.dashed {
+ border: none;
+  height: 3px;
+  width: 98%; /* 👈 Esto hace que no llegue al borde */
+  margin: 1rem auto; /* 👈 Centra horizontalmente */
+  background-image: repeating-linear-gradient(
+    to right,
+    #666,
+    #666 13px,
+    transparent 0px,
+    transparent 21px
+  );
+  opacity: 0.4;
+  border-radius: 2px;
+}
+
+.ticket-body{
+  margin-left: 30px;
+  margin-top: 10px;
+  position: static;
+  
+}
+
+.end-text {
+  text-align: center;
+  color: #999; /* Gris suave */
+  font-style: italic;
+  font-family: "Montserrat", sans-serif;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+
+
+
+
+
+
