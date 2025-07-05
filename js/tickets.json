@@ -1,0 +1,46 @@
+[
+    {
+    "id": "0001",
+    "date": "01/05/2025 9:00AM",
+    "description": "Reportes mal diseñados",
+    "assignedTo": "Herbert Cortez",
+    "status": "En espera",
+    "statusBarColor": "#ffc107",
+    "buttonColor": "#FFE297",
+    "buttonBorder": "#ffc107",
+    "ticketProgress": 76
+  },
+  {
+    "id": "0002",
+    "date": "02/05/2025 10:30AM",
+    "description": "Problema de conexión a la base de datos",
+    "assignedTo": "Astrid Murgas",
+    "status": "Abierto",
+    "statusBarColor": "#F48C06",
+    "buttonColor": "#F9B48B", 
+    "buttonBorder": "#F48C06" ,
+    "ticketProgress": 80
+  },
+  {
+    "id": "0003",
+    "date": "03/05/2025 11:00AM",
+    "description": "Error en el módulo de pagos",
+    "assignedTo": "Jorge Perez",
+    "status": "Cerrado",
+    "statusBarColor": "#198754",
+    "buttonColor": "#28A745", 
+    "buttonBorder": "#198754",
+    "ticketProgress": 100
+  },
+  {
+    "id": "0004",
+    "date": "04/05/2025 14:00PM",
+    "description": "Necesita nueva funcionalidad X",
+    "assignedTo": "Daniela Villalta",
+    "status": "Pendiente",
+    "statusBarColor": "#DC2F02",
+    "buttonColor": "#F88A8A"  ,
+    "buttonBorder": "#DC2F02",
+    "ticketProgress": 0
+  }
+]

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,22 +10,71 @@
     <link rel="stylesheet" href="css/dashboard.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
 </head>
+
 <body>
-    
+
     <div class="imgFondo"></div>
 
-    <div class="row">
+    <div class="container-fluid">
+        <div class="row">
             <div class="col-10 col-sm-10 col-md-10 col-lg-10">
-                <nav>
-                    <p>o pe caus</p>
-                </nav>
+                <div class="search-container"> <input type="text" class="input-search"> <svg class="search-icon"
+                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m21 21-4.34-4.34" />
+                        <circle cx="11" cy="11" r="8" />
+                    </svg>
+                </div>
             </div>
+            <div class="col-2">
+                <div class="imgUser">
+                    <img src="img/Google-Symbol.png" alt="">
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="col-2"></div>
 
+    <div class="container-fluid pt-2">
+        <div class="row">
+            <div class="col-6 col-sm-6 col-md-6 col-lg-6 d-flex flex-column justify-content-end">
+                <div class="date">
+                    <h5>Dashboard</h5>
+                    <p>Jueves, 1 Mayo 2025</p>
+                </div>
+            </div>
+            <div class="col-6 col-sm-6 col-md-6 col-lg-6 d-flex justify-content-center">
+                <div class="imgH2c">
+                    <img src="img/LOLOL 2.png" alt="">
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="white-content-section">
+        <div class="d-flex justify-content-between align-items-center ">
+            <h4 class="mb-1">Mis tickets</h4>
+            <a href="#" class="text-decoration-none text-dark">Todos <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right-icon lucide-chevron-right"><path d="m9 18 6-6-6-6"/></svg><i class="bi bi-chevron-right"></i></a>
+        </div>
+
+        
+    </div>
+
+    <div class="menu">
+        <a href="#"><img src="img/menu/baseconocimiento_inactive.png" alt=""></a>
+        <a href="#"><img src="img/menu/tickets_inactive.png" alt=""></a>
+        <a href="#"><img src="img/menu/dashboard_inactive.png" alt=""></a>
+        <a href="#"><img src="img/menu/notificaciones_active.png" alt=""></a>
+        <a href="#"><img src="img/menu/perfil_inactive.png" alt=""></a>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script src="js/dashboard.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO"
+        crossorigin="anonymous"></script>
 </body>
+
 </html>
