@@ -57,7 +57,7 @@ body {
     box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
     z-index: 1;
     flex-grow: 1;
-    overflow-y: auto;
+    
     padding-bottom: 5rem;
 }
 
@@ -191,4 +191,71 @@ textarea.form-control::placeholder {
 
 .menu a {
     font-size: 1.5rem;
+}
+
+/* Fondo oscuro que cubre toda la pantalla */
+.custom-modal {
+    display: none; /* Oculto por defecto */
+    position: fixed; /* Permanece fijo en la pantalla */
+    z-index: 2000; /* Asegura que esté por encima de todo lo demás (Bootstrap usa ~1000-1070) */
+    left: 0;
+    top: 0;
+    width: 100%; /* Cubre todo el ancho */
+    height: 100%; /* Cubre toda la altura */
+    overflow: auto; /* Habilita el scroll si el contenido es demasiado grande */
+    background-color: rgba(0, 0, 0, 0.7); /* Fondo semi-transparente oscuro */
+    display: flex; /* Para centrar el contenido del modal */
+    align-items: center; /* Centrado vertical */
+    justify-content: center; /* Centrado horizontal */
+}
+
+/* Contenido del modal */
+.custom-modal-content {
+    background-color: #fefefe;
+    margin: auto; /* Centrado automático */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Ancho del modal */
+    max-width: 500px; /* Ancho máximo para pantallas grandes */
+    border-radius: 8px;
+    position: relative; /* Necesario para el botón de cerrar */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.3s ease-out; /* Animación de aparición */
+}
+
+/* Botón de cerrar */
+.custom-close-button {
+    color: #aaa;
+    float: right; /* Para posicionar a la derecha */
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    cursor: pointer;
+}
+
+.custom-close-button:hover,
+.custom-close-button:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Animación de aparición */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.custom-modal-content{
+    display: flex;
+    justify-content: space-evenly;
+    text-align: center;
 }
