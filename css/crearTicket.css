@@ -256,8 +256,10 @@ textarea.form-control::placeholder {
 
 .custom-modal-content{
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
+    align-items: center;
     text-align: center;
+    gap: 5vh;
     
     
 }
@@ -267,7 +269,7 @@ textarea.form-control::placeholder {
     border: none;
     padding: 0;
     cursor: pointer;
-    
+    padding-bottom: 1vh;
 }
 
 .custom-modal-content img{
