@@ -1,7 +1,9 @@
 let currentDate = new Date();
+let selectedDate = obtenerFechaLocalISO();
 
-const API_URL = 'https://6864654f5b5d8d03397d1e12.mockapi.io/Daniela/tbTickets';
+const API_URL = "https://6864654f5b5d8d03397d1e12.mockapi.io/Daniela/tbTickets";
 let tickets = [];
+let opcion = "creacion";
 
 const creacion = document.getElementById("creacion");
 const cierre = document.getElementById("cierre");
@@ -13,9 +15,19 @@ async function CargarTickets() {
     const data = await res.json();
     tickets = data;
     renderCalendar();
+
+    const todayISO = obtenerFechaLocalISO();
+    selectedDate = todayISO;
+
+    if (opcion === "creacion") {
+      showTicketsCreacion(selectedDate);
+    } else if (opcion === "cierre") {
+      showTicketsCierre(selectedDate);
+    }
   } catch (error) {
-    console.error('Error al cargar los tickets:', error);
-    document.getElementById("ticket-info").innerHTML = '<p>Error al cargar los tickets.</p>';
+    console.error("Error al cargar los tickets:", error);
+    document.getElementById("ticket-info").innerHTML =
+      "<p>Error al cargar los tickets.</p>";
   }
 }
 
@@ -24,7 +36,7 @@ function primeraLetraMayuscula(cadena) {
 }
 
 function obtenerFechaLocalISO(date = new Date()) {
-  const offset = date.getTimezoneOffset() * 60000; // en milisegundos
+  const offset = date.getTimezoneOffset() * 60000;
   const localISO = new Date(date - offset).toISOString().slice(0, 10);
   return localISO;
 }
@@ -37,7 +49,9 @@ function renderCalendar() {
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
 
-  mesAno.textContent = `${primeraLetraMayuscula(currentDate.toLocaleString('es', { month: 'long' }))} ${year}`;
+  mesAno.textContent = `${primeraLetraMayuscula(
+    currentDate.toLocaleString("es", { month: "long" })
+  )} ${year}`;
   datesEl.innerHTML = "";
 
   const firstDay = new Date(year, month, 1).getDay();
@@ -57,56 +71,87 @@ function renderCalendar() {
     const div = document.createElement("div");
     div.textContent = d;
 
+    div.setAttribute("data-date", str);
+
     if (str === obtenerFechaLocalISO()) {
       div.classList.add("today");
     }
-
-    if (tickets.some(t => t.creationDate.slice(0, 10) === str || t.closeDate.slice(0, 10) === str)) {
-      div.classList.add("has-ticket");
+    if (opcion === "creacion") {
+      if (
+        tickets.some(
+          (t) => t.creationDate && t.creationDate.slice(0, 10) === str
+        )
+      ) {
+        div.classList.add("has-ticket");
+      }
+    } else if (opcion === "cierre") {
+      if (
+        tickets.some((t) => t.closeDate && t.closeDate.slice(0, 10) === str)
+      ) {
+        div.classList.add("has-ticket");
+      }
     }
 
-    div.addEventListener("click", () => showTickets(str));
+    if (str === selectedDate) {
+      div.classList.add("selected-date");
+    }
 
+    div.addEventListener("click", () => {
+      const previouslySelected = document.querySelector(
+        ".cal-dates .selected-date"
+      );
+      if (previouslySelected) {
+        previouslySelected.classList.remove("selected-date");
+      }
+
+      div.classList.add("selected-date");
+
+      selectedDate = str;
+
+      if (opcion === "creacion") {
+        showTicketsCreacion(selectedDate);
+      } else if (opcion === "cierre") {
+        showTicketsCierre(selectedDate);
+      }
+    });
     datesEl.appendChild(div);
   }
 }
 
 function FormatearFechaDia(fechaISO) {
   const fecha = new Date(fechaISO);
-
-  const dia = fecha.getDate().toString().padStart(2, '0');
-
+  // Usar getUTCDate() para obtener el día en UTC, que coincidirá con la parte YYYY-MM-DD de la cadena ISO.
+  const dia = fecha.getUTCDate().toString().padStart(2, "0");
   return `${dia}`;
 }
 
 function FormatearFechaMesAnio(fechaISO) {
   const fecha = new Date(fechaISO);
-  const meses = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
-  const mes = meses[fecha.getMonth()];
-  const año = fecha.getFullYear();
-
+  const meses = [
+      "Ene", "Feb", "Mar", "Abr", "May", "Jun",
+      "Jul", "Ago", "Sep", "Oct", "Nov", "Dic",
+  ];
+  // Usar getUTCMonth() y getUTCFullYear() para obtener el mes y año en UTC.
+  const mes = meses[fecha.getUTCMonth()];
+  const año = fecha.getUTCFullYear();
   return `${mes}, ${año}`;
 }
 
 // Muestra los tickets de una fecha
 function showTicketsCreacion(fecha) {
-  const lista = tickets.filter(t =>
-    t.creationDate.slice(0, 10) === fecha || t.closeDate.slice(0, 10) === fecha
-  );
+  const lista = tickets.filter((t) => t.creationDate.slice(0, 10) === fecha);
 
   const cont = document.getElementById("ticket-info");
-  cont.innerHTML = `<h3>Tickets en ${fecha}:</h3>`;
+  cont.innerHTML = `<h3 class="ticketsen">Tickets creados en ${fecha}:</h3>`;
 
   if (lista.length === 0) {
     cont.innerHTML += "<p>No hay tickets.</p>";
     return;
   } else {
-    const ul = document.createElement("ul");
-    lista.forEach(t => {
-
-      const tarjeta = document.createElement('div');
-            tarjeta.className = 'tarjeta';
-            tarjeta.innerHTML = `
+    lista.forEach((t) => {
+      const tarjeta = document.createElement("div");
+      tarjeta.className = "tarjeta";
+      tarjeta.innerHTML = `
             <div class="fecha">
                 <p class="dia">${FormatearFechaDia(t.creationDate)}</p>
                 <p class="mesanio">${FormatearFechaMesAnio(t.creationDate)}</p>
@@ -136,44 +181,39 @@ function showTicketsCreacion(fecha) {
 
             </div>
         `;
-            notificaciones.appendChild(tarjeta);
+      cont.appendChild(tarjeta);
     });
-    cont.appendChild(ul);
   }
 }
 
 function showTicketsCierre(fecha) {
-  const lista = tickets.filter(t =>
-    t.creationDate.slice(0, 10) === fecha || t.closeDate.slice(0, 10) === fecha
-  );
+  const lista = tickets.filter((t) => t.closeDate.slice(0, 10) === fecha);
 
   const cont = document.getElementById("ticket-info");
-  cont.innerHTML = `<h3>Tickets en ${fecha}:</h3>`;
+  cont.innerHTML = `<h3 class="ticketsen">Tickets que se cierran en ${fecha}:</h3>`;
 
   if (lista.length === 0) {
     cont.innerHTML += "<p>No hay tickets.</p>";
     return;
   } else {
-    const ul = document.createElement("ul");
-    lista.forEach(t => {
-
-      const tarjeta = document.createElement('div');
-            tarjeta.className = 'tarjeta';
-            tarjeta.innerHTML = `
+    lista.forEach((t) => {
+      const tarjeta = document.createElement("div");
+      tarjeta.className = "tarjeta";
+      tarjeta.innerHTML = `
             <div class="fecha">
-                <p class="dia">01</p>
-                <p class="mesanio">May, 25</p>
+                <p class="dia">${FormatearFechaDia(t.closeDate)}</p>
+                <p class="mesanio">${FormatearFechaMesAnio(t.closeDate)}</p>
             </div>
             <div class="info">
-                <p>No funcionan los filtros</p>
-                <p class="ticket-number">#0001</p>
+                <p>${t.title}</p>
+                <p class="ticket-number">#${t.ticketId}</p>
                 <span class="ticket-status">
-                    <p>En proceso</p>
+                    <p>${t.status}</p>
                 </span>
             </div> 
             <div class="prioridad">
                 <p>Prioridad:</p>
-                <p class="prioridad-color">Media</p>
+                <p class="prioridad-color">${t.ticketPriority}</p>
             </div>
             <div class="iconos">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -189,50 +229,77 @@ function showTicketsCierre(fecha) {
 
             </div>
         `;
-            notificaciones.appendChild(tarjeta);
+      cont.appendChild(tarjeta);
     });
-    cont.appendChild(ul);
   }
 }
 
 // Botones de navegación
 document.getElementById("prev").addEventListener("click", () => {
   currentDate.setMonth(currentDate.getMonth() - 1);
+  // Aseguramos que selectedDate apunte a una fecha en el nuevo mes.
+  // Si el día actual (selectedDate.getDate()) no existe en el nuevo mes, setDate lo ajustará al último día válido.
+  selectedDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), Math.min(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate(), new Date(selectedDate).getDate())).toISOString().slice(0, 10);
   renderCalendar();
+  // Vuelve a cargar los tickets para la nueva fecha seleccionada (o el primer día si no había una fecha seleccionada en el nuevo mes)
+  if (opcion === "creacion") {
+      showTicketsCreacion(selectedDate);
+  } else if (opcion === "cierre") {
+      showTicketsCierre(selectedDate);
+  }
 });
 
 document.getElementById("next").addEventListener("click", () => {
   currentDate.setMonth(currentDate.getMonth() + 1);
+  // Aseguramos que selectedDate apunte a una fecha en el nuevo mes.
+  selectedDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), Math.min(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate(), new Date(selectedDate).getDate())).toISOString().slice(0, 10);
   renderCalendar();
+  // Vuelve a cargar los tickets para la nueva fecha seleccionada
+  if (opcion === "creacion") {
+      showTicketsCreacion(selectedDate);
+  } else if (opcion === "cierre") {
+      showTicketsCierre(selectedDate);
+  }
 });
 
 // Espera a que cargue el HTML y luego carga los tickets
-window.addEventListener('DOMContentLoaded', CargarTickets);
+window.addEventListener("DOMContentLoaded", CargarTickets);
 
 //Menu dropdown
-const dropdown = document.querySelector('.dropdown');
+const dropdown = document.querySelector(".dropdown");
 
-const select = dropdown.querySelector('.select');
-const caret = dropdown.querySelector('.caret');
-const menu = dropdown.querySelector('.menudropdown');
-const options = dropdown.querySelectorAll('.menudropdown li');
-const selected = dropdown.querySelector('.selected');
+const select = dropdown.querySelector(".select");
+const caret = dropdown.querySelector(".caret");
+const menu = dropdown.querySelector(".menudropdown");
+const options = dropdown.querySelectorAll(".menudropdown li");
+const selectedText = dropdown.querySelector(".selected");
 
-select.addEventListener('click', () => {
-  select.classList.toggle('select-clicked');
-  caret.classList.toggle('caret-rotate');
-  menu.classList.toggle('menudropdown-open');
-})
+select.addEventListener("click", () => {
+  select.classList.toggle("select-clicked");
+  caret.classList.toggle("caret-rotate");
+  menu.classList.toggle("menudropdown-open");
+});
 
-options.forEach(option => {
-  option.addEventListener('click', () => {
-    selected.innerText = option.innerText;
-    select.classList.remove('select-clicked');
-    caret.classList.remove('caret-rotate');
-    menu.classList.remove('menudropdown-open');
-    options.forEach(option => {
-      option.classList.remove('active');
+options.forEach((option) => {
+  option.addEventListener("click", () => {
+    selectedText.innerText = option.innerText;
+
+    select.classList.remove("select-clicked");
+    caret.classList.remove("caret-rotate");
+    menu.classList.remove("menudropdown-open");
+
+    options.forEach((opt) => {
+      opt.classList.remove("active");
     });
-    option.classList.add('active');
-  })
-})
+    option.classList.add("active");
+
+    if (option.innerText.toLowerCase() === "creación") {
+      opcion = "creacion";
+      showTicketsCreacion(selectedDate);
+    } else if (option.innerText.toLowerCase() === "cierre") {
+      opcion = "cierre";
+      showTicketsCierre(selectedDate);
+    }
+    renderCalendar();
+  });
+});
