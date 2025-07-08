@@ -1,0 +1,250 @@
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(to bottom, #6c040f 0%, #220004 75%, #2e0b36 100%);
+  background: -webkit-linear-gradient(bottom, #6c040f 0%, #220004 75%, #2e0b36 100%);
+  display: flex;
+  flex-direction: column;
+  font-family: "Montserrat", sans-serif;
+}
+
+.imgFondo {
+  position: absolute;
+  top: -10vh;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 70vh;
+  background: url('../img/35.png') center/cover no-repeat;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.05;
+}
+
+header {
+  padding: 45px 0 10px;
+}
+
+.back {
+  height: 40px;
+  width: 40px;
+  margin-left: 10px;
+}
+
+.headerText {
+  color: white;
+  font-size: 22px;
+}
+
+main, .container, .row {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+main {
+  background-color: #f7f7f7;
+  flex: 1;
+  border-radius: 30px 30px 0 0;
+  z-index: 1;
+  max-width: 3000px;
+  margin: 0 auto;
+  width: 99%;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.ticketsFilter {
+  border: 2px solid white;
+  margin-bottom: 30px;
+  background-color: #8d272f;
+  border-radius: 10px;
+}
+
+.btnfilter,
+.filter-btn {
+  color: white;
+  font-family: "Montserrat";
+  background: none;
+  border: none;
+  padding: 9px 20px;
+  font-size: 20px;
+  width: 100%;
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+  background-color: white;
+  color: #6c040f;
+  font-weight: bold;
+}
+
+.ticket-card {
+  transition: box-shadow 0.2s ease;
+}
+
+.ticket-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.textTicket {
+  padding: 15px 0 0 30px;
+  font-size: 15px;
+}
+
+.noTickets {
+  padding-top: 60px;
+  font-size: 12px;
+}
+
+.noTickets img {
+  max-width: 200px;
+}
+
+.Ntext {
+  padding: 30px 10px 0;
+}
+
+.ticket-id,
+.ticket-date,
+.ticket-subject {
+  font-family: 'Montserrat', sans-serif;
+}
+
+.ticket-id {
+  padding-top: 15px;
+  font-weight: 700;
+  font-size: 30px;
+  color: #000;
+}
+
+.ticket-date {
+  font-weight: 400;
+  color: #888;
+}
+
+.ticket-subject {
+  font-weight: 400;
+  color: #777;
+}
+
+hr.dashed {
+  border: none;
+  height: 3px;
+  width: 98%;
+  margin: 1rem auto;
+  background-image: repeating-linear-gradient(to right, #666, #666 13px, transparent 0px, transparent 21px);
+  opacity: 0.4;
+  border-radius: 2px;
+}
+
+.ticket-body {
+  margin: 10px 0 0 30px;
+}
+
+.end-text {
+  text-align: center;
+  color: #999;
+  font-style: italic;
+  margin: 20px 0 10px;
+}
+
+.card {
+  box-shadow: 0px 6px 12px -2px rgba(0, 0, 0, 0.4);
+  margin-bottom: 25px;
+  border-radius: 16px;
+  background-color: white;
+}
+
+.card-body {
+  padding: 1rem 0.5rem 0.5rem;
+}
+
+.idText,
+.someFunctionsText,
+.date {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.idText {
+  padding-left: 20px;
+  font-size: 30px;
+}
+
+.date {
+  font-size: 14px;
+  color: #555;
+  padding-left: 15px;
+}
+
+.someFunctionsText {
+  padding-left: 20px;
+  font-size: 12px;
+}
+
+.card-body .row > div {
+  min-width: 0;
+  word-wrap: break-word;
+}
+
+.ticket-row {
+  width: 100%;
+}
+
+.ticket-col1 {
+  flex: 0 0 80px;
+  min-width: 50px;
+}
+
+.ticket-col2,
+.ticket-col3 {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+@media (max-width: 620px) {
+  .filter-btn {
+    font-size: 13px;
+    padding: 10px 0;
+  }
+
+  .headerText {
+    font-size: 17px;
+  }
+
+  .calendar {
+    height: 35px;
+  }
+}
+
+@media (min-width: 768px) {
+  .Ntext {
+    font-size: 20px;
+  }
+
+  .noTickets img {
+    width: 250px;
+    display: block;
+    margin: 0 auto;
+  }
+
+  .textTicket {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 576px) {
+  .ticket-card .text-end {
+    text-align: start !important;
+    margin-top: 10px;
+  }
+}
+
+@media (max-width: 400px) {
+  .ticket-col1 {
+    flex: 0 0 60px;
+  }
+}
