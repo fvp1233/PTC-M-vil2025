@@ -273,20 +273,22 @@ h3 {
 }
 
 .dia {
-    font-size: 20px;
+    font-size: 21px;
     font-weight: 500;
+    margin-bottom: 0.5rem;
 }
 
 .mesanio {
     font-size: 14px;
     font-weight: 500;
+    margin-bottom: 0.3rem;
 }
 
 .info p {
     font-size: 12px;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
 }
-
-
 
 .ticket-number {
     color: #929292;
@@ -324,3 +326,18 @@ h3 {
     justify-content: flex-end;
     align-items: flex-end;
 }
+
+.dia {
+    text-align: center;
+    margin-top: 0.8rem;
+}
+
+.info {
+    padding-left: 0.5rem;
+    align-items: center;
+}
+
+.prioridad-color {
+    color: #F48C06;
+}
+
