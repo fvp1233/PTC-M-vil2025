@@ -204,7 +204,7 @@ textarea.form-control::placeholder {
     height: 100%; /* Cubre toda la altura */
     overflow: auto; /* Habilita el scroll si el contenido es demasiado grande */
     background-color: rgba(0, 0, 0, 0.7); /* Fondo semi-transparente oscuro */
-    display: flex; /* Para centrar el contenido del modal */
+    
     align-items: center; /* Centrado vertical */
     justify-content: center; /* Centrado horizontal */
 }
@@ -258,4 +258,22 @@ textarea.form-control::placeholder {
     display: flex;
     justify-content: space-evenly;
     text-align: center;
+    
+    
 }
+
+.custom-modal-content button{
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    
+}
+
+.custom-modal-content img{
+    width: 8vh;
+    height: 8vh;
+}
+
+
+
