@@ -1,3 +1,4 @@
+
 * {
     font-family: "Montserrat";
 }
@@ -127,7 +128,7 @@ h3 {
     flex-direction: row;
     justify-content: center;
     flex-wrap: wrap;
-    align-items: flex-end;
+    align-items: center;
     text-align: left;
 }
 
@@ -211,7 +212,6 @@ h3 {
     bottom: 0;
     left: 0;
     width: 100%;
-    max-width: 100vw;
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -258,6 +258,7 @@ h3 {
     flex-direction: column;
     align-items: center;
     width: 100%;
+    margin-bottom: 4rem;
 }
 
 .tarjeta {
@@ -272,34 +273,36 @@ h3 {
     justify-content: space-between;
 }
 
+.fecha {
+    width: 25%;
+    text-align: center;
+}
+
 .dia {
-    font-size: 20px;
-    font-weight: 500;
+    font-size: 21px;
+    margin-bottom: 0.5rem;
+    margin-top: 0.8rem;
+    text-align: center;
+    font-weight: 600;
 }
 
 .mesanio {
     font-size: 14px;
     font-weight: 500;
+    margin-bottom: 0.3rem;
+    width: 4rem;
+    text-align: center;
+    width: 100%;
 }
 
 .info p {
     font-size: 12px;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
 }
-
-
 
 .ticket-number {
     color: #929292;
-}
-
-.ticket-status {
-    padding: 0.2em 0.8em;
-    border-radius: 999px;
-    font-size: 0.9rem;
-    font-weight: 500;
-    display: inline-block;
-    border: 1px solid #F48C06;
-    background-color: #F9B48B;
 }
 
 .ticket-status p {
@@ -316,11 +319,86 @@ h3 {
     flex-direction: column;
     align-items: center;
     justify-content: space-evenly;
+    width: 10%;
 }
 
 .prioridad {
     display: flex;
     flex-direction: row;
-    justify-content: flex-end;
-    align-items: flex-end;
+}
+
+.info {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    width: 65%;
+}
+
+.descripcion {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 0.3rem;
+}
+
+.cal-dates div.selected-date {
+    background-color: #6A040F;
+    color: white;
+}
+
+.status-en-proceso {
+    padding: 0.2em 0.8em;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    display: inline-block;
+    border: 1px solid #F48C06;
+    background-color: #F9B48B;
+}
+
+.status-esperando-respuesta {
+    padding: 0.2em 0.8em;
+    border-radius: 999px;
+    font-size: 0.2rem;
+    font-weight: 500;
+    display: inline-block;
+    border: 1px solid #FFBA08;
+    background-color: #FFE297;
+}
+
+.status-cerrado {
+    padding: 0.2em 0.8em;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    display: inline-block;
+    border: 1px solid #578F47;
+    background-color: #9AE086;
+}
+
+.status-abierto {
+    padding: 0.2em 0.8em;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    display: inline-block;
+    border: 1px solid #96FF50;
+    background-color: #D6FFC5;
+}
+
+.priority-baja {
+    color: #FFBA08;
+    font-weight: bold;
+}
+
+.priority-media {
+    color: #F48C06;
+    font-weight: bold;
+}
+
+.priority-alta {
+    color: #DC2F02;
+    font-weight: bold;
 }
