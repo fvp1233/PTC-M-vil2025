@@ -31,10 +31,12 @@ async function CargarTickets() {
   }
 }
 
+//Hace la primera letra del mes mayúscula
 function primeraLetraMayuscula(cadena) {
   return cadena.charAt(0).toUpperCase() + cadena.slice(1);
 }
 
+//Obtiene la fecha local para que se muestre esa en el calendario y no la UTC
 function obtenerFechaLocalISO(date = new Date()) {
   const offset = date.getTimezoneOffset() * 60000;
   const localISO = new Date(date - offset).toISOString().slice(0, 10);
@@ -118,26 +120,26 @@ function renderCalendar() {
   }
 }
 
+//Obtiene el día del mes de una fecha en formato ISO para mostrar en el ticket
 function FormatearFechaDia(fechaISO) {
   const fecha = new Date(fechaISO);
-  // Usar getUTCDate() para obtener el día en UTC, que coincidirá con la parte YYYY-MM-DD de la cadena ISO.
   const dia = fecha.getUTCDate().toString().padStart(2, "0");
   return `${dia}`;
 }
 
+//Obtiene el mes y año de una fecha en formato ISO para mostrar en el ticket y lo convierte a un formato más amigable (por ejemplo, "Jul, 2025")
 function FormatearFechaMesAnio(fechaISO) {
   const fecha = new Date(fechaISO);
   const meses = [
-      "Ene", "Feb", "Mar", "Abr", "May", "Jun",
-      "Jul", "Ago", "Sep", "Oct", "Nov", "Dic",
+    "Ene", "Feb", "Mar", "Abr", "May", "Jun",
+    "Jul", "Ago", "Sep", "Oct", "Nov", "Dic",
   ];
-  // Usar getUTCMonth() y getUTCFullYear() para obtener el mes y año en UTC.
   const mes = meses[fecha.getUTCMonth()];
   const año = fecha.getUTCFullYear();
   return `${mes}, ${año}`;
 }
 
-// Muestra los tickets de una fecha
+//Muestra los tickets creados en la fecha específica seleccionada
 function showTicketsCreacion(fecha) {
   const lista = tickets.filter((t) => t.creationDate.slice(0, 10) === fecha);
 
@@ -151,21 +153,55 @@ function showTicketsCreacion(fecha) {
     lista.forEach((t) => {
       const tarjeta = document.createElement("div");
       tarjeta.className = "tarjeta";
+
+      let ticketNumber = '';
+      if (t.ticketId < 10) {
+        ticketNumber = `000${t.ticketId}`;
+      } else if (t.ticketId < 100) {
+        ticketNumber = `00${t.ticketId}`;
+      } else if (t.ticketId < 1000) {
+        ticketNumber = `0${t.ticketId}`;
+      }
+
+      let statusClass = '';
+      const lowerCaseStatus = t.status.toLowerCase();
+      if (lowerCaseStatus.includes("proceso")) {
+        statusClass = "status-en-proceso";
+      } else if (lowerCaseStatus.includes("respuesta")) {
+        statusClass = "status-esperando-respuesta";
+      } else if (lowerCaseStatus.includes("cerrado")) { 
+        statusClass = "status-cerrado";
+      } else if (lowerCaseStatus.includes("abierto")) {
+        statusClass = "status-abierto";
+      }            
+      
+      let priorityClass = '';
+      const lowerCasePriority = t.ticketPriority.toLowerCase();
+      if (lowerCasePriority.includes("baja")) {
+        priorityClass = "priority-baja";
+      } else if (lowerCasePriority.includes("media")) {
+        priorityClass = "priority-media";
+      } else if (lowerCasePriority.includes("alta")) {
+        priorityClass = "priority-alta";
+      }
+
       tarjeta.innerHTML = `
-            <div class="fecha">
+      <div class="fecha">
                 <p class="dia">${FormatearFechaDia(t.creationDate)}</p>
                 <p class="mesanio">${FormatearFechaMesAnio(t.creationDate)}</p>
             </div>
             <div class="info">
                 <p>${t.title}</p>
-                <p class="ticket-number">#${t.ticketId}</p>
+                <div class="descripcion">
+                    <p class="ticket-number">#${ticketNumber}</p>
+                    <div class="prioridad">
+                        <p>Prioridad:</p>
+                        <p class="${priorityClass}">${t.ticketPriority}</p>
+                    </div>
+                </div>
                 <span class="ticket-status">
-                    <p>${t.status}</p>
+                    <p class="${statusClass}">${t.status}</p>
                 </span>
-            </div> 
-            <div class="prioridad">
-                <p>Prioridad:</p>
-                <p class="prioridad-color">${t.ticketPriority}</p>
             </div>
             <div class="iconos">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -180,12 +216,13 @@ function showTicketsCreacion(fecha) {
                 </svg>
 
             </div>
-        `;
+`;
       cont.appendChild(tarjeta);
     });
   }
 }
 
+//Muestra los tickets que se cierran en la fecha específica seleccionada
 function showTicketsCierre(fecha) {
   const lista = tickets.filter((t) => t.closeDate.slice(0, 10) === fecha);
 
@@ -199,21 +236,56 @@ function showTicketsCierre(fecha) {
     lista.forEach((t) => {
       const tarjeta = document.createElement("div");
       tarjeta.className = "tarjeta";
+
+      let ticketNumber = '';
+      if (t.ticketId < 10) {
+        ticketNumber = `000${t.ticketId}`;
+      } else if (t.ticketId < 100) {
+        ticketNumber = `00${t.ticketId}`;
+      } else if (t.ticketId < 1000) {
+        ticketNumber = `0${t.ticketId}`;
+      }
+
+      let statusClass = '';
+      const lowerCaseStatus = t.status.toLowerCase();
+      if (lowerCaseStatus.includes("proceso")) { 
+        statusClass = "status-en-proceso";
+      } else if (lowerCaseStatus.includes("respuesta")) {
+        statusClass = "status-esperando-respuesta";
+      } else if (lowerCaseStatus.includes("cerrado")) { 
+        statusClass = "status-cerrado";
+      } else if (lowerCaseStatus.includes("abierto")) {
+        statusClass = "status-abierto";
+      }           
+
+      let priorityClass = '';
+      const lowerCasePriority = t.ticketPriority.toLowerCase();
+      if (lowerCasePriority.includes("baja")) {
+        priorityClass = "priority-baja";
+      } else if (lowerCasePriority.includes("media")) {
+        priorityClass = "priority-media";
+      } else if (lowerCasePriority.includes("alta")) {
+        priorityClass = "priority-alta";
+      }
+
+
       tarjeta.innerHTML = `
-            <div class="fecha">
+      <div class="fecha">
                 <p class="dia">${FormatearFechaDia(t.closeDate)}</p>
                 <p class="mesanio">${FormatearFechaMesAnio(t.closeDate)}</p>
             </div>
             <div class="info">
                 <p>${t.title}</p>
-                <p class="ticket-number">#${t.ticketId}</p>
+                <div class="descripcion">
+                    <p class="ticket-number">#${ticketNumber}</p>
+                    <div class="prioridad">
+                        <p>Prioridad:</p>
+                        <p class="${priorityClass}">${t.ticketPriority}</p>
+                    </div>
+                </div>
                 <span class="ticket-status">
-                    <p>${t.status}</p>
+                    <p class="${statusClass}">${t.status}</p>
                 </span>
-            </div> 
-            <div class="prioridad">
-                <p>Prioridad:</p>
-                <p class="prioridad-color">${t.ticketPriority}</p>
             </div>
             <div class="iconos">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -228,7 +300,7 @@ function showTicketsCierre(fecha) {
                 </svg>
 
             </div>
-        `;
+      `;
       cont.appendChild(tarjeta);
     });
   }
@@ -237,28 +309,21 @@ function showTicketsCierre(fecha) {
 // Botones de navegación
 document.getElementById("prev").addEventListener("click", () => {
   currentDate.setMonth(currentDate.getMonth() - 1);
-  // Aseguramos que selectedDate apunte a una fecha en el nuevo mes.
-  // Si el día actual (selectedDate.getDate()) no existe en el nuevo mes, setDate lo ajustará al último día válido.
-  selectedDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), Math.min(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate(), new Date(selectedDate).getDate())).toISOString().slice(0, 10);
   renderCalendar();
-  // Vuelve a cargar los tickets para la nueva fecha seleccionada (o el primer día si no había una fecha seleccionada en el nuevo mes)
   if (opcion === "creacion") {
-      showTicketsCreacion(selectedDate);
+    showTicketsCreacion(selectedDate);
   } else if (opcion === "cierre") {
-      showTicketsCierre(selectedDate);
+    showTicketsCierre(selectedDate);
   }
 });
 
 document.getElementById("next").addEventListener("click", () => {
   currentDate.setMonth(currentDate.getMonth() + 1);
-  // Aseguramos que selectedDate apunte a una fecha en el nuevo mes.
-  selectedDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), Math.min(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate(), new Date(selectedDate).getDate())).toISOString().slice(0, 10);
   renderCalendar();
-  // Vuelve a cargar los tickets para la nueva fecha seleccionada
   if (opcion === "creacion") {
-      showTicketsCreacion(selectedDate);
+    showTicketsCreacion(selectedDate);
   } else if (opcion === "cierre") {
-      showTicketsCierre(selectedDate);
+    showTicketsCierre(selectedDate);
   }
 });
 
