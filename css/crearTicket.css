@@ -3,27 +3,22 @@ body {
     margin: 0;
     min-height: 100vh;
     background: linear-gradient(
-        to bottom,  /* Cambiado de "to top" a "to bottom" */
+        to bottom,
         #6c040f 0%,
         #220004 20%,
         #230104 100%
-        
-        
-
     );
 
     /* Versión para compatibilidad con navegadores WebKit (Safari, Chrome antiguo) */
     background: -webkit-linear-gradient(
-        bottom,  /* Invertido para coincidir con la dirección */
-         #6c040f 0%,
+        bottom,
+        #6c040f 0%,
         #220004 20%,
         #230104 100%
-    
     );
     overflow-x: hidden;
     display: flex;
     flex-direction: column;
-    
 }
 
 /* Fondo fijo, sin afectar flujo */
@@ -42,7 +37,7 @@ body {
     background-image: url('../img/35.png');
 }
 
-.flecha-atras a{
+.flecha-atras a {
     color: #fff;
 }
 
@@ -54,10 +49,9 @@ body {
     padding: 20px;
     margin-top: 30px;
     position: relative;
-    box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.1);
     z-index: 1;
     flex-grow: 1;
-    
     padding-bottom: 5rem;
 }
 
@@ -204,9 +198,9 @@ textarea.form-control::placeholder {
     height: 100%; /* Cubre toda la altura */
     overflow: auto; /* Habilita el scroll si el contenido es demasiado grande */
     background-color: rgba(0, 0, 0, 0.7); /* Fondo semi-transparente oscuro */
-    
     align-items: center; /* Centrado vertical */
     justify-content: center; /* Centrado horizontal */
+    
 }
 
 /* Contenido del modal */
@@ -254,17 +248,15 @@ textarea.form-control::placeholder {
     }
 }
 
-.custom-modal-content{
+.custom-modal-content {
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
     gap: 5vh;
-    
-    
 }
 
-.custom-modal-content button{
+.custom-modal-content button {
     background: none;
     border: none;
     padding: 0;
@@ -272,10 +264,164 @@ textarea.form-control::placeholder {
     padding-bottom: 1vh;
 }
 
-.custom-modal-content img{
+.custom-modal-content img {
     width: 8vh;
     height: 8vh;
 }
 
+/* --- Estilos para la Notificación Personalizada --- */
+.custom-notification {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1060;
+    padding: 20px 30px;
+    border-radius: 25px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+    color: white;
+    text-align: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease-in-out, visibility 0.4s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 250px;
+    width: 350px;
+    font-family: "Montserrat";
+    padding-bottom: 50px;
+}
 
+.custom-notification.show {
+    opacity: 1;
+    visibility: visible;
+}
 
+/* Importante: Estas reglas se aplican al contenedor general del contenido de la notificación.
+   Las estructuras internas de éxito/error tienen sus propios diseños. */
+.custom-notification .notification-content {
+    display: flex;
+    flex-direction: column; /* Apila el encabezado y el cuerpo verticalmente */
+    align-items: center; /* Centra el contenido horizontalmente */
+    gap: 15px; /* Espacio entre el encabezado y el cuerpo (si aplica) */
+    width: 100%; /* Asegura que ocupe el ancho disponible para su contenido */
+}
+
+/* --- Estilos específicos para Éxito --- */
+.custom-notification.success {
+    background-color: white;
+    color: black;
+}
+
+.custom-notification .notification-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.custom-notification .notification-title {
+    font-size: 1.8rem;
+    font-weight: 500;
+    color: black;
+}
+
+.custom-notification .notification-header-icon {
+    font-size: 2.2rem;
+    color: #28a745;
+}
+
+.custom-notification .notification-body {
+    text-align: left;
+    width: 100%;
+    padding-left: 10px;
+}
+
+.custom-notification .ticket-id-info {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: black;
+    display: block;
+    line-height: 1.6; /* Aumenta el espacio entre la línea del ID y la siguiente */
+}
+
+#insertedTicketId {
+    font-weight: 500;
+    color: black;
+}
+
+.custom-notification .ticket-message {
+    font-size: 0.9rem;
+    color: black;
+    /* Ajustamos line-height para todo el mensaje */
+    line-height: 1.6; /* Un valor como 1.6 o 1.7 suele ser bueno */
+    display: block; /* Aseguramos que ocupe su propia línea si no lo hacía ya */
+}
+
+/* --- Estilos específicos para Error (mantienen la estructura simple) --- */
+.custom-notification.error {
+    background-color: #dc3545; /* Rojo Bootstrap */
+}
+
+/* Estos estilos genéricos de icono y texto solo se aplicarán si la estructura HTML del error los usa */
+.custom-notification.error .notification-icon {
+    font-size: 3rem; /* Tamaño del icono */
+    margin-bottom: 5px; /* Pequeño margen bajo el icono */
+}
+
+.custom-notification.error .notification-icon:before {
+    content: "\f06a"; /* Código Unicode para fa-exclamation-circle */
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+}
+
+.custom-notification.error .notification-text {
+    font-size: 1.2rem; /* Tamaño del texto del mensaje */
+    font-weight: 600; /* Negrita */
+}
+
+.custom-notification .ticket-id-info {
+    margin-bottom: 15px; /* Ejemplo: más espacio entre el ID y el mensaje */
+}
+
+/* Estilos para el botón de eliminar imagen en la previsualización */
+.remove-image-btn {
+    background: none; /* Sin fondo */
+    border: none; /* Sin borde */
+    color: #fff; /* Color blanco para la 'X' (o el color que desees) */
+    font-size: 1.5rem; /* Tamaño de la 'X' */
+    font-weight: bold; /* Hacer la 'X' más negrita */
+    padding: 0; /* Quitar padding interno */
+    line-height: 1; /* Ajustar line-height */
+    cursor: pointer;
+    text-shadow: 0 0 3px rgba(0, 0, 0, 0.7); /* Sombra para que se vea bien en cualquier imagen */
+    transition: color 0.2s ease-in-out; /* Transición suave al pasar el ratón */
+}
+
+.remove-image-btn:hover {
+    color: #ff0000; 
+}
+
+/* Estilos para el botón personalizado de "Crear Ticket" */
+.btnCreateTicket {
+    background-color: #5C1D24; 
+    color: white; 
+    border: 1px solid #5C1D24;
+    padding: 12px 20px;
+    font-size: 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    outline: none;
+    box-shadow: none; /* Asegurar que no tenga sombra de focus por defecto de Bootstrap si la clase 'btn' está presente */
+}
+
+.btn.btnCreateTicket {
+    background-color: #5C1D24;
+    border-color: #5C1D24;
+    color: white; 
+    outline: none !important; /* !important para anular estilos fuertes de Bootstrap */
+    box-shadow: none !important; /* !important para anular estilos fuertes de Bootstrap */
+}
