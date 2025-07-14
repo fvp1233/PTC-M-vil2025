@@ -55,12 +55,69 @@ body{
 }
 
 
-.formUser{
+.formName{
     position: relative;
     width: 100%;
     margin-bottom: 3vh;
     
     
+}
+
+.formName input[type="text"] {
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid #FFFFFF;
+    outline: none;
+    box-sizing: border-box;
+    font-size: 1.1rem;
+    color: #FFFFFF;
+    font-family: "Montserrat";
+    font-weight: 300;
+
+}
+
+.lblName{
+    position: absolute;
+    bottom: 5px; /* Esto lo posiciona inicialmente */
+    left: 0;
+    color: #FFFFFF;
+    pointer-events: none;
+    transition: all 0.3 ease;
+    font-size: 1.0rem;
+    font-family: "Montserrat";
+    font-weight: 250;
+}
+
+.lblName .text-Name{
+    display: inline-block;
+    white-space: nowrap;
+}
+
+/* --- EFECTO DE ANIMACIÓN: Cuando el INPUT está enfocado o ya tiene texto --- */
+
+.formName input:focus + .lblName .text-Name,
+.formName input:valid + .lblName .text-Name {
+    transform: translateY(-150%); /* Aquí es donde ajustamos la subida */
+    font-size: 12px;
+    color: #fff;
+}
+
+.text-Name {
+    position: absolute;
+    bottom: 5px; /* Posición inicial del texto */
+    transition: all 0.3s ease;
+    color: #fff;
+}
+
+
+
+
+
+.formUser{
+    position: relative;
+    width: 100%;
+    margin-bottom: 3vh; 
 }
 
 .formUser input[type="text"] {
@@ -166,115 +223,6 @@ body{
 
 
 
-.formPassword{
-    position: relative;
-    width: 100%;
-}
-
-.formPassword input[type="password"] {
-    width: 100%;
-    background-color: transparent;
-    border: none;
-    border-bottom: 1px solid #FFFFFF;
-    outline: none;
-    box-sizing: border-box;
-    font-size: 1.1rem;
-    color: #FFFFFF;
-    font-family: "Montserrat";
-    font-weight: 300;
-}
-
-.lblPassword{
-    position: absolute;
-    bottom: 5px; /* Esto lo posiciona inicialmente */
-    left: 0;
-    color: #FFFFFF;
-    pointer-events: none;
-    transition: all 0.3 ease;
-    font-size: 1.0rem;
-    font-family: "Montserrat";
-    font-weight: 250;
-}
-
-.lblPassword .text-Password{
-    display: inline-block;
-    
-}
-
-/* --- EFECTO DE ANIMACIÓN: Cuando el INPUT está enfocado o ya tiene texto --- */
-
-.formPassword input:focus + .lblPassword .text-Password,
-.formPassword input:valid + .lblPassword .text-Password {
-    transform: translateY(-150%); /* Aquí es donde ajustamos la subida */
-    font-size: 12px;
-    color: #fff;
-}
-
-.text-Password {
-    position: absolute;
-    bottom: 5px; /* Posición inicial del texto */
-    left: 0;
-    transition: all 0.3s ease;
-    color: #fff;
-    
-}
-
-
-
-
-/* Asegúrate de que el input de contraseña tenga suficiente padding-right para que el texto no se superponga con el icono */
-.formPassword input {
-    width: 100%;
-    height: 100%;
-    background: none;
-    color: #fff;
-    padding-top: 20px;
-    padding-right: 35px; /* AÑADE O AJUSTA ESTO: Dale espacio al icono */
-    border: none;
-    outline: 0px;
-}
-
-/* Estilos para el contenedor del label (lblPassword) */
-.formPassword .lblPassword {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%; /* Ajusta el ancho para que el icono se posicione bien al final */
-    height: 100%; /* Esto es importante para que el icono se centre verticalmente */
-    pointer-events: none;
-    border-bottom: 1px solid #fff; /* La línea base */
-    /* Asegúrate de que el lblPassword no tenga un overflow:hidden que corte el icono si se sale de él */
-}
-
-
-/* Estilos para el texto del label (Contraseña) */
-.text-Password {
-    position: absolute;
-    bottom: 5px; /* Posición inicial del texto, ajusta si es necesario */
-    left: 0;
-    transition: all 0.3s ease;
-    color: #fff;
-}
-
-/* Animación del texto del label */
-.formPassword input:focus + .lblPassword .text-Password,
-.formPassword input:valid + .lblPassword .text-Password {
-    transform: translateY(-150%); /* El valor que ya usas, ajústalo si no sube suficiente */
-    font-size: 12px;
-    color: #fff;
-}
-
-/* ESTILOS CLAVE PARA EL ICONO DEL OJO */
-.eye-icon {
-    position: absolute;
-    right: 5px; /* DISTANCIA DESDE EL BORDE DERECHO DEL INPUT */
-    bottom: 10px; /* Ajusta este valor para que se alinee con la línea de entrada */
-    color: #fff; /* Color del icono */
-    cursor: pointer;
-    font-size: 1.2rem; /* Tamaño del icono. Ajusta si el icono de tu imagen es diferente */
-    z-index: 10; /* Asegura que esté por encima */
-    pointer-events: all; /* Permitir clics en el icono */
-}
 
 .formPhone p{
     color: #fff;
