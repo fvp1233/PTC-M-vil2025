@@ -23,7 +23,7 @@ body {
     overflow-x: hidden;
     display: flex;
     flex-direction: column;
-    padding-bottom: 3rem;
+    padding-bottom: 2rem;
 }
 
 /* Fondo fijo, sin afectar flujo */
@@ -122,6 +122,7 @@ body {
     z-index: 1;
     flex-grow: 1;
     overflow-y: auto;
+    padding-bottom: 5rem;
 }
 
 /* Card body flex para tickets */
@@ -266,4 +267,30 @@ body {
 
 .menu a {
     font-size: 1.5rem;
+}
+
+.add-btn{
+    position: fixed;    
+    bottom: 7vh;      
+    right: 3vh;      
+    border-radius: 50%;
+    width: 7vh;
+    height: 7vh;
+    border: none;
+    box-shadow: 0 4px 10px rgba(199, 199, 199, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    z-index: 1001;
+    transition: transform 0.3s ease;
+    background-color: #BC3233;
+    color: #fff;
+}
+.add-btn:hover{
+    transform: scale(1,1); /* Efecto de zoom al pasar el mouse */
+}
+
+.add-btn a{
+    text-decoration: none;
+    color: #fff;
 }
