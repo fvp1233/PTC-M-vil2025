@@ -166,7 +166,25 @@ dialog button {
     width: 100%;
 }
 
-#modal h3 {
+#modal-logout h3 {
     font-weight: 500;
     text-align: center;
+}
+
+.input {
+    width: 90%;
+    padding: 10px;
+    border: 1px solid #6A040F;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+    outline: none;
+}
+
+#modal-username {
+    width: 80%;
+    padding: 20px;
+    border: none;
+    border-radius: 8px;
+    background-color: white;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
 }
