@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Perfil</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="css/stylePerfil.css" />
+</head>
+
+<body>
+  <div class="imgFondo"></div>
+  <div class="informacion">
+    <div class="encabezado">
+      <h1>Perfil</h1>
+    </div>
+    <img src="img/fotoperfil.png" alt="" class="foto">
+    <h3 id="nombre"></h3>
+    <h5 id="rol"></h5>
+    <p>Tickets generados: 9</p>
+  </div>
+  <div class="contenido">
+    <div class="tarjeta">
+      <div class="categoria">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M8 0C9.06087 0 10.0783 0.421427 10.8284 1.17157C11.5786 1.92172 12 2.93913 12 4C12 5.06087 11.5786 6.07828 10.8284 6.82843C10.0783 7.57857 9.06087 8 8 8C6.93913 8 5.92172 7.57857 5.17157 6.82843C4.42143 6.07828 4 5.06087 4 4C4 2.93913 4.42143 1.92172 5.17157 1.17157C5.92172 0.421427 6.93913 0 8 0ZM8 10C12.42 10 16 11.79 16 14V16H0V14C0 11.79 3.58 10 8 10Z"
+            fill="#6A040F" />
+        </svg>
+        <p>Usuario</p>
+        <svg id="edit" xmlns="http://www.w3.org/2000/svg" height="17" width="17"
+          viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
+          <path fill="#2ca9a8"
+            d="M441 58.9L453.1 71c9.4 9.4 9.4 24.6 0 33.9L424 134.1 377.9 88 407 58.9c9.4-9.4 24.6-9.4 33.9 0zM209.8 256.2L344 121.9 390.1 168 255.8 302.2c-2.9 2.9-6.5 5-10.4 6.1l-58.5 16.7 16.7-58.5c1.1-3.9 3.2-7.5 6.1-10.4zM373.1 25L175.8 222.2c-8.7 8.7-15 19.4-18.3 31.1l-28.6 100c-2.4 8.4-.1 17.4 6.1 23.6s15.2 8.5 23.6 6.1l100-28.6c11.8-3.4 22.5-9.7 31.1-18.3L487 138.9c28.1-28.1 28.1-73.7 0-101.8L474.9 25C446.8-3.1 401.2-3.1 373.1 25zM88 64C39.4 64 0 103.4 0 152L0 424c0 48.6 39.4 88 88 88l272 0c48.6 0 88-39.4 88-88l0-112c0-13.3-10.7-24-24-24s-24 10.7-24 24l0 112c0 22.1-17.9 40-40 40L88 464c-22.1 0-40-17.9-40-40l0-272c0-22.1 17.9-40 40-40l112 0c13.3 0 24-10.7 24-24s-10.7-24-24-24L88 64z" />
+        </svg>
+      </div>
+      <p id="usuario"></p>
+    </div>
+    <div class="tarjeta">
+      <div class="categoria">
+        <svg width="18" height="18" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M11 8C12.933 8 14.5 6.433 14.5 4.5C14.5 2.567 12.933 1 11 1C9.067 1 7.5 2.567 7.5 4.5C7.5 6.433 9.067 8 11 8Z"
+            fill="#6A040F" stroke="#6A040F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M1 19.5C1 15.0815 5.0295 11.5 10 11.5Z" fill="#6A040F" />
+          <path d="M1 19.5C1 15.0815 5.0295 11.5 10 11.5" stroke="#6A040F" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round" />
+          <path d="M14.5 20L19.5 15L17.5 13L12.5 18V20H14.5Z" fill="#6A040F" stroke="#6A040F" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <p>Nombre completo</p>
+      </div>
+      <p id="nombre-completo"></p>
+    </div>
+    <div class="tarjeta">
+      <div class="categoria">
+        <svg width="23" height="16" viewBox="0 0 17 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M16.47 0.005267C16.4018 -0.00175567 16.3332 -0.00175567 16.265 0.005267H2.265C2.17527 0.00664956 2.08614 0.0201037 2 0.045267L9.225 7.24027L16.47 0.005267Z"
+            fill="#6A040F" />
+          <path
+            d="M16.9051 0.695312L9.62509 7.94531C9.43773 8.13156 9.18427 8.23611 8.92009 8.23611C8.6559 8.23611 8.40245 8.13156 8.21509 7.94531L1.00009 0.750313C0.977908 0.831833 0.966147 0.915835 0.965088 1.00031V11.0003C0.965088 11.2655 1.07044 11.5199 1.25798 11.7074C1.44552 11.895 1.69987 12.0003 1.96509 12.0003H15.9651C16.2303 12.0003 16.4847 11.895 16.6722 11.7074C16.8597 11.5199 16.9651 11.2655 16.9651 11.0003V1.00031C16.9611 0.89614 16.9409 0.79323 16.9051 0.695312ZM2.65009 11.0003H1.95509V10.2853L5.59009 6.68031L6.29509 7.38531L2.65009 11.0003ZM15.9551 11.0003H15.2551L11.6101 7.38531L12.3151 6.68031L15.9501 10.2853L15.9551 11.0003Z"
+            fill="#6A040F" />
+        </svg>
+        <p>Correo electrónico</p>
+      </div>
+      <p id="correo"></p>
+    </div>
+    <div class="tarjeta">
+      <div class="categoria">
+        <svg width="12" height="20" viewBox="0 0 12 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M10 0H2C1.46957 0 0.960859 0.210714 0.585786 0.585786C0.210714 0.960859 0 1.46957 0 2V18C0 18.5304 0.210714 19.0391 0.585786 19.4142C0.960859 19.7893 1.46957 20 2 20H10C10.5304 20 11.0391 19.7893 11.4142 19.4142C11.7893 19.0391 12 18.5304 12 18V2C12 1.46957 11.7893 0.960859 11.4142 0.585786C11.0391 0.210714 10.5304 0 10 0ZM7 19H5V18H7V19ZM10 17H2V3H10V17Z"
+            fill="#6A040F" />
+        </svg>
+        <p>Número de teléfono</p>
+      </div>
+      <p id="telefono"></p>
+    </div>
+
+    <div class="logout" id="btnAbrirModalLogout">
+      <svg xmlns="http://www.w3.org/2000/svg" height="20" width="20"
+        viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
+        <path fill="#6a040f"
+          d="M502.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L402.7 224 192 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l210.7 0-73.4 73.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l128-128zM160 96c17.7 0 32-14.3 32-32s-14.3-32-32-32L96 32C43 32 0 75 0 128L0 384c0 53 43 96 96 96l64 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-64 0c-17.7 0-32-14.3-32-32l0-256c0-17.7 14.3-32 32-32l64 0z" />
+      </svg>
+      <p>CERRAR SESIÓN</p>
+    </div>
+  </div>
+
+  <dialog id="modal-logout">
+    <article>
+      <header>
+        <h3>¿Estás seguro que deseas cerrar sesión?</h3>
+        <p>Tendrás que ingresar de nuevo tus credenciales.</p>
+      </header>
+      <div class="acciones">
+        <button class="cancelar" id="btnCerrarModalLogout">Cancelar</button>
+        <button class="confirmar">Cerrar Sesión</button>
+      </div>
+    </article>
+  </dialog>
+
+  <dialog id="modal-username">
+    <article>
+      <header>
+        <h3>Editar nombre de usuario</h3>
+      </header>
+      <form id="frmEditarUsuario">
+        <input type="number" id="userId" hidden>
+        <input class="input" type="text" id="username" required>
+        <div class="acciones">
+          <button type="button" class="cancelar" id="btnCancelar">Cancelar</button>
+          <button type="submit" class="confirmar" id="btnGuardar">Guardar</button>
+        </div>
+      </form>
+    </article>
+  </dialog>
+
+  <div class="menu">
+    <a href="#"><img src="img/menu/baseconocimiento_inactive.png" alt=""></a>
+    <a href="#"><img src="img/menu/tickets_inactive.png" alt=""></a>
+    <a href="#"><img src="img/menu/dashboard_inactive.png" alt=""></a>
+    <a href="#"><img src="img/menu/notificaciones_inactive.png" alt=""></a>
+    <a href="#"><img src="img/menu/perfil_active.png" alt=""></a>
+  </div>
+
+  <script src="js/scriptPerfil.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+
+</html>
