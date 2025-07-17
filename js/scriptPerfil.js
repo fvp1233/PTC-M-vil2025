@@ -8,28 +8,20 @@ const correo = document.getElementById('correo');
 const telefono = document.getElementById('telefono');
 
 let currentUser = null; // Variable global para almacenar el objeto del usuario cargado
+let userId = null; // Variable para almacenar el ID del usuario actual
 
 // Solicitud GET para cargar los datos del usuario desde la API
 async function CargarDatos() {
-    console.log("Cargando datos del usuario...");
     try {
         const res = await fetch(API_URL);
-        if (!res.ok) {
-            throw new Error(`HTTP error! status: ${res.status}`);
-        }
-        const data = await res.json(); // 'data' será un array de usuarios
+        const data = await res.json();
 
-        if (data && data.length > 0) {
-            currentUser = data[0]; // ¡Asigna el primer usuario a la variable global currentUser!
-            console.log("Datos del usuario cargados:", currentUser);
-            CargarUsuario(currentUser); // Llama a CargarUsuario para mostrar los datos
-        } else {
-            console.warn('No se encontraron usuarios en la API.');
-        }
+        currentUser = data[0];
+        userId = currentUser.userId; // Asigna el ID del usuario actual
+        CargarUsuario(currentUser);
+        console.log("Datos del usuario cargados:", currentUser);
     } catch (error) {
         console.error('Error al cargar el usuario:', error);
-        if (nombre) nombre.textContent = 'Error al cargar.';
-        if (rol) rol.textContent = '';
     }
 }
 
@@ -41,12 +33,8 @@ function CargarUsuario(user) { // Este 'user' es el objeto que se recibe
     }
 
     if (nombre && user.fullName) {
-        // Asegúrate de que el split sea seguro si el nombre completo tiene menos de 3 partes
         const nameParts = user.fullName.split(' ');
-        // Si quieres solo el primer y segundo nombre, revisa el índice [2].
-        // Normalmente sería [0] y [1] para "Nombre Apellido1"
-        // Si "Esteban Zavaleta", split(' ')[0] es "Esteban", split(' ')[1] es "Zavaleta". No hay [2].
-        nombre.textContent = nameParts.length >= 2 ? `${nameParts[0]} ${nameParts[1]}` : user.fullName;
+        nombre.textContent = nameParts.length >= 2 ? `${nameParts[0]} ${nameParts[2]}` : user.fullName;
     }
     if (rol) {
         rol.textContent = user.rol || '';
@@ -68,7 +56,6 @@ function CargarUsuario(user) { // Este 'user' es el objeto que se recibe
     if (fotoPerfil && user.profilePicture) { // Si tu API devuelve 'profilePicture'
         fotoPerfil.src = user.profilePicture;
     }
-    console.log("Interfaz de usuario actualizada con:", user.userName);
 }
 
 // Modal para cerrar sesión (Mantener este tal cual, ya funciona)
@@ -100,18 +87,15 @@ const btnAbrirModalEditar = document.getElementById("edit"); // El SVG con ID "e
 if (btnCerrarEditar) {
     btnCerrarEditar.addEventListener("click", () => {
         modalEditar.close();
-        console.log("Modal de edición cerrado.");
     });
 }
 
 // Event listener para abrir el modal de edición
 if (btnAbrirModalEditar) {
     btnAbrirModalEditar.addEventListener("click", () => {
-        console.log("Clic en el botón de edición.");
         // Verificar si currentUser tiene datos antes de intentar abrir el modal
         if (currentUser) {
-            console.log("currentUser existe:", currentUser);
-            abrirModalEditar(currentUser); // ¡PASA EL OBJETO currentUser como argumento!
+            abrirModalEditar(userId, currentUser); // ¡PASA EL OBJETO currentUser como argumento!
         } else {
             console.warn("No hay datos de usuario cargados en 'currentUser'. No se puede abrir el modal de edición.");
             alert("No se pudieron cargar los datos del usuario para editar. Por favor, recargue la página.");
@@ -121,13 +105,14 @@ if (btnAbrirModalEditar) {
 
 // Función para abrir el modal de edición y rellenar el input
 // ¡CORRECCIÓN CLAVE AQUÍ: Usa 'user' o 'usuario' consistentemente!
-function abrirModalEditar (userObj) { // Renombré el parámetro a 'userObj' para mayor claridad
-    console.log("abrirModalEditar llamada con userObj:", userObj);
+function abrirModalEditar(userId, userObj) { // Renombré el parámetro a 'userObj' para mayor claridad
     const usernameInput = document.getElementById("username");
+    const userIdInput = document.getElementById("userId");
     // Verificar que el input existe y que el objeto userObj y su propiedad userName están definidos
     if (usernameInput && userObj && userObj.userName) {
         usernameInput.value = userObj.userName; // Ahora accedemos a userObj.userName
-        console.log("Input de username rellenado con:", userObj.userName);
+        userIdInput.value = userIdInput.value; // Asignar el ID del usuario al input oculto
+        console.log(userIdInput.value);
     } else {
         console.error("No se pudo rellenar el input de username. Elemento o datos faltantes.");
         if (!usernameInput) console.error("Elemento 'username' (el input) no encontrado.");
@@ -150,7 +135,7 @@ document.getElementById("frmEditarUsuario").addEventListener("submit", async e =
     }
 
     // Asegúrate de que tenemos un usuario cargado y su ID para la actualización
-    if (!currentUser || !currentUser.id) {
+    if (!currentUser || !userId) {
         console.error("No hay un usuario seleccionado o no tiene ID para actualizar.");
         alert("Error: No se pudo identificar al usuario para actualizar.");
         return;
@@ -158,28 +143,38 @@ document.getElementById("frmEditarUsuario").addEventListener("submit", async e =
 
     try {
         // Llamada a la API para actualizar el usuario
-        const respuesta = await fetch(`${API_URL}/${currentUser.userId}`, { // Usa currentUser.id
+        const respuesta = await fetch(`${API_URL}/${userId}`, { // Usa currentUser.id
             method: "PUT",
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ userName: newUsername }) // Envía el campo 'userName' con el nuevo valor
         });
 
         if (respuesta.ok) {
-            alert("El registro fue actualizado correctamente");
+            //Alerta de éxito de SweetAlert
+            Swal.fire({
+                position: "center",
+                icon: "success",
+                text: "El usuario fue actualizado correctamente",
+                showConfirmButton: false,
+                timer: 1800,
+                width: "90%",
+            });
+
             modalEditar.close();
 
-            // Actualiza el nombre de usuario en el objeto currentUser (localmente)
             currentUser.userName = newUsername;
-            // Vuelve a cargar los datos en la UI con el objeto currentUser actualizado
             CargarUsuario(currentUser);
-
-            console.log("Usuario actualizado y UI refrescada.");
-            // Si tenías una función global 'obtenerPersonas()' para recargar una tabla,
-            // asegúrate de que esté definida en tu código o remuévela si no la usas.
-            // obtenerPersonas(); // Esto probablemente necesita ser eliminado o implementado
         } else {
             const errorText = await respuesta.text(); // Intenta leer el cuerpo de la respuesta de error
-            alert(`Hubo un error al actualizar: ${respuesta.status} - ${errorText}`);
+            Swal.fire({
+                //Alerta de error de SweetAlert
+                position: "center",
+                icon: "error",
+                text: `Hubo un error al actualizar: ${respuesta.status} - ${errorText}`,
+                showConfirmButton: false,
+                timer: 1800,
+                width: "90%"
+            });
             console.error('Error en la respuesta de la API:', respuesta.status, errorText);
         }
     } catch (error) {

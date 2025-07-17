@@ -111,12 +111,13 @@
         <h3>Editar nombre de usuario</h3>
       </header>
       <form id="frmEditarUsuario">
-                <input class="input" type="text" id="username" required>
-                <div class="acciones">
-<button type="button" class="cancelar" id="btnCancelar">Cancelar</button>
-                <button type="submit" class="confirmar" id="btnGuardar">Guardar</button>
-                </div>
-            </form>
+        <input type="number" id="userId" hidden>
+        <input class="input" type="text" id="username" required>
+        <div class="acciones">
+          <button type="button" class="cancelar" id="btnCancelar">Cancelar</button>
+          <button type="submit" class="confirmar" id="btnGuardar">Guardar</button>
+        </div>
+      </form>
     </article>
   </dialog>
 
@@ -129,6 +130,7 @@
   </div>
 
   <script src="js/scriptPerfil.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 
 </html>
