@@ -104,7 +104,6 @@ if (btnAbrirModalEditar) {
 }
 
 // Función para abrir el modal de edición y rellenar el input
-// ¡CORRECCIÓN CLAVE AQUÍ: Usa 'user' o 'usuario' consistentemente!
 function abrirModalEditar(userId, userObj) { // Renombré el parámetro a 'userObj' para mayor claridad
     const usernameInput = document.getElementById("username");
     const userIdInput = document.getElementById("userId");
