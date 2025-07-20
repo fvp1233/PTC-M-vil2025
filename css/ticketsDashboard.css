@@ -217,10 +217,11 @@ hr.dashed {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding-left: 10px;
-  gap: 2px;
+  padding-left: 20px;
+  gap: 3px;
   line-height: 29px;
   padding-top: 0px;
+  
 }
 
 .description p {
@@ -301,7 +302,10 @@ hr.dashed {
   }
 
   .description{
-    font-size: 15px;
+    font-size: 13px;
+  }
+  .ticket-col2{
+    padding-left: 9px;
   }
 
   
