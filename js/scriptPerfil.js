@@ -58,7 +58,7 @@ function CargarUsuario(user) { // Este 'user' es el objeto que se recibe
     }
 }
 
-// Modal para cerrar sesión (Mantener este tal cual, ya funciona)
+// Modal para cerrar sesión
 const modalLogout = document.getElementById("modal-logout");
 const btnAbrirModalLogout = document.getElementById("btnAbrirModalLogout");
 const btnCerrarModalLogout = document.getElementById("btnCerrarModalLogout");
