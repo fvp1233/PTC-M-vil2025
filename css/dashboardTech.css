@@ -280,11 +280,11 @@ body {
     width: 95px; /* Ancho suficiente para que se "estire" y cubra bien la esquina */
     height: 25px; /* Altura de la banda */
     text-align: center;
-    font-size: 0.6rem; /* Ajusta el tamaño de la fuente si es necesario */
+    font-size: 0.8rem; /* Ajusta el tamaño de la fuente si es necesario */
     font-weight: bold;
     color: #FFFFFF; /* Color del texto del ribbon */
     line-height: 25px; /* Centra el texto verticalmente */
-    transform: translateX(50%) translateY(-60%) rotate(45deg); /* Rotar y mover. Ajusta 'translate' para posicionamiento exacto */
+    transform: translateX(50%) translateY(-70%) rotate(45deg); /* Rotar y mover. Ajusta 'translate' para posicionamiento exacto */
     transform-origin: top left; /* El punto desde donde se aplica la rotación */
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* Sombra sutil para darle profundidad */
     z-index: 10; /* Asegura que esté por encima del contenido de la tarjeta */

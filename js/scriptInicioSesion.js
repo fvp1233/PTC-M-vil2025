@@ -3,6 +3,9 @@
 const USUARIO_CORRECTO = "ptc2025";
 const CONTRASENA_CORRECTA = "1234";
 
+const  USUARIO_CORRECTO2 = "tecnico2025"
+const CONTRASENA_CORRECTA2 = "1234"
+
 // --- Referencias a elementos del DOM ---
 const loginForm = document.querySelector(".formLogin");
 const usernameInput = document.getElementById("username");
@@ -26,7 +29,12 @@ loginForm.addEventListener("submit", (event) => {
         // setTimeout(() => {
              window.location.href = "dashboard.html"; // Por ejemplo, a tu página de dashboard
         // }, 1500); // Espera 1.5 segundos antes de redirigir
-    } else {
+    }else if(usuarioIngresado === USUARIO_CORRECTO2 && contrasenaIngresada === CONTRASENA_CORRECTA2){
+        console.log("Inicio de sesión éxitoso.")
+        window.location.href = "dashboardTech.html"
+    } 
+    
+    else {
         showGlobalMessage("Usuario o contraseña incorrectos.", 'error');
         console.log("Intento de inicio de sesión fallido.");
     }

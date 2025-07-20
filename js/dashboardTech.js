@@ -27,9 +27,9 @@ document.addEventListener('DOMContentLoaded', () => {
             // Define severity colors - Adjusted 'Medio' to 'Media' to match your JSON data
             const severityColors = {
                 'Crítico': '#FF0000', // Red
-                'Alto': '#FFA500',    // Orange
-                'Medio': '#FFD700',   // Gold/Yellow - Changed from 'Medio' to 'Media' to match your JSON
-                'Bajo': '#008000',    // Green
+                'Alto': '#F48C06',    // Orange
+                'Medio': '#FFBA08',   // Gold/Yellow - Changed from 'Medio' to 'Media' to match your JSON
+                'Bajo': '#67D947',    // Green
                 'Info': '#ADD8E6'     // Light Blue (for general info/low severity)
             };
 
@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                         <div class="d-flex flex-column justify-content-end align-items-end ps-3 flex-grow-1">
                             <div class="d-flex align-items-center">
-                                <p class="mb-0 me-2" style="font-size: 0.9rem;">Ver ticket</p>
+                                <p class="mb-0" style="font-size: 0.8rem;">Ver ticket</p>
                                 <a href="#" class="btn btn-link p-0" style="color: inherit; text-decoration: none;">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right">
                                         <path d="m9 18 6-6-6-6"/>
