@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Base de conocimiento</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="css/styleBaseConocimiento.css" />
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+
+<body>
+    <div class="imgFondo"></div>
+    <div class="informacion">
+        <div class="encabezado">
+            <h1>Base de conocimiento</h1>
+            <div class="search-container">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Busca un artículo">
+            </div>
+        </div>
+        <div class="texto-encabezado">
+            <div class="texto">
+                <h2>Tus soluciones rápidas</h2>
+                <hr>
+                <h2>¿Tienes preguntas?</h2>
+                <p>No dudes en recurrir a esta sección.</p>
+            </div>
+            <img src="img/base_conocimiento.png" alt="">
+
+        </div>
+    </div>
+    <div class="contenido" id="contenido">
+        <!--Tarjetas de artículos inyectadas por JS-->
+    </div>
+
+    <dialog id="modal">
+        <article>
+            <header>
+                <div class="modal-titulo">
+                    <img src="img/flechaIzquierda.png" alt="" id="flechaIzquierda">
+                    <h3>Configuración de impresora a la red</h3>
+                </div>
+                <div class="modal-datos">
+                    <p>Redactado por: Fernando Velásquez</p>
+                    <p>Fecha: 18/07/2025</p>
+                </div>
+            </header>
+            <div class="modal-info">
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam, iure. Laboriosam cumque hic facilis rerum! Incidunt qui in illum facere repellendus quis magni tempore, amet iste provident enim. Aliquam, possimus!
+                Error praesentium quas dolor fugiat labore ipsa cupiditate repellat nam temporibus? Sapiente eos nulla voluptatem consequuntur praesentium cupiditate animi! Quis numquam accusamus temporibus. Nisi, asperiores libero aut et tempore explicabo.
+                Inventore ad recusandae voluptatum, quibusdam ullam veritatis quisquam nemo in porro fugit, cupiditate minima autem dolorem earum, praesentium sit atque ducimus maiores ratione non fugiat. Pariatur, quo. Rem, eius minima!
+                Perspiciatis voluptates, architecto tenetur exercitationem obcaecati atque voluptatum error commodi mollitia tempora saepe reiciendis molestiae consectetur doloribus delectus quos ratione quasi odit? Accusantium, provident doloribus dolorum doloremque fugiat quisquam sunt. Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit soluta fuga pariatur dignissimos voluptatem, neque vero quod cumque placeat dolor nemo dolorum possimus asperiores provident, harum repellendus ad minus odit?</p>
+            </div>
+        </article>
+    </dialog>
+
+    <div class="menu">
+        <a href="#"><img src="img/menu/baseconocimiento_active.png" alt=""></a>
+        <a href="#"><img src="img/menu/tickets_inactive.png" alt=""></a>
+        <a href="#"><img src="img/menu/dashboard_inactive.png" alt=""></a>
+        <a href="#"><img src="img/menu/notificaciones_inactive.png" alt=""></a>
+        <a href="#"><img src="img/menu/perfil_inactive.png" alt=""></a>
+    </div>
+
+    <script src="js/scriptBaseConocimiento.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+
+</html>
