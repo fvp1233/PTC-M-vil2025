@@ -15,6 +15,17 @@ async function CargarDatos() {
     }
 }
 
+function FormatearFecha(fechaISO) {
+    const fecha = new Date(fechaISO);
+
+    const dia = fecha.getDate().toString().padStart(2, '0');
+    const meses = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
+    const mes = meses[fecha.getMonth()];
+    const año = fecha.getFullYear();
+
+    return `${dia}, ${mes}, ${año}`;
+}
+
 function CargarNotificaciones(data) {
     if (data.length === 0) {
         noNotifVista.style.display = 'flex';
@@ -24,13 +35,13 @@ function CargarNotificaciones(data) {
         notifVista.style.display = 'flex';
 
         data.forEach(notificacion => {
-        const tarjeta = document.createElement('div');
-        tarjeta.className = 'tarjeta';
-        tarjeta.innerHTML = `
-            <p class="fecha">${notificacion.notificationDate}</p>
+            const tarjeta = document.createElement('div');
+            tarjeta.className = 'tarjeta';
+            tarjeta.innerHTML = `
+            <p class="fecha">${FormatearFecha(notificacion.notificationDate)}</p>
             <p class="notificacion">${notificacion.message}</p>
         `;
-        notificaciones.appendChild(tarjeta);
+            notificaciones.appendChild(tarjeta);
         });
     }
 }

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendario</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/styleCalendario.css">
+</head>
+
+<body>
+    <div class="encabezado">
+        <img src="img/flechaIzquierda.png" alt="Flecha" class="flecha">
+        <h1>Calendario de tickets</h1>
+    </div>
+
+    <div class="cal-header">
+        <div class="mes">
+            <img src="img/previous.png" alt="Anterior" id="prev">
+            <h3 id="mes-ano"></h3>
+            <img src="img/next.png" alt="Siguiente" id="next">
+        </div>
+        <div class="dropdown">
+            <p>Mostrar por:</p>
+            <div class="select-wrapper">
+                <div class="select">
+                    <span class="selected">Creación</span>
+                    <div class="caret"></div>
+                </div>
+                <ul class="menudropdown">
+                    <li class="active" id="creacion">Creación</li>
+                    <li id="cierre">Cierre</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="cal-container">
+
+        <div class="cal-days">
+            <div>LU</div>
+            <div>MA</div>
+            <div>MI</div>
+            <div>JU</div>
+            <div>VI</div>
+            <div>SÁ</div>
+            <div>DO</div>
+        </div>
+        <div class="cal-dates" id="cal-dates"></div>
+    </div>
+
+    <div id="ticket-info">
+        <!--Tickets inyectados por JS-->
+    </div>
+
+    <div class="menu">
+        <a href="#"><img src="img/menu/baseconocimiento_inactive.png" alt=""></a>
+        <a href="#"><img src="img/menu/tickets_active.png" alt=""></a>
+        <a href="#"><img src="img/menu/dashboard_inactive.png" alt=""></a>
+        <a href="#"><img src="img/menu/notificaciones_inactive.png" alt=""></a>
+        <a href="#"><img src="img/menu/perfil_inactive.png" alt=""></a>
+    </div>
+    <script src="js/scriptCalendario.js">
+
+    </script>
+</body>
+
+</html>
