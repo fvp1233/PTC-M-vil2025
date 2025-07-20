@@ -94,28 +94,31 @@ document.addEventListener("DOMContentLoaded", function () {
   headerContainer.insertAdjacentHTML("beforeend", headerHTML);
 
   // Render del historial de cambios
-  ticketAuditoria.detalles.forEach((detalle, index) => {
-    const esUltimo = index === ticketAuditoria.detalles.length - 1;
+ ticketAuditoria.detalles.forEach((detalle, index) => {
+  const esUltimo = index === ticketAuditoria.detalles.length - 1;
 
-    let detalleHTML = `
-      <div class="row">
-        <div class="col ticket-body">
-          <p>Ticket generado hace: <span>${detalle.generado}</span></p>
-          <p>Técnico Asignado: <span>${detalle.tecnico}</span></p>
-          <p>Prioridad: <span>${detalle.prioridad}</span></p>
-          <p>Categoría: <span>${detalle.categoria}</span></p>
-        </div>
+  let detalleHTML = `
+    <div class="row">
+      <div class="col ticket-body">
+        <p>Ticket generado hace: <span>${detalle.generado}</span></p>
+        <p>Técnico Asignado: <span>${detalle.tecnico}</span></p>
+        <p>Prioridad: <span>${detalle.prioridad}</span></p>
+        <p>Categoría: <span>${detalle.categoria}</span></p>
       </div>
+    </div>
+  `;
+
+  if (!esUltimo) {
+    detalleHTML += `<hr class="dashed">`;
+  } else {
+    detalleHTML += `
+      <p class="end-text">Fin de los cambios</p>
+      <div style="height: 70px;"></div>
     `;
+  }
 
-    if (!esUltimo) {
-      detalleHTML += `<hr class="dashed">`;
-    } else {
-      detalleHTML += `<p class="end-text">Fin de los cambios</p>`;
-    }
-
-    bodyContainer.insertAdjacentHTML("beforeend", detalleHTML);
-  });
+  bodyContainer.insertAdjacentHTML("beforeend", detalleHTML);
+});
 
   // Botón "volver" funcional
   const backButton = document.querySelector('.btnBackAuditory');

@@ -21,7 +21,7 @@ body {
     );
   display: flex;
   flex-direction: column;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Montserrat";
 }
 
 .imgFondo {
@@ -44,18 +44,20 @@ header {
 .back {
   height: 40px;
   width: 40px;
-  margin-left: 10px;
+  margin-left: 2px;
 }
 
 .headerText {
   color: white;
-  font-size: 22px;
+  font-size: 30px;
+  padding-right: 15px ;
 }
 
 main, .container, .row {
   max-width: 100%;
   overflow-x: hidden;
 }
+
 
 main {
   background-color: #f7f7f7;
@@ -66,6 +68,7 @@ main {
   margin: 0 auto;
   width: 100%;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  margin-top: 40px;
 }
 
 .ticketsFilter {
@@ -93,13 +96,6 @@ main {
   font-weight: bold;
 }
 
-.ticket-card {
-  transition: box-shadow 0.2s ease;
-}
-
-.ticket-card:hover {
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
 
 .textTicket {
   padding: 15px 0 0 30px;
@@ -125,12 +121,7 @@ main {
   font-family: 'Montserrat', sans-serif;
 }
 
-.ticket-id {
-  padding-top: 15px;
-  font-weight: 700;
-  font-size: 30px;
-  color: #000;
-}
+
 
 .ticket-date {
   font-weight: 400;
@@ -142,63 +133,33 @@ main {
   color: #777;
 }
 
-hr.dashed {
-  border: none;
-  height: 3px;
-  width: 98%;
-  margin: 1rem auto;
-  background-image: repeating-linear-gradient(to right, #666, #666 13px, transparent 0px, transparent 21px);
-  opacity: 0.4;
-  border-radius: 2px;
-}
-
 .ticket-body {
   margin: 10px 0 0 30px;
 }
 
-.end-text {
-  text-align: center;
-  color: #999;
-  font-style: italic;
-  margin: 20px 0 10px;
-}
+
 
 .card {
   box-shadow: 0px 6px 12px -2px rgba(0, 0, 0, 0.4);
-  margin-bottom: 25px;
-  border-radius: 16px;
+  margin-bottom: 15px;
+  border-radius: 5px;
   background-color: white;
+  margin-top: 30px;
+  color: #000;
+  
+  
 }
 
 .card-body {
   padding: 1rem 0.5rem 0.5rem;
 }
 
-.idText,
-.someFunctionsText,
 .date {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  line-height: 0.2;
-  margin: 0;
-  padding-top: 21px;
-}
-
-.idText {
-  padding-left: 20px;
-  font-size: 30px;
-  padding-top: 20px;
-  margin-bottom: 0px;
-
-}
-
-.date {
-  font-size: 13px;
-  color: #555;
-  padding-left: 15px;
-  
+  font-size: 14px;
+  color: #7c7c7c;
+  padding-bottom: 15px;
+  line-height: 0.9;
   
 }
 
@@ -234,7 +195,7 @@ hr.dashed {
   flex-direction: column;
   justify-content: center;
   padding-left: 20px;
-  gap: 3px;
+  gap: 1px;
   line-height: 29px;
   padding-top: 0px;
   
@@ -244,6 +205,7 @@ hr.dashed {
   margin: 0 !important;
   padding: 0 !important;
   line-height: 1.3; /* compacta el alto de línea */
+  font-size: 14px;
 }
 
 .ticket-col2 p {
@@ -268,6 +230,7 @@ hr.dashed {
 
 .id{
   padding-top: 2px;
+  font-size: 15px;
 }
 
 @media (max-width: 620px) {
@@ -277,7 +240,7 @@ hr.dashed {
   }
 
   .headerText {
-    font-size: 17px;
+    font-size: 19px;
   }
 
   .calendar {
@@ -318,8 +281,20 @@ hr.dashed {
   }
 
   .description{
-    font-size: 13px;
+    font-size: 12px;
   }
+  .id{
+  font-size: 12px;
+  }
+  .date {
+  font-size: 12px; 
+}
+
+  .card{
+    width: 92%;
+  }
+
+ 
   .ticket-col2{
     padding-left: 9px;
   }
@@ -388,24 +363,46 @@ hr.dashed {
   cursor: pointer;
 }
 
-.menu {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    max-width: 100vw;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    border-top: 1px solid #929292;
-    padding: 0.5rem 0;
-    z-index: 1000;
-    background-color: #FBF6F6;
+.ticket-card {
+  position: relative;
+  overflow: hidden;
 }
 
-.menu a {
-    font-size: 1.5rem;
+/* Contenedor del estado */
+.ticket-status-banner {
+  position: absolute;
+  top: 15px;               /* separación desde el tope de la tarjeta */
+  right: -40px;            /* ajusta según el ancho de la tarjeta */
+  width: 160px;            /* ancho de la cinta diagonal */
+  padding: 5px 0;          /* solo padding vertical para centrar el texto */
+  background-color: #d32f2f; /* color de fondo según estado */
+  color: white;
+  text-align: center;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  transform: rotate(45deg);
+  transform-origin: top right;
+  z-index: 2;
 }
+
+/* Colores por estado */
+.status-pendiente {
+  background-color: #d14a4a;
+}
+
+.status-en-proceso {
+  background-color: #f38d2c;
+}
+
+.status-en-espera {
+  background-color: #56b881;
+}
+
+.status-completado {
+  background-color: #c9ae2c;
+}
+
 
 
 
