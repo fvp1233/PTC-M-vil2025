@@ -73,31 +73,24 @@ p {
     background-color: white;
     border-top-left-radius: 30px;
     border-top-right-radius: 30px;
-    padding: 20px; /* Keep overall padding for the container */
+    padding: 20px;
     margin-top: 30px;
     position: relative;
     box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
     z-index: 1;
     flex-grow: 1;
     overflow-y: auto;
-    /* margin: 0 auto;  Remove this if you want full width items to align to left/right with padding */
     width: 100%;
     box-sizing: border-box;
-
-    /* Flexbox properties for two columns */
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: space-between; /* Distribute items with space between them */
-    gap: 20px; /* Adds space between flex items, both horizontally and vertically */
-    /* Alternatively, you can use:
-    justify-content: flex-start;
-    align-items: flex-start;
-    */
-    padding-left: 20px; /* Example: Adjust padding to allow cards to align with it */
+    justify-content: space-between;
+    gap: 20px;
+    padding-left: 20px;
     padding-right: 20px; 
     padding-top: 10%;
-    padding-bottom: 4rem;
+    padding-bottom: 3rem;
 }
 
 .menu {
@@ -118,30 +111,30 @@ p {
 .search-container {
     margin-top: 0%;
     width: 90%;
-    display: flex; /* Make it a flex container */
-    align-items: center; /* Vertically align items in the center */
-    background-color: white; /* Move background to container for rounded corners */
-    border-radius: 10px; /* Apply border-radius here */
-    box-shadow: 0px 2px 5px rgba(0,0,0,0.2); /* Apply shadow here */
-    padding: 0 10px; /* Add some padding around content */
-    box-sizing: border-box; /* Include padding in width */
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
+    padding: 0 10px;
+    box-sizing: border-box;
     margin-bottom: 1.5rem;
 }
 
 .search-container input {
     font-size: 15px;
-    padding: 10px 0; /* Adjust padding: remove left/right as icon handles spacing */
-    border: none; /* No border needed as it's on the container now */
-    outline: none; /* Remove outline on focus */
-    flex-grow: 1; /* Allow input to take up remaining space */
-    margin-left: 10px; /* Space between icon and input */
+    padding: 10px 0;
+    border: none;
+    outline: none;
+    flex-grow: 1;
+    margin-left: 10px;
     transition: 0.4s ease-in-out;
-    width: auto; /* Let flexbox manage width */
+    width: auto;
 }
 
 .search-container i {
     color: #000;
-    font-size: 18px; /* Adjust icon size if needed */
+    font-size: 18px;
 }
 
 .texto-encabezado {
@@ -168,18 +161,9 @@ h2 {
 }
 
 .tarjeta {
-    width: calc(50% - 10px); /* 50% for two cards, minus half of the gap for each side */
-                                /* If you use `gap: 20px` on parent, use `calc(50% - 10px)` */
-    /* Alternative for width without gap property (older browsers):
-    width: calc(50% - 20px); // 20px for margin-right on the first card
-    margin-right: 20px; // For spacing between cards. You'd likely need to target :nth-child(odd) or :nth-child(even)
-    margin-left: 0;
-    */
-
-    margin-top: 0; /* Let `gap` or `padding-top` on .contenido manage vertical spacing */
-    margin-bottom: 0; /* Let `gap` or `padding-bottom` on .contenido manage vertical spacing */
-    /* If not using gap, you might need margin-bottom: 20px; */
-
+    width: calc(50% - 10px);
+    margin-top: 0;
+    margin-bottom: 0;
     background-color: white;
     border-radius: 10px;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
@@ -188,7 +172,6 @@ h2 {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    
 }
 
 .leer-mas {
@@ -200,17 +183,19 @@ h5 {
     font-weight: bold;
 }
 
-.modal {
-    min-width: 100vw;
-    min-height: 100vh;
+.modal, .modal-agregar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #FBF6F6; /* Si es opaco, está bien. Si quieres semitransparente, usa rgba(0,0,0,0.5) */
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    justify-content: center; /* Centra horizontalmente el modal-content */
     align-items: center;
-    background-color: #FBF6F6;
-    margin-top: 0 !important;
-    outline: none;
+    z-index: 999;
 }
+
 
 .flechaIzquierda {
     position: absolute;
@@ -235,6 +220,7 @@ h5 {
     justify-content: space-around;
     width: 100%;
     text-align: center;
+    margin-bottom: 2rem;
 }
 
 .modal-datos p {
@@ -252,4 +238,145 @@ h5 {
 .leer-mas {
     outline: none;
     cursor: pointer;
+}
+
+#modal-agregar .modal-content,
+.modal .modal-content {
+    width: 100%;
+    max-width: 600px;
+    background-color: #FBF6F6;
+    padding: 1.5rem;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    max-height: 95vh;
+    overflow-y: auto;
+    padding-top: 0;
+    &::-webkit-scrollbar {
+        width: 0px;
+        background: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+        background: transparent;
+    }
+    scrollbar-width: none;
+}
+
+.oculto {
+    display: none;
+}
+
+.final {
+    background-color: white;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-top: -1rem;
+    position: relative; /* Asegura que la sombra se vea bien y que esté por encima de .menu si es necesario */
+    z-index: 2; /* Para que quede por encima del menú fijo si se superponen */
+    padding-bottom: 4rem;
+}
+
+.final img {
+    width: 40%; /* Mantén el ancho de la imagen */
+    height: auto; /* Asegura que la altura se ajuste proporcionalmente al ancho */
+    display: block; /* Elimina cualquier espacio extra debajo de la imagen si lo hubiera */
+}
+
+.texto-final {
+    width: 50%; /* Mantén el ancho del texto-final */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centra verticalmente el contenido dentro de .texto-final */
+    align-items: center; /* Centra horizontalmente el texto y el botón dentro de .texto-final */
+    /* REMUEVE height: 100%; - No lo necesitas, Flexbox lo estirará */
+    /* REMUEVE align-items: space-around; - Es inválido */
+    padding: 10px; /* Añade un poco de padding interno si necesitas espacio entre el contenido y los bordes del div */
+    box-sizing: border-box; /* Asegura que el padding no añada ancho/alto total */
+}
+
+.texto-final p {
+    text-align: center; /* Centra el texto del párrafo */
+    margin-bottom: 10px; /* Espacio entre el párrafo y el botón */
+}
+
+.texto-final button, form button {
+    background-color: #4a0e0e;
+    color: white;
+    border: none;
+    padding: 0.5rem 1.5rem; /* Ajusta el padding para que el botón se vea mejor */
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+form button {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.texto-final p {
+    margin: 0;
+    margin-bottom: 1rem;
+}
+
+.add {
+    background-color: #6A040F;
+    position: fixed; /*El boón queda encima del contenido, flotante*/
+    bottom: 3.5rem; /*Desde abajo 20px*/
+    right: 25px; /*Desde la derecha 25px*/
+    color: white; /*Color del ícono*/
+    border: none; /*Quitar bordes al botón*/
+    border-radius: 50%; /*Hacemos más redondo el botón*/
+    width: 60px;
+    height: 60px; /*Para que el botón quede simétrico*/
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+    display: flex; /*Activamos flexbox*/
+    justify-content: center; /*Alineación horizontal*/
+    align-items: center; /*Alineación vertical*/
+    transition: transform 0.4s; /*Animación que durará 0.4s*/
+    z-index: 900; /*Para que el botón siempre quede encima de todo*/
+}
+
+form input, form textarea {
+    width: 95%;
+    padding: 0.5rem;
+    border-radius: 5px;
+    border: solid 1px #4a0e0e;
+    margin-bottom: 1rem;
+    font-size: medium;
+}
+
+form input:focus {
+    outline: #6A040F;
+}
+
+#descripcion {
+    min-height: 3rem; /* Aproximadamente 3 líneas de texto */
+}
+
+#solucion {
+    min-height: 15rem;
+}
+
+.botones {
+    position: absolute; /*El boón queda encima del contenido, flotante*/
+    top: 1.5rem; /*Desde abajo 20px*/
+    right: 25px; /*Desde la derecha 25px*/
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    z-index: 900; /*Para que el botón siempre quede encima de todo*/
+}
+
+.botones button {
+    background-color: #6A040F;
+    color: white; /*Color del ícono*/
+    border-radius: 10px; /*Hacemos más redondo el botón*/border: none; /*Quitar bordes al botón*/
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);display: flex; /*Activamos flexbox*/
+    justify-content: center; /*Alineación horizontal*/
+    align-items: center; /*Alineación vertical*/
+    width: 40px;
+    height: 40px;
+    margin-left: 1rem;
 }
