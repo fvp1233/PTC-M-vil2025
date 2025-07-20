@@ -73,16 +73,31 @@ p {
     background-color: white;
     border-top-left-radius: 30px;
     border-top-right-radius: 30px;
-    padding: 20px;
+    padding: 20px; /* Keep overall padding for the container */
     margin-top: 30px;
     position: relative;
     box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
     z-index: 1;
-    flex-grow: 1; /* Allow content to grow and take available space */
+    flex-grow: 1;
     overflow-y: auto;
-    margin: 0 auto;
-    width: 100%; /* Ensure it takes full width */
-    box-sizing: border-box; /* Include padding in width calculation */
+    /* margin: 0 auto;  Remove this if you want full width items to align to left/right with padding */
+    width: 100%;
+    box-sizing: border-box;
+
+    /* Flexbox properties for two columns */
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between; /* Distribute items with space between them */
+    gap: 20px; /* Adds space between flex items, both horizontally and vertically */
+    /* Alternatively, you can use:
+    justify-content: flex-start;
+    align-items: flex-start;
+    */
+    padding-left: 20px; /* Example: Adjust padding to allow cards to align with it */
+    padding-right: 20px; 
+    padding-top: 10%;
+    padding-bottom: 4rem;
 }
 
 .menu {
@@ -153,13 +168,27 @@ h2 {
 }
 
 .tarjeta {
-    margin-top: 20px;
-    margin-bottom: 40px;
-    width: 42.5%;
+    width: calc(50% - 10px); /* 50% for two cards, minus half of the gap for each side */
+                                /* If you use `gap: 20px` on parent, use `calc(50% - 10px)` */
+    /* Alternative for width without gap property (older browsers):
+    width: calc(50% - 20px); // 20px for margin-right on the first card
+    margin-right: 20px; // For spacing between cards. You'd likely need to target :nth-child(odd) or :nth-child(even)
+    margin-left: 0;
+    */
+
+    margin-top: 0; /* Let `gap` or `padding-top` on .contenido manage vertical spacing */
+    margin-bottom: 0; /* Let `gap` or `padding-bottom` on .contenido manage vertical spacing */
+    /* If not using gap, you might need margin-bottom: 20px; */
+
     background-color: white;
     border-radius: 10px;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
-    padding: 2% 4% 2% 4%;
+    padding: 4%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    
 }
 
 .leer-mas {
@@ -167,5 +196,60 @@ h2 {
 }
 
 h5 {
+    margin-top: 5%;
     font-weight: bold;
+}
+
+.modal {
+    min-width: 100vw;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #FBF6F6;
+    margin-top: 0 !important;
+    outline: none;
+}
+
+.flechaIzquierda {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 2rem;
+    color: #000;
+    cursor: pointer;
+}
+
+.modal-titulo h3 {
+    font-weight: bold;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.modal-datos {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 100%;
+    text-align: center;
+}
+
+.modal-datos p {
+    color: #929292;
+}
+
+.modal-info {
+    width: 100%;
+}
+
+.modal-info p {
+    font-size: 1rem;
+}
+
+.leer-mas {
+    outline: none;
+    cursor: pointer;
 }
