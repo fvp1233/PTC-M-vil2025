@@ -201,16 +201,20 @@ h5 {
 }
 
 .modal {
-    min-width: 100vw;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
     background-color: #FBF6F6;
-    margin-top: 0 !important;
-    outline: none;
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    overflow-y: auto;
+    padding-top: 1rem;
+    z-index: 999;
 }
+
 
 .flechaIzquierda {
     position: absolute;
@@ -235,6 +239,7 @@ h5 {
     justify-content: space-around;
     width: 100%;
     text-align: center;
+    margin-bottom: 2rem;
 }
 
 .modal-datos p {
@@ -252,4 +257,18 @@ h5 {
 .leer-mas {
     outline: none;
     cursor: pointer;
+}
+
+.modal-content {
+    width: 95%;
+    max-width: 600px;
+    background-color: #FBF6F6;
+    padding: 1.5rem;
+    box-sizing: border-box;
+}
+
+.oculto {
+    display: none; /* Oculta el elemento completamente */
+    /* También puedes usar: visibility: hidden; opacity: 0; para una transición suave,
+       pero para empezar, display: none; es lo más directo. */
 }

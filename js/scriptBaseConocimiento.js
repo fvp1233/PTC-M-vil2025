@@ -1,5 +1,17 @@
 API_URL = "https://687435d9dd06792b9c935e6c.mockapi.io/Daniela/tbSolution";
 
+// Variables globales para los elementos del modal y menú
+const modal = document.getElementById("modal");
+const btnCerrar = document.getElementById("flechaIzquierda");
+const menu = document.querySelector(".menu");
+
+// Elementos dentro del modal que vamos a rellenar dinámicamente
+const modalTitle = modal.querySelector('.modal-content .modal-titulo h3'); // Selecciona el h3 dentro del modal
+const modalAuthor = modal.querySelector('.modal-content .modal-datos p:first-child'); // El primer p en modal-datos (autor)
+const modalDate = modal.querySelector('.modal-content .modal-datos p:last-child'); // El segundo p en modal-datos (fecha)
+const modalInfo = modal.querySelector('.modal-content .modal-info p'); // El párrafo con la información completa
+
+
 // Solicitud GET para cargar el contenido
 async function CargarDatos() {
     try {
@@ -13,70 +25,68 @@ async function CargarDatos() {
 
 function CargarContenido(data) {
     const contenidoVista = document.getElementById('contenido');
-    contenidoVista.innerHTML = ''; // Limpiar el contenido antes de añadir (útil si CargarContenido se llama varias veces)
+    contenidoVista.innerHTML = ''; // Limpiar el contenido antes de añadir
 
     data.forEach(c => {
+        // Formatear la fecha para que se vea bien en el modal
+        const rawDate = new Date(c.updateDate); // Crea un objeto Date
+        // Formato DD/MM/YYYY
+        const formattedDate = `${rawDate.getDate().toString().padStart(2, '0')}/${(rawDate.getMonth() + 1).toString().padStart(2, '0')}/${rawDate.getFullYear()}`;
+
+
         const tarjeta = document.createElement('div');
         tarjeta.className = 'tarjeta';
         tarjeta.innerHTML = `
-            <h5>${c.title}d</h5>
+            <h5>${c.title}</h5>
             <p>${c.description}</p>
-            <p class="leer-mas" data-id="${c.id}" data-title="${c.title}" data-description="${c.solutionSteps}">Leer más</p>
-            `;
+            <p class="leer-mas"
+               data-id="${c.solutionId}"
+               data-title="${c.title}"
+               data-description="${c.description}"
+               data-full-solution="${c.solutionSteps}"
+               data-author="${c.userId}"  data-date="${formattedDate}" >Leer más</p>
+        `;
         contenidoVista.appendChild(tarjeta);
     });
 
-    // ¡IMPORTANTE! Llama a la función para adjuntar eventos *después* de que todas las tarjetas han sido añadidas al DOM.
     attachLeerMasEventListeners();
 }
 
-// Función separada para adjuntar los event listeners a los botones "Leer más"
 function attachLeerMasEventListeners() {
-    // Selecciona todos los elementos con la CLASE "leer-mas"
-    const btnAbrirModalLeerMasList = document.querySelectorAll(".leer-mas"); // Usa querySelectorAll para clases
+    const btnAbrirModalLeerMasList = document.querySelectorAll(".leer-mas");
 
     btnAbrirModalLeerMasList.forEach(button => {
-        // Asegúrate de que el event listener no se añada múltiples veces si esta función se llama repetidamente
-        // Una forma simple es remover el listener antes de añadirlo, o usar un flag/set.
-        // Por simplicidad, si CargarContenido vacía y rellena siempre, no es un problema inmediato.
         button.addEventListener("click", (event) => {
             const currentButton = event.target; // El botón "Leer más" que fue clickeado
 
-            // Ejemplo de cómo podrías obtener datos para el modal si los necesitas
-            // const articleId = currentButton.dataset.id;
-            // const articleTitle = currentButton.dataset.title;
-            // const articleDescription = currentButton.dataset.description;
+            // Obtener los datos de los data-attributes
+            const articleTitle = currentButton.dataset.title;
+            const articleFullSolution = currentButton.dataset.fullSolution;
+            const articleAuthor = currentButton.dataset.author;
+            const articleDate = currentButton.dataset.date;
 
-            // Rellenar el modal con el contenido dinámico si es necesario
-            // document.querySelector('.modal-titulo h3').textContent = articleTitle;
-            // document.querySelector('.modal-info p').textContent = articleDescription;
+            // Rellenar el contenido del modal con los datos obtenidos
+            if (modalTitle) modalTitle.textContent = articleTitle;
+            if (modalInfo) modalInfo.innerHTML = articleFullSolution; // Usar innerHTML si solutionSteps tiene tags HTML
 
-            modalLeerMas.showModal();
+            // Rellenar los datos de autor y fecha
+            if (modalAuthor) modalAuthor.textContent = `Redactado por: ${articleAuthor}`;
+            if (modalDate) modalDate.textContent = `Fecha: ${articleDate}`;
+
+
+            // Mostrar el modal
+            modal.classList.remove("oculto");
         });
     });
 }
 
-
-window.addEventListener('DOMContentLoaded', CargarDatos);
-
-// Asegúrate de que 'modal' y 'flechaIzquierda' existan en el DOM global,
-// o que se seleccionen después de que el DOM esté completamente cargado.
-const modalLeerMas = document.getElementById("modal");
-const btnCerrarModalLeerMas = document.getElementById("flechaIzquierda");
-
-// Este listener para cerrar se puede añadir directamente ya que el botón de cerrar es único
-if (btnCerrarModalLeerMas) {
-    btnCerrarModalLeerMas.addEventListener("click", (event) => {
-        event.preventDefault();
-        modalLeerMas.close();
+// Listener para el botón de cerrar modal (flechaIzquierda)
+if (btnCerrar) {
+    btnCerrar.addEventListener("click", () => {
+        modal.classList.add("oculto");
     });
 } else {
     console.error("El botón para cerrar el modal (flechaIzquierda) no se encontró.");
 }
 
-// Opcional: Para evitar que el modal se cierre al hacer clic fuera de él (si lo deseas)
-// modalLeerMas.addEventListener('click', (e) => {
-//     if (e.target === modalLeerMas) {
-//         modalLeerMas.close();
-//     }
-// });
+window.addEventListener('DOMContentLoaded', CargarDatos);
