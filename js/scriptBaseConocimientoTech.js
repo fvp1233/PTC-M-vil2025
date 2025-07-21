@@ -44,7 +44,7 @@ function CargarContenido(data) {
                data-title="${c.title}"
                data-description="${c.description}"
                data-full-solution="${c.solutionSteps}"
-               data-author="${c.userId}"  data-date="${formattedDate}" >Leer más</p>
+               data-author="${c.userId}"  data-date="${formattedDate}">Leer más</p>
         `;
         contenidoVista.appendChild(tarjeta);
     });

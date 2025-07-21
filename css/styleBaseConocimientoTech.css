@@ -320,7 +320,23 @@ form button {
     margin-bottom: 1rem;
 }
 
-
+.add {
+    background-color: #6A040F;
+    position: fixed; /*El boón queda encima del contenido, flotante*/
+    bottom: 3.5rem; /*Desde abajo 20px*/
+    right: 25px; /*Desde la derecha 25px*/
+    color: white; /*Color del ícono*/
+    border: none; /*Quitar bordes al botón*/
+    border-radius: 50%; /*Hacemos más redondo el botón*/
+    width: 60px;
+    height: 60px; /*Para que el botón quede simétrico*/
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+    display: flex; /*Activamos flexbox*/
+    justify-content: center; /*Alineación horizontal*/
+    align-items: center; /*Alineación vertical*/
+    transition: transform 0.4s; /*Animación que durará 0.4s*/
+    z-index: 900; /*Para que el botón siempre quede encima de todo*/
+}
 
 form input, form textarea {
     width: 95%;
