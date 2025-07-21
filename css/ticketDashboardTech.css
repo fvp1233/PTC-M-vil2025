@@ -1,0 +1,411 @@
+body {
+   margin: 0;
+    min-height: 100vh;
+    background: linear-gradient(
+        to bottom,  /* Cambiado de "to top" a "to bottom" */
+        #6c040f 0%,
+        #220004 20%,
+        #230104 100%
+        
+        
+
+    );
+
+    /* Versión para compatibilidad con navegadores WebKit (Safari, Chrome antiguo) */
+    background: -webkit-linear-gradient(
+        bottom,  /* Invertido para coincidir con la dirección */
+         #6c040f 0%,
+        #220004 20%,
+        #230104 100%
+    
+    );
+  display: flex;
+  flex-direction: column;
+  font-family: "Montserrat", sans-serif;
+}
+
+.imgFondo {
+  position: absolute;
+  top: -10vh;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 70vh;
+  background: url('../img/35.png') center/cover no-repeat;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.05;
+}
+
+header {
+  padding: 45px 0 10px;
+}
+
+.back {
+  height: 40px;
+  width: 40px;
+  margin-left: 10px;
+}
+
+.headerText {
+  color: white;
+  font-size: 22px;
+}
+
+main, .container, .row {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+main {
+  background-color: #f7f7f7;
+  flex: 1;
+  border-radius: 30px 30px 0 0;
+  z-index: 1;
+  max-width: 3000px;
+  margin: 0 auto;
+  width: 100%;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.ticketsFilter {
+  border: 2px solid white;
+  margin-bottom: 30px;
+  background-color: #8d272f;
+  border-radius: 10px;
+}
+
+.btnfilter,
+.filter-btn {
+  color: white;
+  font-family: "Montserrat";
+  background: none;
+  border: none;
+  padding: 9px 20px;
+  font-size: 20px;
+  width: 100%;
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+  background-color: white;
+  color: #6c040f;
+  font-weight: bold;
+}
+
+.ticket-card {
+  transition: box-shadow 0.2s ease;
+}
+
+.ticket-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.textTicket {
+  padding: 15px 0 0 30px;
+  font-size: 15px;
+}
+
+.noTickets {
+  padding-top: 60px;
+  font-size: 12px;
+}
+
+.noTickets img {
+  max-width: 200px;
+}
+
+.Ntext {
+  padding: 30px 10px 0;
+}
+
+.ticket-id,
+.ticket-date,
+.ticket-subject {
+  font-family: 'Montserrat', sans-serif;
+}
+
+.ticket-id {
+  padding-top: 15px;
+  font-weight: 700;
+  font-size: 30px;
+  color: #000;
+}
+
+.ticket-date {
+  font-weight: 400;
+  color: #888;
+}
+
+.ticket-subject {
+  font-weight: 400;
+  color: #777;
+}
+
+hr.dashed {
+  border: none;
+  height: 3px;
+  width: 98%;
+  margin: 1rem auto;
+  background-image: repeating-linear-gradient(to right, #666, #666 13px, transparent 0px, transparent 21px);
+  opacity: 0.4;
+  border-radius: 2px;
+}
+
+.ticket-body {
+  margin: 10px 0 0 30px;
+}
+
+.end-text {
+  text-align: center;
+  color: #999;
+  font-style: italic;
+  margin: 20px 0 10px;
+}
+
+.card {
+  box-shadow: 0px 6px 12px -2px rgba(0, 0, 0, 0.4);
+  margin-bottom: 25px;
+  border-radius: 16px;
+  background-color: white;
+}
+
+.card-body {
+  padding: 1rem 0.5rem 0.5rem;
+}
+
+.idText,
+.someFunctionsText,
+.date {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  line-height: 0.2;
+  margin: 0;
+  padding-top: 21px;
+}
+
+.idText {
+  padding-left: 20px;
+  font-size: 30px;
+  padding-top: 20px;
+  margin-bottom: 0px;
+
+}
+
+.date {
+  font-size: 13px;
+  color: #555;
+  padding-left: 15px;
+  
+  
+}
+
+.someFunctionsText {
+  padding-left: 20px;
+  font-size: 12px;
+}
+
+.card-body .row > div {
+  min-width: 0;
+  word-wrap: break-word;
+}
+
+.ticket-row {
+  width: 100%;
+  display: flex;
+  align-items: center; /* Centra verticalmente todos los elementos */
+}
+
+.ticket-col1 {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding-left: 0px !important;
+  margin-left: 0px !important;
+}
+
+.ticket-col2{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 20px;
+  gap: 3px;
+  line-height: 29px;
+  padding-top: 0px;
+  
+}
+
+.description p {
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 1.3; /* compacta el alto de línea */
+}
+
+.ticket-col2 p {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.ticket-col3 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between; /* distribuye ícono arriba y grupo abajo */
+  padding-right: 2px;
+  padding-left: 0px;
+  min-height: 72px; /* asegura espacio vertical sin tocar el ancho */
+  max-width: 60px;
+}
+
+.TicketStatus {
+  align-self: flex-start;
+  margin-top: 0px;
+}
+
+.id{
+  padding-top: 2px;
+}
+
+@media (max-width: 620px) {
+  .filter-btn {
+    font-size: 13px;
+    padding: 10px 0;
+  }
+
+  .headerText {
+    font-size: 17px;
+  }
+
+  .calendar {
+    height: 35px;
+  }
+  
+}
+
+@media (min-width: 768px) {
+  .Ntext {
+    font-size: 20px;
+  }
+
+  .noTickets img {
+    width: 250px;
+    display: block;
+    margin: 0 auto;
+  }
+
+  .textTicket {
+    font-size: 22px;
+  }
+
+  
+  
+}
+
+@media (max-width: 576px) {
+  .ticket-card .text-end {
+    text-align: start !important;
+    margin-top: 10px;
+    padding-right: 15px;
+  }
+
+  .TicketPriority{
+    font-size: 13px;
+    padding-right: 0px;
+  }
+
+  .description{
+    font-size: 13px;
+  }
+  .ticket-col2{
+    padding-left: 9px;
+  }
+
+  
+}
+
+@media (max-width: 400px) {
+  .ticket-col1 {
+    flex: 0 0 60px;
+  }
+}
+
+.AnotherDiv{
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 2px;
+  padding-top: 16.5px;
+}
+
+.iconSVG {
+  width: 35px;
+  height: 35px;
+}
+
+.TicketPriority {
+  margin: 0;
+  white-space: nowrap; /* Evita que el texto se divida en dos líneas */
+  color: black; /* texto base negro */
+  font-weight: 600;
+  white-space: nowrap;
+ 
+}
+
+.bg-orange {
+  background-color: #ff9800;
+  color: white;
+}
+
+.TicketPriority span {
+  font-weight: bold;
+}
+
+/* Colores de la palabra nivel */
+.alta {
+  color: #c1121f; /* rojo */
+}
+
+.media {
+  color: #e08b00; /* amarillo */
+}
+
+.baja {
+  color: #007e33; /* verde */
+}
+
+.btn-icon1 {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.menu {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    max-width: 100vw;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid #929292;
+    padding: 0.5rem 0;
+    z-index: 1000;
+    background-color: #FBF6F6;
+}
+
+.menu a {
+    font-size: 1.5rem;
+}
+
+
+

@@ -1,0 +1,300 @@
+/* Body y fondo */
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: linear-gradient(
+        to bottom,  /* Cambiado de "to top" a "to bottom" */
+        #6c040f 0%,
+        #220004 20%,
+        #230104 100%
+        
+        
+
+    );
+
+    /* Versión para compatibilidad con navegadores WebKit (Safari, Chrome antiguo) */
+    background: -webkit-linear-gradient(
+        bottom,  /* Invertido para coincidir con la dirección */
+         #6c040f 0%,
+        #220004 20%,
+        #230104 100%
+    
+    );
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 2rem;
+}
+
+/* Fondo fijo, sin afectar flujo */
+.imgFondo {
+    position: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center top -10vh;
+    pointer-events: none;
+    z-index: -1;
+    opacity: 0.05;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-image: url('../img/35.png');
+}
+
+/* Barra de búsqueda */
+.Searchbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 2vh;
+}
+
+.search-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding-top: 2vh;
+    width: 100%;
+    margin: 0 auto;
+    padding-left: 2vh;
+}
+
+.input-search {
+    width: 100%;
+    padding: 0.5vh 0.5vh 0.5vh 3.5vh;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: white;
+    color: #333;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.8rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    outline: none;
+}
+
+.search-icon {
+    position: absolute;
+    left: 2.5vh;
+    color: #666;
+    pointer-events: none;
+}
+
+/* Imagen de usuario */
+.imgUser {
+    padding-top: 2vh;
+}
+
+.imgUser img {
+    height: 3vh;
+    width: 3vh;
+    border-radius: 15px;
+}
+
+.imgH2c img {
+    width: 20vh;
+    height: 20vh;
+}
+
+/* Fecha y texto relacionado */
+.date {
+    color: #fff;
+}
+
+.date h5 {
+    font-family: "Montserrat", sans-serif;
+}
+
+.date p {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 300;
+}
+
+/* Sección blanca contenedora */
+.white-content-section {
+    background-color: white;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    padding: 20px;
+    margin-top: 30px;
+    position: relative;
+    box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
+    z-index: 1;
+    flex-grow: 1;
+    overflow-y: auto;
+    padding-bottom: 5rem;
+}
+
+/* Card body flex para tickets */
+.white-content-section .card-body {
+    padding: 10px;
+    display: flex;
+    align-items: stretch;
+    min-height: 100px; /* aseguras que la barra tenga altura visible */
+    position: relative;
+}
+
+
+.ticket-status-bar {
+    width: 7px;
+    background-color: #ffc107;
+    display: block;
+    border-radius: 2px;
+    flex-shrink: 0;
+    margin-left: -10px;
+    height: 13vh; /* altura fija visible y consistente */
+}
+
+
+
+
+/* Contenedor info ticket */
+.white-content-section .ticket-content {
+    flex-grow: 1;
+    margin-left: 10px;
+    display: flex;
+    flex-direction: column;
+    color: #220004;
+    font-size: 1.5vh;
+    font-weight: 400;
+    font-family: "Montserrat";
+}
+
+
+
+/* Título ticket */
+.white-content-section .ticket-card h6 {
+    font-weight: 600;
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 0;
+    font-family: "Montserrat";
+}
+
+/* Grupo info texto */
+.white-content-section .ticket-info-group p {
+    line-height: 1.2;
+    font-size: 1.5vh;
+    margin-bottom: 0.7rem;
+    font-family: "Montserrat";
+}
+
+.white-content-section .ticket-info-group p:last-child {
+    margin-bottom: 0 !important;
+}
+
+/* Botón estado */
+.white-content-section .ticket-status-btn {
+    border-radius: 15px;
+    padding: 3px 12px;
+    font-size: 0.7rem;
+    font-weight: 450;
+    background-color: #FFE297;
+    border:2px solid  #FFBA08;
+    color: #000 !important;
+
+}
+
+/* Texto fecha con icono */
+.white-content-section .text-muted small {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.75rem;
+    color: #6c757d;
+    margin-bottom: 0 !important;
+     
+}
+
+/* Tarjeta ticket individual */
+.ticket-item {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.8); /* sombra más suave */
+    overflow: hidden;
+    background-color: white;
+}
+
+/* Descripción del ticket */
+.white-content-section .ticket-description {
+    color: #333;
+    font-weight: 500;
+    font-size: 1rem; /* corregido de 10vh a tamaño razonable */
+    border-bottom: 1px solid #e0e0e0;
+    
+}
+
+/* Contenedor para gráfico o valor */
+.chargeValue {
+    width: 80px; /* definido fijo */
+    height: 80px;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    margin-top: -1vh;
+    margin-right: -1.5vh;
+}
+
+/* Persona asignada */
+.assigned-person {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: #333;
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* Código ticket */
+.ticket-code {
+    font-size: 1.6vh;
+    font-weight: 600;
+    color: #929292;
+}
+
+.menu {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    max-width: 100vw;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid #929292;
+    padding: 0.5rem 0;
+    z-index: 1000;
+    background-color: #FBF6F6;
+}
+
+
+.card {
+    position: relative;
+    overflow: hidden; /* Esto es CRÍTICO para que el ribbon se "corte" en los bordes de la tarjeta */
+    border-radius: 0.5rem; /* Asegúrate de que tus tarjetas tengan un border-radius para un corte limpio */
+    /* Otros estilos de tu tarjeta (sombra, padding, etc.) */
+}
+
+.ribbon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 95px; /* Ancho suficiente para que se "estire" y cubra bien la esquina */
+    height: 25px; /* Altura de la banda */
+    text-align: center;
+    font-size: 0.8rem; /* Ajusta el tamaño de la fuente si es necesario */
+    font-weight: bold;
+    color: #FFFFFF; /* Color del texto del ribbon */
+    line-height: 25px; /* Centra el texto verticalmente */
+    transform: translateX(50%) translateY(-70%) rotate(45deg); /* Rotar y mover. Ajusta 'translate' para posicionamiento exacto */
+    transform-origin: top left; /* El punto desde donde se aplica la rotación */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* Sombra sutil para darle profundidad */
+    z-index: 10; /* Asegura que esté por encima del contenido de la tarjeta */
+
+    /* Los colores de fondo se establecerán dinámicamente con JavaScript */
+    /* background-color: #FF0000; <- Ejemplo, esto viene de JS */
+}
+
+
+.menu a {
+    font-size: 1.5rem;
+}
+
