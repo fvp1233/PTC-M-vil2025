@@ -457,6 +457,7 @@ main {
 
   /* centrado horizontal */
   margin: 0 auto;
+  margin-bottom: 90px;
 }
 
 .btn-delete {
@@ -480,6 +481,68 @@ main {
 .btn-delete svg {
   width: 35px;     /* Define el ancho */
   height: 35px;    /* Define la altura exacta */
+}
+
+.pasos-resolucion-input {
+    border: none;
+    background-color: transparent;
+    outline: none; /* Quita el borde al enfocar */
+    /* Puedes añadir un borde inferior muy sutil si quieres una pista visual */
+    /* border-bottom: 1px solid #eee; */
+    padding: 5px 0;
+    font-family: "Montserrat", sans-serif;
+    color: #333; /* Color del texto que se escribe */
+    width: 100%; /* Ocupa todo el ancho disponible */
+    box-sizing: border-box; /* Asegura que padding no afecte el ancho total */
+    min-height: 20px; /* Altura mínima, puedes ajustar */
+}
+
+.pasos-resolucion-input::placeholder {
+    color: #999; /* Color del texto del placeholder */
+    font-style: italic;
+    opacity: 1; /* Asegura que el placeholder sea visible */
+}
+
+/* También, asegúrate de que los párrafos dentro de .Data tengan los estilos correctos */
+.ContentTicket .Data p {
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+    color: #7c7c7c;
+}
+
+/* Y para los Headers */
+.ContentTicket .Headers p {
+    font-weight: bold;
+    color: #000;
+    margin-bottom: 5px; /* Espacio entre el header y el data */
+}
+
+/* Ajuste para el texto principal del ticket en la primera card */
+.description p#ticket-title {
+    font-size: 18px; /* Haz el título más grande */
+    font-weight: bold;
+    color: #333;
+    line-height: 1.2;
+}
+
+/* Ajuste para el ID en la primera card */
+.id p#ticket-id {
+    font-size: 15px;
+    color: #666;
+}
+
+/* Ajuste para la fecha en la primera card */
+.date p {
+    font-size: 14px;
+    color: #7c7c7c;
+    line-height: 1.1;
+}
+
+/* Asegura que no haya texto sobrante en .Data donde se espera un input */
+.ContentTicket .Data input {
+    /* Si estás usando un input, asegúrate que no haya un <p> adicional */
+    vertical-align: top; /* Alinea el input con el texto superior si hay otros elementos */
 }
 
 
