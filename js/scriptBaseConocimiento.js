@@ -1,9 +1,8 @@
 API_URL = "https://687435d9dd06792b9c935e6c.mockapi.io/Daniela/tbSolution";
 
-// Variables globales para los elementos del modal y menú
+// Variables globales para los elementos del modal
 const modal = document.getElementById("modal");
 const btnCerrar = document.getElementById("flechaIzquierda");
-const menu = document.querySelector(".menu");
 
 // Elementos dentro del modal que vamos a rellenar dinámicamente
 const modalTitle = modal.querySelector('.modal-content .modal-titulo h3'); // Selecciona el h3 dentro del modal
@@ -91,7 +90,7 @@ if (btnCerrar) {
 
 window.addEventListener('DOMContentLoaded', CargarDatos);
 
-//Agregar un nuevo registro
+//Agregar nueva solucion
 const modalAgregar = document.getElementById("modal-agregar"); //Cuadro de diálogo
 const btnAgregar = document.getElementById("add"); //+ para abrir
 const btnCerrarAgregar = document.getElementById("cerrar-agregar") //X para cerrar
@@ -104,7 +103,6 @@ btnCerrarAgregar.addEventListener("click", () => {
     modalAgregar.classList.add("oculto");
 });
 
-//Agregar nueva solucion
 document.getElementById("frmAgregar").addEventListener("submit", async e => {
     e.preventDefault(); //e representa a "submit" - Evita que el formulario se envíe
     //Capturar los valores del formulario
@@ -124,7 +122,6 @@ document.getElementById("frmAgregar").addEventListener("submit", async e => {
         description: descripcion, // Coincide con 'description' en MockAPI
         solutionSteps: solucion,
         updateDate: date,  // Coincide con 'solutionSteps' en MockAPI
-        // Ahora vamos a añadir la fecha y el userId aquí también
     };
 
 

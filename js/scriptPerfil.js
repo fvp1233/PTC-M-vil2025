@@ -2,7 +2,7 @@ API_URL = "https://687435d9dd06792b9c935e6c.mockapi.io/Daniela/tbUsers";
 
 const nombre = document.getElementById('nombre');
 const rol = document.getElementById('rol');
-const usuario = document.getElementById('usuario'); // Este es el <p id="usuario">
+const usuario = document.getElementById('usuario');
 const nombreCompleto = document.getElementById('nombre-completo');
 const correo = document.getElementById('correo');
 const telefono = document.getElementById('telefono');
@@ -39,7 +39,7 @@ function CargarUsuario(user) { // Este 'user' es el objeto que se recibe
     if (rol) {
         rol.textContent = user.rol || '';
     }
-    if (usuario) { // Actualiza el <p id="usuario"> con el userName
+    if (usuario) {
         usuario.textContent = user.userName || '';
     }
     if (nombreCompleto) {
@@ -50,11 +50,6 @@ function CargarUsuario(user) { // Este 'user' es el objeto que se recibe
     }
     if (telefono) {
         telefono.textContent = user.phone || '';
-    }
-
-    const fotoPerfil = document.querySelector('.foto');
-    if (fotoPerfil && user.profilePicture) { // Si tu API devuelve 'profilePicture'
-        fotoPerfil.src = user.profilePicture;
     }
 }
 
@@ -93,9 +88,8 @@ if (btnCerrarEditar) {
 // Event listener para abrir el modal de edición
 if (btnAbrirModalEditar) {
     btnAbrirModalEditar.addEventListener("click", () => {
-        // Verificar si currentUser tiene datos antes de intentar abrir el modal
         if (currentUser) {
-            abrirModalEditar(userId, currentUser); // ¡PASA EL OBJETO currentUser como argumento!
+            abrirModalEditar(userId, currentUser);
         } else {
             console.warn("No hay datos de usuario cargados en 'currentUser'. No se puede abrir el modal de edición.");
             alert("No se pudieron cargar los datos del usuario para editar. Por favor, recargue la página.");
@@ -104,12 +98,12 @@ if (btnAbrirModalEditar) {
 }
 
 // Función para abrir el modal de edición y rellenar el input
-function abrirModalEditar(userId, userObj) { // Renombré el parámetro a 'userObj' para mayor claridad
+function abrirModalEditar(userId, userObj) {
     const usernameInput = document.getElementById("username");
     const userIdInput = document.getElementById("userId");
     // Verificar que el input existe y que el objeto userObj y su propiedad userName están definidos
     if (usernameInput && userObj && userObj.userName) {
-        usernameInput.value = userObj.userName; // Ahora accedemos a userObj.userName
+        usernameInput.value = userObj.userName;
         userIdInput.value = userIdInput.value; // Asignar el ID del usuario al input oculto
         console.log(userIdInput.value);
     } else {
@@ -133,7 +127,6 @@ document.getElementById("frmEditarUsuario").addEventListener("submit", async e =
         return;
     }
 
-    // Asegúrate de que tenemos un usuario cargado y su ID para la actualización
     if (!currentUser || !userId) {
         console.error("No hay un usuario seleccionado o no tiene ID para actualizar.");
         alert("Error: No se pudo identificar al usuario para actualizar.");
