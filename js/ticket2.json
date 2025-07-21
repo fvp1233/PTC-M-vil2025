@@ -1,0 +1,34 @@
+[
+  {
+    "id": "0001",
+    "date": "01/05/2025 9:00AM",
+    "description": "Reportes maldiseñados",
+    "assignedTo": "Herbert Cortéz",
+    "statusBarColor": "#DC2F02",
+    "severity": "Crítico"  
+  },
+  {
+    "id": "0002",
+    "date": "02/05/2025 10:30AM",
+    "description": "Falla en el servidor de base de datos",
+    "assignedTo": "María López",
+    "statusBarColor": "#F48C06",
+    "severity": "Alto"     
+  },
+  {
+    "id": "0003",
+    "date": "03/05/2025 11:45AM",
+    "description": "Consulta de usuario para configurar impresora",
+    "assignedTo": "Juan Pérez",
+    "statusBarColor": "#FFBA08",
+    "severity": "Medio"    
+  },
+  {
+    "id": "0004",
+    "date": "04/05/2025 12:01AM",
+    "description": "Activacion de licencias",
+    "assignedTo": "Juan Pérez",
+    "statusBarColor": "#67D947",
+    "severity": "Bajo"    
+  }
+]

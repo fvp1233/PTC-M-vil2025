@@ -21,7 +21,7 @@ body {
     );
   display: flex;
   flex-direction: column;
-  font-family: "Montserrat";
+  font-family: "Montserrat", sans-serif;
 }
 
 .imgFondo {
@@ -44,20 +44,18 @@ header {
 .back {
   height: 40px;
   width: 40px;
-  margin-left: 2px;
+  margin-left: 10px;
 }
 
 .headerText {
   color: white;
-  font-size: 30px;
-  padding-right: 15px ;
+  font-size: 22px;
 }
 
 main, .container, .row {
   max-width: 100%;
   overflow-x: hidden;
 }
-
 
 main {
   background-color: #f7f7f7;
@@ -68,7 +66,6 @@ main {
   margin: 0 auto;
   width: 100%;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  margin-top: 40px;
 }
 
 .ticketsFilter {
@@ -96,6 +93,13 @@ main {
   font-weight: bold;
 }
 
+.ticket-card {
+  transition: box-shadow 0.2s ease;
+}
+
+.ticket-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
 
 .textTicket {
   padding: 15px 0 0 30px;
@@ -121,7 +125,12 @@ main {
   font-family: 'Montserrat', sans-serif;
 }
 
-
+.ticket-id {
+  padding-top: 15px;
+  font-weight: 700;
+  font-size: 30px;
+  color: #000;
+}
 
 .ticket-date {
   font-weight: 400;
@@ -133,33 +142,63 @@ main {
   color: #777;
 }
 
+hr.dashed {
+  border: none;
+  height: 3px;
+  width: 98%;
+  margin: 1rem auto;
+  background-image: repeating-linear-gradient(to right, #666, #666 13px, transparent 0px, transparent 21px);
+  opacity: 0.4;
+  border-radius: 2px;
+}
+
 .ticket-body {
   margin: 10px 0 0 30px;
 }
 
-
+.end-text {
+  text-align: center;
+  color: #999;
+  font-style: italic;
+  margin: 20px 0 10px;
+}
 
 .card {
   box-shadow: 0px 6px 12px -2px rgba(0, 0, 0, 0.4);
-  margin-bottom: 15px;
-  border-radius: 5px;
+  margin-bottom: 25px;
+  border-radius: 16px;
   background-color: white;
-  margin-top: 30px;
-  color: #000;
-  
-  
 }
 
 .card-body {
   padding: 1rem 0.5rem 0.5rem;
 }
 
+.idText,
+.someFunctionsText,
 .date {
   display: flex;
-  font-size: 14px;
-  color: #7c7c7c;
-  padding-bottom: 15px;
-  line-height: 0.9;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  line-height: 0.2;
+  margin: 0;
+  padding-top: 21px;
+}
+
+.idText {
+  padding-left: 20px;
+  font-size: 30px;
+  padding-top: 20px;
+  margin-bottom: 0px;
+
+}
+
+.date {
+  font-size: 13px;
+  color: #555;
+  padding-left: 15px;
+  
   
 }
 
@@ -195,7 +234,7 @@ main {
   flex-direction: column;
   justify-content: center;
   padding-left: 20px;
-  gap: 1px;
+  gap: 3px;
   line-height: 29px;
   padding-top: 0px;
   
@@ -205,7 +244,6 @@ main {
   margin: 0 !important;
   padding: 0 !important;
   line-height: 1.3; /* compacta el alto de línea */
-  font-size: 14px;
 }
 
 .ticket-col2 p {
@@ -230,7 +268,6 @@ main {
 
 .id{
   padding-top: 2px;
-  font-size: 15px;
 }
 
 @media (max-width: 620px) {
@@ -240,7 +277,7 @@ main {
   }
 
   .headerText {
-    font-size: 19px;
+    font-size: 17px;
   }
 
   .calendar {
@@ -281,25 +318,15 @@ main {
   }
 
   .description{
-    font-size: 12px;
-  }
-  .id{
-  font-size: 12px;
-  }
-  .date {
-  font-size: 12px; 
-}
-
-  .card{
-    width: 92%;
+    font-size: 13px;
   }
 
- 
+  .TicketTech {
+  font-size: 13px ;
+  }
   .ticket-col2{
-    padding-left: 9px;
+    padding-left: 2px;
   }
-
-  
 }
 
 @media (max-width: 400px) {
@@ -363,59 +390,6 @@ main {
   cursor: pointer;
 }
 
-.card {
-  position: relative;
-  overflow: hidden;
-}
-
-/* Contenedor del estado */
-.ticket-status-banner {
- position: absolute;
-  top: 70px;               /* sube un poco la cinta */
-  right: -30px;            /* menor “overhang” hacia la derecha */
-  width: 140px;           /* cinta más estrecha */
- 
- 
-  color: #fff;
-  text-align: center;
-  font-size: 9px;          /* texto más pequeño */
-  font-weight: bold;
-  text-transform: uppercase;
-  transform: rotate(45deg);
-  transform-origin: top right;
-  z-index: 2;
-}
-
-/* Colores por estado */
-.status-pendiente {
-  background-color: #d14a4a;
-}
-
-.status-en-proceso {
-  background-color: #f38d2c;
-}
-
-.status-en-espera {
-  background-color: #FFBA08;
-}
-
-.status-completado {
-  background-color: #56b881;
-}
-
-.Headers{
-  color: #000;
-}
-
-.ContentTicket{
-  font-size: 14px;
-  padding-bottom: 20px;
-}
-
-.Data{
-  color: #7c7c7c;
-}
-
 .menu {
     position: fixed;
     bottom: 0;
@@ -435,56 +409,17 @@ main {
     font-size: 1.5rem;
 }
 
-.ticket-actions {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-top: 20px;
-  /* quitamos align-items para que cada botón controle su alineación */
+.TicketTech {
+  white-space: nowrap; /* Mantiene el texto en una sola línea */
+  overflow: hidden; /* Oculta el texto que desborda si no cabe */
+  text-overflow: ellipsis; /* Añade puntos suspensivos (...) si el texto se oculta */
+  margin-top: 5px; /* Pequeño espacio superior si lo necesitas */
+  margin-right: 5px;
+  line-height: 0.9;
+  padding-top: 5px;
 }
 
-.btn-edit-ticket {
-  width: 65%;             /* o el valor que prefieras */
-  padding: 8px 0;
-  background-color: #bc3233;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  font-size: 12px;
-  font-weight: bold;
-  text-transform: uppercase;
-  cursor: pointer;
-
-  /* centrado horizontal */
-  margin: 0 auto;
+.TicketTech strong {
+  font-weight: bold; /* Asegura que la palabra "Técnico:" esté en negrita */
 }
-
-.btn-delete {
-  width: 40px;
-  height: 40px;
-  padding: 0;
-  background: transparent;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-
-  /* espacio y alineación dentro de .ticket-actions */
-  margin-right: 10px;
-  align-self: flex-end;
-  margin-bottom: 65px;
-  
-}
-
-.btn-delete svg {
-  width: 35px;     /* Define el ancho */
-  height: 35px;    /* Define la altura exacta */
-}
-
-
-
-
-
-
 
