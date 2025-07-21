@@ -320,11 +320,13 @@ hr.dashed {
   .description{
     font-size: 13px;
   }
-  .ticket-col2{
-    padding-left: 9px;
-  }
 
-  
+  .TicketTech {
+  font-size: 13px ;
+  }
+  .ticket-col2{
+    padding-left: 2px;
+  }
 }
 
 @media (max-width: 400px) {
@@ -407,5 +409,17 @@ hr.dashed {
     font-size: 1.5rem;
 }
 
+.TicketTech {
+  white-space: nowrap; /* Mantiene el texto en una sola línea */
+  overflow: hidden; /* Oculta el texto que desborda si no cabe */
+  text-overflow: ellipsis; /* Añade puntos suspensivos (...) si el texto se oculta */
+  margin-top: 5px; /* Pequeño espacio superior si lo necesitas */
+  margin-right: 5px;
+  line-height: 0.9;
+  padding-top: 5px;
+}
 
+.TicketTech strong {
+  font-weight: bold; /* Asegura que la palabra "Técnico:" esté en negrita */
+}
 
