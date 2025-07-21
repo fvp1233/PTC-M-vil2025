@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <p class="ticket-description">${ticket.description}</p>
                             </div>
                             <p class="mb-0 mt-1">
-                                <small>Asignado a:</small><br />
+                                <small>Creado por:</small><br />
                                 <span class="assigned-person">${ticket.assignedTo}</span>
                             </p>
                         </div>

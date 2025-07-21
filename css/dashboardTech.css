@@ -298,28 +298,3 @@ body {
     font-size: 1.5rem;
 }
 
-.add-btn{
-    position: fixed;    
-    bottom: 7vh;      
-    right: 3vh;      
-    border-radius: 50%;
-    width: 7vh;
-    height: 7vh;
-    border: none;
-    box-shadow: 0 4px 10px rgba(199, 199, 199, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center; 
-    z-index: 1001;
-    transition: transform 0.3s ease;
-    background-color: #BC3233;
-    color: #fff;
-}
-.add-btn:hover{
-    transform: scale(1,1); /* Efecto de zoom al pasar el mouse */
-}
-
-.add-btn a{
-    text-decoration: none;
-    color: #fff;
-}
