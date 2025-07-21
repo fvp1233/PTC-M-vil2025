@@ -45,7 +45,7 @@ body {
 
 header{
     padding-top: 45px;
-    padding-bottom: 40px;
+    padding-bottom: 60px;
     
 }
 
@@ -184,7 +184,6 @@ hr.dashed {
 .menu a {
     font-size: 1.5rem;
 }
-
 .noTickets {
   padding-top: 60px;
   font-size: 12px;
@@ -197,6 +196,33 @@ hr.dashed {
 .Ntext {
   padding: 30px 10px 0;
 }
+
+.ticket-body hr.dashed {
+    width: calc(100% + 30px);
+    margin-left: -18px;
+    margin-right: 0; 
+    
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+     
+    
+}
+
+
+.ticket-description-label {
+ color: #625e5e;
+}
+
+.Archive{
+  color: #625e5e;
+}
+
+.description-text{
+  color: #625e5e;
+}
+
+
+
 
 
 
