@@ -165,15 +165,13 @@ function showTicketsCreacion(fecha) {
 
       let statusClass = '';
       const lowerCaseStatus = t.status.toLowerCase();
-      if (lowerCaseStatus.includes("proceso")) {
+      if (lowerCaseStatus.includes("progreso")) {
         statusClass = "status-en-proceso";
-      } else if (lowerCaseStatus.includes("respuesta")) {
+      } else if (lowerCaseStatus.includes("espera")) {
         statusClass = "status-esperando-respuesta";
-      } else if (lowerCaseStatus.includes("cerrado")) { 
+      } else if (lowerCaseStatus.includes("completado")) { 
         statusClass = "status-cerrado";
-      } else if (lowerCaseStatus.includes("abierto")) {
-        statusClass = "status-abierto";
-      }            
+      }
       
       let priorityClass = '';
       const lowerCasePriority = t.ticketPriority.toLowerCase();
@@ -183,6 +181,8 @@ function showTicketsCreacion(fecha) {
         priorityClass = "priority-media";
       } else if (lowerCasePriority.includes("alta")) {
         priorityClass = "priority-alta";
+      } else if (lowerCasePriority.includes("crítica")) {
+        priorityClass = "priority-critica";
       }
 
       tarjeta.innerHTML = `
@@ -191,7 +191,7 @@ function showTicketsCreacion(fecha) {
                 <p class="mesanio">${FormatearFechaMesAnio(t.creationDate)}</p>
             </div>
             <div class="info">
-                <p>${t.title}</p>
+                <p class="ticket-title">${t.title}</p>
                 <div class="descripcion">
                     <p class="ticket-number">#${ticketNumber}</p>
                     <div class="prioridad">
@@ -248,16 +248,14 @@ function showTicketsCierre(fecha) {
 
       let statusClass = '';
       const lowerCaseStatus = t.status.toLowerCase();
-      if (lowerCaseStatus.includes("proceso")) { 
+      if (lowerCaseStatus.includes("progreso")) {
         statusClass = "status-en-proceso";
-      } else if (lowerCaseStatus.includes("respuesta")) {
+      } else if (lowerCaseStatus.includes("espera")) {
         statusClass = "status-esperando-respuesta";
-      } else if (lowerCaseStatus.includes("cerrado")) { 
+      } else if (lowerCaseStatus.includes("completado")) { 
         statusClass = "status-cerrado";
-      } else if (lowerCaseStatus.includes("abierto")) {
-        statusClass = "status-abierto";
-      }           
-
+      }
+      
       let priorityClass = '';
       const lowerCasePriority = t.ticketPriority.toLowerCase();
       if (lowerCasePriority.includes("baja")) {
@@ -266,6 +264,8 @@ function showTicketsCierre(fecha) {
         priorityClass = "priority-media";
       } else if (lowerCasePriority.includes("alta")) {
         priorityClass = "priority-alta";
+      } else if (lowerCasePriority.includes("crítica")) {
+        priorityClass = "priority-critica";
       }
 
 
@@ -275,7 +275,7 @@ function showTicketsCierre(fecha) {
                 <p class="mesanio">${FormatearFechaMesAnio(t.closeDate)}</p>
             </div>
             <div class="info">
-                <p>${t.title}</p>
+                <p class="ticket-title">${t.title}</p>
                 <div class="descripcion">
                     <p class="ticket-number">#${ticketNumber}</p>
                     <div class="prioridad">
