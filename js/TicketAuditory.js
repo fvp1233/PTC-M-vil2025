@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", function () {
         },
       ],
     },
-    // ... más tickets
+    
   };
 
   /**

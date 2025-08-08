@@ -1,4 +1,4 @@
-//Javascript del proyecto
+//Javascript del proyecto para que simule una carga y me rediriga al login
 
 document.addEventListener('DOMContentLoaded', (event)=> {
     //5 segundo de carga
