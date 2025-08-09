@@ -57,14 +57,16 @@ body {
     padding-top: 2vh;
     width: 100%;
     margin: 0 auto;
-    padding-left: 2vh;
+    padding-left: 1vh;
+    padding-right: 1vh;
+    
 }
 
 .input-search {
     width: 100%;
     padding: 0.5vh 0.5vh 0.5vh 3.5vh;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 12px;
     background-color: white;
     color: #333;
     font-family: 'Montserrat', sans-serif;
@@ -75,7 +77,7 @@ body {
 
 .search-icon {
     position: absolute;
-    left: 2.5vh;
+    left: 1.5vh;
     color: #666;
     pointer-events: none;
 }
@@ -142,7 +144,9 @@ body {
     border-radius: 2px;
     flex-shrink: 0;
     margin-left: -10px;
-    height: 13vh; /* altura fija visible y consistente */
+    align-self:auto;
+    height: auto;
+    border-radius: 10px;
 }
 
 
@@ -174,10 +178,18 @@ body {
 /* Grupo info texto */
 .white-content-section .ticket-info-group p {
     line-height: 1.2;
-    font-size: 1.5vh;
+    font-size: 1.4vh;
     margin-bottom: 0.7rem;
     font-family: "Montserrat";
 }
+
+.assignedTotxt{
+    font-size: 1.4vh;
+    font-family: "Montserrat";
+    font-weight: 500;
+}
+
+
 
 .white-content-section .ticket-info-group p:last-child {
     margin-bottom: 0 !important;
@@ -220,7 +232,7 @@ body {
     color: #333;
     font-weight: 500;
     font-size: 1rem; /* corregido de 10vh a tamaño razonable */
-    border-bottom: 1px solid #e0e0e0;
+    
     
 }
 
@@ -237,10 +249,11 @@ body {
 
 /* Persona asignada */
 .assigned-person {
-    font-size: 0.72rem;
+    font-size: 1.4vh;
     font-weight: 500;
     color: #333;
     font-family: 'Montserrat', sans-serif;
+    
 }
 
 /* Código ticket */
@@ -249,6 +262,8 @@ body {
     font-weight: 600;
     color: #929292;
 }
+
+
 
 .menu {
     position: fixed;

@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     updateDate(); // Llama la función al cargar la página
 
     // Función para cargar los tickets desde un archivo JSON
-        // Función para cargar los tickets desde un archivo JSON
+    // Función para cargar los tickets desde un archivo JSON
     async function loadTickets() {
         try {
             const response = await fetch('js/tickets.json');
@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             tickets.forEach(ticket => {
                 const ticketCard = document.createElement('div');
-                ticketCard.classList.add('card', 'mt-3', 'ticket-item', 'mb-3');
+                ticketCard.classList.add('card', 'mt-3', 'ticket-item', 'mb-4');
 
                 let buttonTextColor = '#FFFFFF';
                 const hexToRgb = hex => {
@@ -53,8 +53,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div class="ticket-status-bar" style="background-color: ${ticket.statusBarColor || '#ccc'};"></div>
                         <div class="col-8 d-flex flex-column pe-3 ms-3">
                             <h6 class="ticket-code">#${ticket.id}</h6>
-                            <div class="ticket-info-group">
-                                <p class="text-muted"><small><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                            <div class="ticket-info-group mb-1">
+                                <p class="text-muted"><small><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                             stroke-linecap="round" stroke-linejoin="round"
                                             class="lucide lucide-clock-icon lucide-clock">
@@ -63,15 +63,20 @@ document.addEventListener('DOMContentLoaded', () => {
                                         </svg> ${ticket.date}</small></p>
                                 <p class="ticket-description">${ticket.description}</p>
                             </div>
-                            <p class="mb-0 mt-1">
-                                <small>Asignado a:</small><br />
-                                <span class="assigned-person">${ticket.assignedTo}</span>
+                            <div class = ""ticket-assignedTo-group">
+                            <p class= " mt-2 mb-0 assignedTotxt">
+                                Asignado a: <br>
                             </p>
+                            <div class = "assigned-person-container"     
+                               <p> <span class="assigned-person">${ticket.assignedTo}</span> </p>
+                            </div>
+                            </div>
                         </div>
-                        <div class="d-flex flex-column justify-content-between align-items-end ps-3 flex-grow-1">
+                        <div class="d-flex flex-column justify-content-around align-items-end ps-3 flex-grow-1">
                             <div id="chart-${ticket.id}" class="chargeValue"></div>
                             <button class="btn btn-sm ticket-status-btn" style="background-color: ${ticket.buttonColor || '#6c757d'}; color: ${buttonTextColor}; border: ${buttonBorderStyle};">${ticket.status}</button>
                         </div>
+                        
                     </div>
                 `;
 
