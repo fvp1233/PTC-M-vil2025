@@ -106,6 +106,11 @@ p {
     padding: 0.5rem 0;
     z-index: 1000;
     background-color: #FBF6F6;
+    height: 30px;
+}
+
+.menu img {
+    height: 18px;
 }
 
 .search-container {
@@ -185,14 +190,13 @@ h5 {
 
 .modal, .modal-agregar {
     position: fixed;
-    top: 0;
+    padding-top: 3rem;
     left: 0;
     width: 100vw;
     height: 100vh;
     background-color: #FBF6F6;
     display: flex;
     justify-content: center;
-    align-items: center;
     z-index: 999;
 }
 

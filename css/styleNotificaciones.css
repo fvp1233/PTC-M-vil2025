@@ -61,7 +61,40 @@ h3 {
     border-top: 1px solid #929292;
     padding: 0.5rem 0;
     z-index: 1000;
-    background-color: white;
+    background-color: #FBF6F6;
+}
+
+.menu img {
+    height: 17.6px;
+    width: 19px;
+    margin-bottom: 2px;
+}
+
+.notificacionicon img {
+    height: 17.6px;
+    width: 20.6px;
+}
+
+.perfil img {
+    height: 17.6px;
+    width: 19.3px;
+}
+
+.ticket img {
+    height: 17.6px;
+    width: 20px;
+    margin-left: 1px;
+}
+
+.dashboard img {
+    height: 17.6px;
+    width: 18.5px;
+}
+
+.base img {
+    height: 17.6px;
+    width: 19px;
+    margin-left: 1px;
 }
 
 .menu a {

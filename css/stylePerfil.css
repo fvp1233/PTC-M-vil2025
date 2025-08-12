@@ -114,6 +114,11 @@ p {
     padding: 0.5rem 0;
     z-index: 1000;
     background-color: #FBF6F6;
+    height: 30px;
+}
+
+.menu img {
+    height: 18px;
 }
 
 .logout {
