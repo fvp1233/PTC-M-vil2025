@@ -265,6 +265,10 @@ body {
     background-color: #FBF6F6;
 }
 
+.menu img {
+    height: 18px;
+}
+
 
 .card {
     position: relative;

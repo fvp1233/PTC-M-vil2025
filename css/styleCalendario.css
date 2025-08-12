@@ -232,6 +232,10 @@ h3 {
     background-color: white;
 }
 
+.menu img {
+    height: 18px;
+}
+
 #ticket-info {
     margin-bottom: 3rem;
 }

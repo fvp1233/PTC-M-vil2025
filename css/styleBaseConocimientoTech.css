@@ -108,6 +108,10 @@ p {
     background-color: #FBF6F6;
 }
 
+.menu img {
+    height: 18px;
+}
+
 .search-container {
     margin-top: 0%;
     width: 90%;

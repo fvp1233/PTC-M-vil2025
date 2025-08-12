@@ -116,6 +116,10 @@ p {
     background-color: #FBF6F6;
 }
 
+.menu img {
+    height: 18px;
+}
+
 .logout {
     display: flex;
     flex-direction: row;

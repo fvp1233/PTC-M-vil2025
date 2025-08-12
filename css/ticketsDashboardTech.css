@@ -405,6 +405,10 @@ hr.dashed {
     background-color: #FBF6F6;
 }
 
+.menu img {
+    height: 18px;
+}
+
 .menu a {
     font-size: 1.5rem;
 }
