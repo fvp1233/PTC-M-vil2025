@@ -43,8 +43,8 @@ h1 {
 
 .perfil-foto-container {
     position: relative;
-    width: 135px; /* Adjust size as needed */
-    height: 135px; /* Should be the same as width for a perfect circle */
+    width: 120px; /* Adjust size as needed */
+    height: 120px; /* Should be the same as width for a perfect circle */
     border-radius: 50%;
     overflow: hidden; /* This is the key to making it a circle */
     cursor: pointer;
