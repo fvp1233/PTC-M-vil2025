@@ -1,50 +1,90 @@
-const USUARIO_CORRECTO = "ptc2025";
-const CONTRASENA_CORRECTA = "1234";
+const API_URL = 'http://localhost:8080/api/users/login';
 
-const  USUARIO_CORRECTO2 = "tecnico2025"
-const CONTRASENA_CORRECTA2 = "1234"
+document.addEventListener('DOMContentLoaded', (event) => {
+    // Obtén los elementos del DOM
+    const loginForm = document.getElementById('login-form');
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+    const errorMessage = document.getElementById('error-message');
 
-// --- Referencias a elementos del DOM ---
-const loginForm = document.querySelector(".formLogin");
-const usernameInput = document.getElementById("username");
-const passwordInput = document.getElementById("password");
-const eyeIcon = document.querySelector(".eye-icon");
+    // Escucha el evento de envío del formulario
+    if (loginForm) {
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
 
+            const username = usernameInput.value;
+            const password = passwordInput.value;
 
+            try {
+                errorMessage.textContent = '';
 
-//  Manejo del envío del formulario 
-loginForm.addEventListener("submit", (event) => {
-    event.preventDefault(); // Evita que la página se recargue
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ username, password }),
+                });
 
-    const usuarioIngresado = usernameInput.value;
-    const contrasenaIngresada = passwordInput.value;
+                const data = await response.json();
 
-    //validación
-    if (usuarioIngresado === USUARIO_CORRECTO && contrasenaIngresada === CONTRASENA_CORRECTA) {
-        
-        console.log("Inicio de sesión exitoso.");
+                if (!response.ok) {
+                    errorMessage.textContent = data.error || 'Error en las credenciales. Inténtalo de nuevo.';
+                    return;
+                }
 
-        // Aquí puedes redirigir al usuario
-             window.location.href = "dashboard.html";
-             
-    }else if(usuarioIngresado === USUARIO_CORRECTO2 && contrasenaIngresada === CONTRASENA_CORRECTA2){
-        console.log("Inicio de sesión éxitoso.")
-        window.location.href = "dashboardTech.html"
-    } 
-    
-    else {
-        showGlobalMessage("Usuario o contraseña incorrectos.", 'error');
-        console.log("Intento de inicio de sesión fallido.");
+                // *** CAMBIO CLAVE AQUÍ ***
+                // Verifica si la contraseña ha expirado
+                if (data.passwordExpired) {
+                    // Si ha expirado, guarda el token temporal y redirige
+                    localStorage.setItem('jwt_token', data.token);
+                    errorMessage.textContent = 'Su contraseña temporal ha expirado. Será redirigido para cambiarla.';
+                    setTimeout(() => {
+                        window.location.href = '../cambiarContraseña.html';
+                    }, 2000); // 2 segundos para mostrar el mensaje
+                    return;
+                }
+
+                // Si la contraseña no ha expirado, guarda los datos y redirige al dashboard
+                localStorage.setItem('jwt_token', data.token);
+                localStorage.setItem('user_username', data.username);
+                localStorage.setItem('user_rolId', data.rolId);
+
+                console.log('Login exitoso!');
+                console.log('Token JWT:', data.token);
+                console.log('Nombre de usuario:', data.username);
+                console.log('ID del Rol:', data.rolId);
+
+                // Lógica de redirección basada en el rol
+                switch (data.rolId) {
+                    case 1:
+                        window.location.href = '../dashboard.html';
+                        break;
+                    case 2:
+                    case 3:
+                        window.location.href = '../dashboardTech.html';
+                        break;
+                    default:
+                        window.location.href = '../dashboard.html';
+                }
+
+            } catch (error) {
+                console.error('Error durante el login:', error);
+                errorMessage.textContent = 'Ocurrió un error. Por favor, intenta más tarde.';
+            }
+        });
+    }
+
+    // --- Lógica para mostrar/ocultar la contraseña ---
+    const passwordInputHide = document.getElementById("password");
+    const eyeIcon = document.querySelector(".eye-icon");
+
+    if (eyeIcon && passwordInputHide) {
+        eyeIcon.addEventListener("click", () => {
+            const type = passwordInputHide.getAttribute("type") === "password" ? "text" : "password";
+            passwordInputHide.setAttribute("type", type);
+            eyeIcon.classList.toggle("fa-eye");
+            eyeIcon.classList.toggle("fa-eye-slash");
+        });
     }
 });
-
-//  Funcionalidad de mostrar/ocultar contraseña
-if (eyeIcon) {
-    eyeIcon.addEventListener("click", () => {
-        const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
-        passwordInput.setAttribute("type", type);
-        eyeIcon.classList.toggle("fa-eye");
-        eyeIcon.classList.toggle("fa-eye-slash");
-    });
-}
-

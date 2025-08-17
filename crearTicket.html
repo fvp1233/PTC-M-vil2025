@@ -43,16 +43,16 @@
 
     <div class="white-content-section">
         <div class="container">
-            <form id="ticketForm">
+            <form id="ticketForm" method="post">
                 <div class="form-section-padding">
                     <div class="mb-5">
-                        <label for="tituloTicket" class="form-label fw-bold">Título del ticket</label>
+                        <label id="titulo"  for="tituloTicket" class="form-label fw-bold">Título del ticket</label>
                         <input type="text" class="form-control" id="tituloTicket"
                             placeholder="Coloca un título a tu problema">
                     </div>
 
                     <div class="mb-3">
-                        <label for="categoria" class="form-label fw-bold">Categoría</label>
+                        <label id="categoria"  for="categoria" class="form-label fw-bold">Categoría</label>
                         <select class="form-select" id="categoria">
                             <option value="">Selecciona la categoría</option>
                             <option value="1">Soporte Técnico</option>
@@ -62,7 +62,7 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label fw-bold">Prioridad</label>
+                        <label id="prioridad" class="form-label fw-bold">Prioridad</label>
                         <div class="row row-cols-2 g-2" id="prioridad-buttons-container">
                             <div class="col d-flex justify-content-center">
                                 <button type="button" class="btn btn-prioridad mt-2 mb-2"
@@ -84,12 +84,12 @@
                     </div>
 
                     <div class="mb-5">
-                        <label for="descripcion" class="form-label visually-hidden">Descripción</label>
+                        <label id="descripcion"  for="descripcion" class="form-label visually-hidden">Descripción</label>
                         <textarea class="form-control" id="descripcion" rows="5" placeholder="Descripción"></textarea>
                     </div>
 
                     <div class="mb-5">
-                        <label class="form-label fw-bold">Subir una imagen</label>
+                        <label id="imagen" class="form-label fw-bold">Subir una imagen</label>
                         <button type="button" class="btn btn-link text-decoration-none p-0" id="openCustomModal">
                             <i class="fas fa-upload fa-lg"></i>
                         </button>
