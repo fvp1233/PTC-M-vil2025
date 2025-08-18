@@ -1,5 +1,7 @@
 API_URL = "https://687435d9dd06792b9c935e6c.mockapi.io/Daniela/tbSolution";
 
+let todasLasTarjetas = []; // Aquí guardaremos los datos completos
+
 // Variables globales para los elementos del modal
 const modal = document.getElementById("modal");
 const btnCerrar = document.getElementById("flechaIzquierda");
@@ -16,7 +18,9 @@ async function CargarDatos() {
     try {
         const res = await fetch(API_URL);
         const data = await res.json();
-        CargarContenido(data);
+        todasLasTarjetas = data; // Guardamos los datos completos
+        crearDropdown(); // Crear el dropdown una sola vez
+        CargarContenido(data);  // Mostramos todas al inicio
     } catch (error) {
         console.error('Error al cargar el contenido:', error);
     }
@@ -24,7 +28,9 @@ async function CargarDatos() {
 
 function CargarContenido(data) {
     const contenidoVista = document.getElementById('contenido');
-    contenidoVista.innerHTML = ''; // Limpiar el contenido antes de añadir
+    // Elimina solo las tarjetas, no el dropdown
+    const tarjetasExistentes = contenidoVista.querySelectorAll('.tarjeta');
+    tarjetasExistentes.forEach(t => t.remove());
 
     data.forEach(c => {
         // Formatear la fecha para que se vea bien en el modal
@@ -32,18 +38,17 @@ function CargarContenido(data) {
         // Formato DD/MM/YYYY
         const formattedDate = `${rawDate.getDate().toString().padStart(2, '0')}/${(rawDate.getMonth() + 1).toString().padStart(2, '0')}/${rawDate.getFullYear()}`;
 
-
         const tarjeta = document.createElement('div');
         tarjeta.className = 'tarjeta';
         tarjeta.innerHTML = `
-            <h5>${c.title}</h5>
+            <h5 style="font-size: 13px; font-weight: bold;">${c.title}</h5>
             <p>${c.description}</p>
             <p class="leer-mas"
-               data-id="${c.solutionId}"
-               data-title="${c.title}"
-               data-description="${c.description}"
-               data-full-solution="${c.solutionSteps}"
-               data-author="${c.userId}"  data-date="${formattedDate}" >Leer más</p>
+                data-id="${c.solutionId}"
+                data-title="${c.title}"
+                data-description="${c.description}"
+                data-full-solution="${c.solutionSteps}"
+                data-author="${c.userId}"  data-date="${formattedDate}" >Leer más</p>
         `;
         contenidoVista.appendChild(tarjeta);
     });
@@ -72,9 +77,8 @@ function attachLeerMasEventListeners() {
             if (modalAuthor) modalAuthor.textContent = `Redactado por: ${articleAuthor}`;
             if (modalDate) modalDate.textContent = `Fecha: ${articleDate}`;
 
-
             // Mostrar el modal
-            modal.classList.remove("oculto");
+            modal.style.display = 'block'; // CAMBIO A display: block
         });
     });
 }
@@ -82,10 +86,60 @@ function attachLeerMasEventListeners() {
 // Listener para el botón de cerrar modal (flechaIzquierda)
 if (btnCerrar) {
     btnCerrar.addEventListener("click", () => {
-        modal.classList.add("oculto");
+        modal.style.display = 'none'; // CAMBIO A display: none
     });
 } else {
     console.error("El botón para cerrar el modal (flechaIzquierda) no se encontró.");
+}
+
+function filtrarPorCategoria(idCategoria) {
+    const tarjetasFiltradas = idCategoria === 0
+        ? todasLasTarjetas
+        : todasLasTarjetas.filter(t => t.categoryId === idCategoria);
+
+    CargarContenido(tarjetasFiltradas);
+}
+
+function crearDropdown() {
+    const contenidoVista = document.getElementById('contenido');
+
+    // Verifica si ya existe el dropdown
+    if (document.getElementById('dropdownButton')) return;
+
+
+    const dropdown = document.createElement('div');
+    dropdown.className = 'dropdown w-100 mb-3';
+    dropdown.innerHTML = `
+        <button class="btn btn-custom dropdown-toggle w-100" type="button" data-bs-toggle="dropdown"
+            aria-expanded="false" id="dropdownButton">
+            Todas las categorías
+        </button>
+        <ul class="dropdown-menu w-100">
+            <li><a class="dropdown-item" href="#" data-id="0">Todas las categorías</a></li>
+            <li><a class="dropdown-item" href="#" data-id="1">Soporte técnico</a></li>
+            <li><a class="dropdown-item" href="#" data-id="2">Consultas</a></li>
+            <li><a class="dropdown-item" href="#" data-id="3">Gestión de usuarios</a></li>
+            <li><a class="dropdown-item" href="#" data-id="4">Redes</a></li>
+            <li><a class="dropdown-item" href="#" data-id="5">Incidentes críticos</a></li>
+        </ul>
+    `;
+
+    // Lo agregamos al principio del .contenido para que esté encima de las tarjetas
+    contenidoVista.insertBefore(dropdown, contenidoVista.firstChild);
+
+
+    // Evento para cambiar texto y filtrar
+    dropdown.querySelectorAll('.dropdown-item').forEach(item => {
+        item.addEventListener('click', function (e) {
+            e.preventDefault();
+            const selectedText = this.textContent;
+            const selectedId = parseInt(this.dataset.id);
+            const dropdownButton = document.getElementById('dropdownButton');
+            dropdownButton.textContent = selectedText;
+
+            filtrarPorCategoria(selectedId);
+        });
+    });
 }
 
 window.addEventListener('DOMContentLoaded', CargarDatos);
