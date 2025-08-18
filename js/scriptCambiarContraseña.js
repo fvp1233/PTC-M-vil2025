@@ -1,17 +1,16 @@
-API_URL ='http://localhost:8080/api/users/change-password';
+// Archivo: scriptCambiarContraseña.js
+
+const API_URL = 'http://localhost:8080/api/users/change-password';
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Referencias a los elementos del DOM
     const form = document.querySelector('.formChangePassword');
     const newPasswordInput = document.getElementById('NewPassword');
     const confirmPasswordInput = document.getElementById('ConfirmPassword');
-    
-    // Contenedor para mensajes de éxito/error. Lo creamos dinámicamente.
     const messageContainer = document.createElement('div');
     form.insertBefore(messageContainer, form.querySelector('.btn-enter'));
     messageContainer.classList.add('text-center', 'mt-3');
     
-    // --- Lógica para mostrar/ocultar contraseña (TU CÓDIGO INTEGRADO) ---
+    // Lógica para mostrar/ocultar contraseña
     document.querySelectorAll('.eye-icon').forEach(icon => {
         icon.addEventListener('click', () => {
             const passwordInput = icon.closest('label').previousElementSibling;
@@ -22,12 +21,22 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Lógica del formulario para cambiar la contraseña
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
         const newPassword = newPasswordInput.value;
         const confirmPassword = confirmPasswordInput.value;
+
+        // Obtener el nombre de usuario y token con las claves correctas
+        // Las claves 'user_username' y 'jwt_token' deben coincidir
+        // con las usadas en tu script de login.
+        const username = localStorage.getItem('user_username'); 
+        const token = localStorage.getItem('jwt_token');
+
+        // Línea de depuración añadida
+        console.log("HOLAAAAAAAAAAAAAAAAAA")
+        console.log('Username from localStorage:', username);
+        console.log('Token from localStorage:', token);
 
         // Validaciones del lado del cliente
         if (newPassword !== confirmPassword) {
@@ -44,9 +53,10 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const token = localStorage.getItem('jwt_token');
-        if (!token) {
-            messageContainer.textContent = 'No se encontró un token. Por favor, inicie sesión de nuevo.';
+        // VERIFICACIÓN CLAVE: Comprobar si el nombre de usuario y el token existen
+        if (!username || !token) {
+            console.error('Error: Nombre de usuario o token faltante en localStorage.');
+            messageContainer.textContent = 'Faltan credenciales. Por favor, inicie sesión de nuevo.';
             messageContainer.classList.add('text-danger');
             messageContainer.classList.remove('text-success');
             setTimeout(() => {
@@ -57,23 +67,29 @@ document.addEventListener('DOMContentLoaded', () => {
         
         try {
             const response = await fetch(API_URL, {
-                method: 'PUT',
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
-                body: JSON.stringify({ newPassword }),
+                body: JSON.stringify({
+                    username: username,
+                    newPassword: newPassword,
+                    currentPassword: ''
+                }),
             });
 
             const data = await response.json();
 
             if (response.ok) {
-                messageContainer.textContent = data.message;
+                messageContainer.textContent = 'Contraseña cambiada exitosamente.';
                 messageContainer.classList.add('text-success');
                 messageContainer.classList.remove('text-danger');
                 
-                // Borra el token obsoleto y redirige al login
-                localStorage.removeItem('jwt_token');
+                // Borra el token obsoleto y el username del localStorage
+                localStorage.removeItem('jwt_token'); 
+                localStorage.removeItem('user_username');
+                
                 setTimeout(() => {
                     window.location.href = 'inicioSesion.html';
                 }, 3000); 

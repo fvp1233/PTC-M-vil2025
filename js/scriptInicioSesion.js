@@ -38,6 +38,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 if (data.passwordExpired) {
                     // Si ha expirado, guarda el token temporal y redirige
                     localStorage.setItem('jwt_token', data.token);
+                    localStorage.setItem('user_username', data.username);
                     errorMessage.textContent = 'Su contraseña temporal ha expirado. Será redirigido para cambiarla.';
                     setTimeout(() => {
                         window.location.href = '../cambiarContraseña.html';
