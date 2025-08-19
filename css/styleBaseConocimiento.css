@@ -7,8 +7,8 @@ body {
     margin: 0;
     min-height: 100vh;
     background: linear-gradient(black, #6A040F, #6A040F, #6A040F, #6A040F);
-    display: flex; /* Make body a flex container */
-    flex-direction: column; /* Stack children vertically */
+    display: flex;
+    flex-direction: column;
 }
 
 .informacion {
@@ -17,7 +17,7 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 100%; /* Ensure it takes full width */
+    width: 100%;
 }
 
 .imgFondo {
@@ -106,6 +106,11 @@ p {
     padding: 0.5rem 0;
     z-index: 1000;
     background-color: #FBF6F6;
+    height: 30px;
+}
+
+.menu img {
+    height: 18px;
 }
 
 .search-container {
@@ -185,14 +190,13 @@ h5 {
 
 .modal, .modal-agregar {
     position: fixed;
-    top: 0;
+    padding-top: 3rem;
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: #FBF6F6; /* Si es opaco, está bien. Si quieres semitransparente, usa rgba(0,0,0,0.5) */
+    background-color: #FBF6F6;
     display: flex;
-    justify-content: center; /* Centra horizontalmente el modal-content */
-    align-items: center;
+    justify-content: center;
     z-index: 999;
 }
 
@@ -273,39 +277,37 @@ h5 {
     justify-content: space-evenly;
     align-items: center;
     margin-top: -1rem;
-    position: relative; /* Asegura que la sombra se vea bien y que esté por encima de .menu si es necesario */
-    z-index: 2; /* Para que quede por encima del menú fijo si se superponen */
+    position: relative;
+    z-index: 2;
     padding-bottom: 4rem;
 }
 
 .final img {
-    width: 40%; /* Mantén el ancho de la imagen */
-    height: auto; /* Asegura que la altura se ajuste proporcionalmente al ancho */
-    display: block; /* Elimina cualquier espacio extra debajo de la imagen si lo hubiera */
+    width: 40%;
+    height: auto;
+    display: block;
 }
 
 .texto-final {
-    width: 50%; /* Mantén el ancho del texto-final */
+    width: 50%;
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Centra verticalmente el contenido dentro de .texto-final */
-    align-items: center; /* Centra horizontalmente el texto y el botón dentro de .texto-final */
-    /* REMUEVE height: 100%; - No lo necesitas, Flexbox lo estirará */
-    /* REMUEVE align-items: space-around; - Es inválido */
-    padding: 10px; /* Añade un poco de padding interno si necesitas espacio entre el contenido y los bordes del div */
-    box-sizing: border-box; /* Asegura que el padding no añada ancho/alto total */
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    box-sizing: border-box;
 }
 
 .texto-final p {
-    text-align: center; /* Centra el texto del párrafo */
-    margin-bottom: 10px; /* Espacio entre el párrafo y el botón */
+    text-align: center;
+    margin-bottom: 10px;
 }
 
 .texto-final button, form button {
     background-color: #4a0e0e;
     color: white;
     border: none;
-    padding: 0.5rem 1.5rem; /* Ajusta el padding para que el botón se vea mejor */
+    padding: 0.5rem 1.5rem;
     border-radius: 5px;
     cursor: pointer;
 }
@@ -318,49 +320,4 @@ form button {
 .texto-final p {
     margin: 0;
     margin-bottom: 1rem;
-}
-
-
-
-form input, form textarea {
-    width: 95%;
-    padding: 0.5rem;
-    border-radius: 5px;
-    border: solid 1px #4a0e0e;
-    margin-bottom: 1rem;
-    font-size: medium;
-}
-
-form input:focus {
-    outline: #6A040F;
-}
-
-#descripcion {
-    min-height: 3rem; /* Aproximadamente 3 líneas de texto */
-}
-
-#solucion {
-    min-height: 15rem;
-}
-
-.botones {
-    position: absolute; /*El boón queda encima del contenido, flotante*/
-    top: 1.5rem; /*Desde abajo 20px*/
-    right: 25px; /*Desde la derecha 25px*/
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    z-index: 900; /*Para que el botón siempre quede encima de todo*/
-}
-
-.botones button {
-    background-color: #6A040F;
-    color: white; /*Color del ícono*/
-    border-radius: 10px; /*Hacemos más redondo el botón*/border: none; /*Quitar bordes al botón*/
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);display: flex; /*Activamos flexbox*/
-    justify-content: center; /*Alineación horizontal*/
-    align-items: center; /*Alineación vertical*/
-    width: 40px;
-    height: 40px;
-    margin-left: 1rem;
 }

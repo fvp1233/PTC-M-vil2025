@@ -1,9 +1,8 @@
 API_URL = "https://687435d9dd06792b9c935e6c.mockapi.io/Daniela/tbSolution";
 
-// Variables globales para los elementos del modal y menú
+// Variables globales para los elementos del modal
 const modal = document.getElementById("modal");
 const btnCerrar = document.getElementById("flechaIzquierda");
-const menu = document.querySelector(".menu");
 
 // Elementos dentro del modal que vamos a rellenar dinámicamente
 const modalTitle = modal.querySelector('.modal-content .modal-titulo h3'); // Selecciona el h3 dentro del modal
@@ -90,68 +89,3 @@ if (btnCerrar) {
 }
 
 window.addEventListener('DOMContentLoaded', CargarDatos);
-
-//Agregar un nuevo registro
-const modalAgregar = document.getElementById("modal-agregar"); //Cuadro de diálogo
-const btnAgregar = document.getElementById("add"); //+ para abrir
-const btnCerrarAgregar = document.getElementById("cerrar-agregar") //X para cerrar
-
-btnAgregar.addEventListener("click", () => {
-    modalAgregar.classList.remove("oculto");
-});
-
-btnCerrarAgregar.addEventListener("click", () => {
-    modalAgregar.classList.add("oculto");
-});
-
-//Agregar nueva solucion
-document.getElementById("frmAgregar").addEventListener("submit", async e => {
-    e.preventDefault(); //e representa a "submit" - Evita que el formulario se envíe
-    //Capturar los valores del formulario
-    const titulo = document.getElementById("titulo").value.trim();
-    const descripcion = document.getElementById("descripcion").value.trim();
-    const solucion = document.getElementById("solucion").value.trim();
-    const date = new Date().toISOString();
-
-    //Validación básica
-    if (!titulo || !descripcion || !solucion) {
-        alert("Complete todos los campos");
-        return; //Evitar que el formulario se envíe
-    }
-
-    const dataToSend = {
-        title: titulo,           // Coincide con 'title' en MockAPI
-        description: descripcion, // Coincide con 'description' en MockAPI
-        solutionSteps: solucion,
-        updateDate: date,  // Coincide con 'solutionSteps' en MockAPI
-        // Ahora vamos a añadir la fecha y el userId aquí también
-    };
-
-
-    //Llamar a la API para enviar el usuario
-    const respuesta = await fetch(API_URL, {
-        method: "POST",
-        headers: { 'Content-Type': 'application/json' }, //Indicar a la API que el contenido que recibe es un JSON
-        body: JSON.stringify(dataToSend)
-    });
-
-    if (respuesta.ok) {
-        Swal.fire({
-            position: "center",
-            icon: "success",
-            text: "La solución fue agregada correctamente",
-            showConfirmButton: false,
-            timer: 1800,
-            width: "90%",
-        });
-
-        //Limpiar el formulario y cerrar el nodal
-        document.getElementById("frmAgregar").reset();
-        modalAgregar.classList.add("oculto");
-
-        //Recargar la tabla
-        CargarDatos();
-    } else {
-        alert("Hubo un error al agregar");
-    }
-});

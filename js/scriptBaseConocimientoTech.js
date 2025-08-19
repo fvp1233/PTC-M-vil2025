@@ -5,12 +5,25 @@ const modal = document.getElementById("modal");
 const btnCerrar = document.getElementById("flechaIzquierda");
 const menu = document.querySelector(".menu");
 
-// Elementos dentro del modal que vamos a rellenar dinámicamente
-const modalTitle = modal.querySelector('.modal-content .modal-titulo h3'); // Selecciona el h3 dentro del modal
-const modalAuthor = modal.querySelector('.modal-content .modal-datos p:first-child'); // El primer p en modal-datos (autor)
-const modalDate = modal.querySelector('.modal-content .modal-datos p:last-child'); // El segundo p en modal-datos (fecha)
-const modalInfo = modal.querySelector('.modal-content .modal-info p'); // El párrafo con la información completa
+// Elementos dentro del modal de "Leer más"
+const modalTitle = modal.querySelector('.modal-content .modal-titulo h3');
+const modalAuthor = modal.querySelector('.modal-content .modal-datos p:first-child');
+const modalDate = modal.querySelector('.modal-content .modal-datos p:last-child');
+const modalInfo = modal.querySelector('.modal-content .modal-info p');
 
+// Variables globales para la lógica de edición y el modal de formulario
+let currentSolutionId = null; 
+const modalAgregar = document.getElementById("modal-agregar");
+const btnAgregar = document.getElementById("add");
+const btnCerrarAgregar = document.getElementById("cerrar-agregar");
+const frmAgregar = document.getElementById("frmAgregar");
+const modalAgregarTitulo = modalAgregar.querySelector('.modal-titulo h3');
+
+// Campos del formulario (Agregar/Editar)
+const tituloInput = document.getElementById("titulo");
+const descripcionInput = document.getElementById("descripcion");
+const solucionInput = document.getElementById("solucion");
+const palabrasClaveInput = document.getElementById("palabrasclave");
 
 // Solicitud GET para cargar el contenido
 async function CargarDatos() {
@@ -25,14 +38,11 @@ async function CargarDatos() {
 
 function CargarContenido(data) {
     const contenidoVista = document.getElementById('contenido');
-    contenidoVista.innerHTML = ''; // Limpiar el contenido antes de añadir
+    contenidoVista.innerHTML = ''; 
 
     data.forEach(c => {
-        // Formatear la fecha para que se vea bien en el modal
-        const rawDate = new Date(c.updateDate); // Crea un objeto Date
-        // Formato DD/MM/YYYY
+        const rawDate = new Date(c.updateDate);
         const formattedDate = `${rawDate.getDate().toString().padStart(2, '0')}/${(rawDate.getMonth() + 1).toString().padStart(2, '0')}/${rawDate.getFullYear()}`;
-
 
         const tarjeta = document.createElement('div');
         tarjeta.className = 'tarjeta';
@@ -40,11 +50,12 @@ function CargarContenido(data) {
             <h5>${c.title}</h5>
             <p>${c.description}</p>
             <p class="leer-mas"
-               data-id="${c.solutionId}"
-               data-title="${c.title}"
-               data-description="${c.description}"
-               data-full-solution="${c.solutionSteps}"
-               data-author="${c.userId}"  data-date="${formattedDate}">Leer más</p>
+                data-id="${c.solutionId}"
+                data-title="${c.title}"
+                data-description="${c.description}"
+                data-full-solution="${c.solutionSteps}"
+                data-keywords="${c.keywords || ''}" 
+                data-author="${c.userId}" data-date="${formattedDate}">Leer más</p>
         `;
         contenidoVista.appendChild(tarjeta);
     });
@@ -57,30 +68,27 @@ function attachLeerMasEventListeners() {
 
     btnAbrirModalLeerMasList.forEach(button => {
         button.addEventListener("click", (event) => {
-            const currentButton = event.target; // El botón "Leer más" que fue clickeado
+            const currentButton = event.target;
+            const articleId = currentButton.dataset.id;
+            
+            currentSolutionId = articleId;
 
-            // Obtener los datos de los data-attributes
             const articleTitle = currentButton.dataset.title;
             const articleFullSolution = currentButton.dataset.fullSolution;
             const articleAuthor = currentButton.dataset.author;
             const articleDate = currentButton.dataset.date;
 
-            // Rellenar el contenido del modal con los datos obtenidos
             if (modalTitle) modalTitle.textContent = articleTitle;
-            if (modalInfo) modalInfo.innerHTML = articleFullSolution; // Usar innerHTML si solutionSteps tiene tags HTML
-
-            // Rellenar los datos de autor y fecha
+            if (modalInfo) modalInfo.innerHTML = articleFullSolution;
             if (modalAuthor) modalAuthor.textContent = `Redactado por: ${articleAuthor}`;
             if (modalDate) modalDate.textContent = `Fecha: ${articleDate}`;
 
-
-            // Mostrar el modal
             modal.classList.remove("oculto");
         });
     });
 }
 
-// Listener para el botón de cerrar modal (flechaIzquierda)
+// Listener para el botón de cerrar modal (flechaIzquierda) del modal de lectura
 if (btnCerrar) {
     btnCerrar.addEventListener("click", () => {
         modal.classList.add("oculto");
@@ -89,69 +97,155 @@ if (btnCerrar) {
     console.error("El botón para cerrar el modal (flechaIzquierda) no se encontró.");
 }
 
-window.addEventListener('DOMContentLoaded', CargarDatos);
-
-//Agregar un nuevo registro
-const modalAgregar = document.getElementById("modal-agregar"); //Cuadro de diálogo
-const btnAgregar = document.getElementById("add"); //+ para abrir
-const btnCerrarAgregar = document.getElementById("cerrar-agregar") //X para cerrar
-
+// Listener para el botón de abrir el modal de agregar (+)
 btnAgregar.addEventListener("click", () => {
+    frmAgregar.reset();
+    currentSolutionId = null;
+    modalAgregarTitulo.textContent = "Agregar solución";
     modalAgregar.classList.remove("oculto");
 });
 
+// Listener para el botón de cerrar modal de agregar
 btnCerrarAgregar.addEventListener("click", () => {
     modalAgregar.classList.add("oculto");
 });
 
-//Agregar nueva solucion
-document.getElementById("frmAgregar").addEventListener("submit", async e => {
-    e.preventDefault(); //e representa a "submit" - Evita que el formulario se envíe
-    //Capturar los valores del formulario
-    const titulo = document.getElementById("titulo").value.trim();
-    const descripcion = document.getElementById("descripcion").value.trim();
-    const solucion = document.getElementById("solucion").value.trim();
+// Listener para el envío del formulario (funciona para agregar y editar)
+frmAgregar.addEventListener("submit", async e => {
+    e.preventDefault(); 
+
+    const titulo = tituloInput.value.trim();
+    const descripcion = descripcionInput.value.trim();
+    const solucion = solucionInput.value.trim();
+    const palabrasClave = palabrasClaveInput.value.trim();
     const date = new Date().toISOString();
 
-    //Validación básica
     if (!titulo || !descripcion || !solucion) {
-        alert("Complete todos los campos");
-        return; //Evitar que el formulario se envíe
+        Swal.fire({
+            icon: 'error',
+            title: 'Campos incompletos',
+            text: 'Por favor, complete todos los campos obligatorios.',
+            width: "90%"
+        });
+        return;
     }
 
     const dataToSend = {
-        title: titulo,           // Coincide con 'title' en MockAPI
-        description: descripcion, // Coincide con 'description' en MockAPI
+        title: titulo,
+        description: descripcion,
         solutionSteps: solucion,
-        updateDate: date,  // Coincide con 'solutionSteps' en MockAPI
-        // Ahora vamos a añadir la fecha y el userId aquí también
+        keywords: palabrasClave,
+        updateDate: date,
+        // userId: '1' // Si tienes el userId, agrégalo aquí
     };
 
+    let method = 'POST';
+    let url = API_URL;
 
-    //Llamar a la API para enviar el usuario
-    const respuesta = await fetch(API_URL, {
-        method: "POST",
-        headers: { 'Content-Type': 'application/json' }, //Indicar a la API que el contenido que recibe es un JSON
-        body: JSON.stringify(dataToSend)
-    });
+    if (currentSolutionId) {
+        method = 'PUT';
+        url = `${API_URL}/${currentSolutionId}`;
+    }
 
-    if (respuesta.ok) {
-        Swal.fire({
-            position: "center",
-            icon: "success",
-            text: "La solución fue agregada correctamente",
-            showConfirmButton: false,
-            timer: 1800,
-            width: "90%",
+    try {
+        const respuesta = await fetch(url, {
+            method: method,
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dataToSend)
         });
 
-        //Limpiar el formulario y cerrar el nodal
-        document.getElementById("frmAgregar").reset();
-        modalAgregar.classList.add("oculto");
+        if (respuesta.ok) {
+            Swal.fire({
+                position: "center",
+                icon: "success",
+                text: `La solución fue ${method === 'POST' ? 'agregada' : 'actualizada'} correctamente`,
+                showConfirmButton: false,
+                timer: 1800,
+                width: "90%",
+            });
 
-        //Recargar la tabla
-        CargarDatos();
-    } else {
-        alert("Hubo un error al agregar");
+            frmAgregar.reset();
+            modalAgregar.classList.add("oculto");
+            CargarDatos();
+        } else {
+            throw new Error(`Error en la API: ${respuesta.status}`);
+        }
+    } catch (error) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: `Hubo un error al guardar la solución: ${error.message}`,
+            width: "90%"
+        });
+        console.error("Error al guardar la solución:", error);
     }
 });
+
+// Lógica para el botón de editar
+document.getElementById("edit").addEventListener("click", () => {
+    if (!currentSolutionId) {
+        console.error("No hay una solución seleccionada para editar.");
+        return;
+    }
+
+    modal.classList.add("oculto");
+
+    const articuloSeleccionado = document.querySelector(`.leer-mas[data-id="${currentSolutionId}"]`);
+    if (articuloSeleccionado) {
+        tituloInput.value = articuloSeleccionado.dataset.title;
+        descripcionInput.value = articuloSeleccionado.dataset.description;
+        solucionInput.value = articuloSeleccionado.dataset.fullSolution;
+        palabrasClaveInput.value = articuloSeleccionado.dataset.keywords;
+    }
+
+    modalAgregarTitulo.textContent = "Editar solución";
+
+    modalAgregar.classList.remove("oculto");
+});
+
+// Lógica para el botón de eliminar
+document.getElementById("delete").addEventListener("click", async () => {
+    if (!currentSolutionId) {
+        console.error("No hay una solución seleccionada para eliminar.");
+        return;
+    }
+
+    const result = await Swal.fire({
+        title: '¿Estás seguro que quieres eliminar la solución?',
+        text: 'La acción no puede ser revertida',
+        showCancelButton: true,
+        confirmButtonColor: '#6b040f',
+        cancelButtonColor: '#595050',
+        confirmButtonText: 'Confirmar',
+        cancelButtonText: 'Cancelar'
+    });
+
+    if (result.isConfirmed) {
+        try {
+            const res = await fetch(`${API_URL}/${currentSolutionId}`, {
+                method: 'DELETE'
+            });
+
+            if (res.ok) {
+                Swal.fire({
+                    title: 'Eliminado!',
+                    text: 'La solución ha sido eliminada.',
+                    icon: 'success'
+                });
+                modal.classList.add('oculto');
+                CargarDatos();
+            } else {
+                throw new Error(`Error al eliminar: ${res.status}`);
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: `Hubo un problema al eliminar la solución: ${error.message}`,
+            });
+            console.error("Error al eliminar:", error);
+        }
+    }
+});
+
+window.addEventListener('DOMContentLoaded', CargarDatos);

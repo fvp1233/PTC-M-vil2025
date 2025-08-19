@@ -1,5 +1,3 @@
-// --- Credenciales ÚNICAS predefinidas ---
-// ¡Estas deben ser exactas!
 const USUARIO_CORRECTO = "ptc2025";
 const CONTRASENA_CORRECTA = "1234";
 
@@ -14,21 +12,21 @@ const eyeIcon = document.querySelector(".eye-icon");
 
 
 
-// --- Manejo del envío del formulario ---
+//  Manejo del envío del formulario 
 loginForm.addEventListener("submit", (event) => {
     event.preventDefault(); // Evita que la página se recargue
 
     const usuarioIngresado = usernameInput.value;
     const contrasenaIngresada = passwordInput.value;
 
-    // --- La única validación: ¿Son las credenciales EXACTAS? ---
+    //validación
     if (usuarioIngresado === USUARIO_CORRECTO && contrasenaIngresada === CONTRASENA_CORRECTA) {
         
         console.log("Inicio de sesión exitoso.");
+
         // Aquí puedes redirigir al usuario
-        // setTimeout(() => {
-             window.location.href = "dashboard.html"; // Por ejemplo, a tu página de dashboard
-        // }, 1500); // Espera 1.5 segundos antes de redirigir
+             window.location.href = "dashboard.html";
+             
     }else if(usuarioIngresado === USUARIO_CORRECTO2 && contrasenaIngresada === CONTRASENA_CORRECTA2){
         console.log("Inicio de sesión éxitoso.")
         window.location.href = "dashboardTech.html"
@@ -40,7 +38,7 @@ loginForm.addEventListener("submit", (event) => {
     }
 });
 
-// --- Funcionalidad de mostrar/ocultar contraseña (se mantiene por utilidad) ---
+//  Funcionalidad de mostrar/ocultar contraseña
 if (eyeIcon) {
     eyeIcon.addEventListener("click", () => {
         const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";

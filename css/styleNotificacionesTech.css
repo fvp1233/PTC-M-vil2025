@@ -64,6 +64,10 @@ h3 {
     background-color: white;
 }
 
+.menu img {
+    height: 18px;
+}
+
 .menu a {
     font-size: 1.5rem;
 }

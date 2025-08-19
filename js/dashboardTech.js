@@ -20,28 +20,28 @@ document.addEventListener('DOMContentLoaded', () => {
             const tickets = await response.json();
             const ticketsContainer = document.querySelector('.white-content-section');
 
-            // Remove any existing static tickets before loading new ones
+            //Elimina cualquier ticket que exista antes de cargar los nuevos
             const staticTickets = ticketsContainer.querySelectorAll('.card.ticket-item');
             staticTickets.forEach(ticket => ticket.remove());
 
-            // Define severity colors - Adjusted 'Medio' to 'Media' to match your JSON data
+            // Define los colores que asigne en el json
             const severityColors = {
-                'Crítico': '#FF0000', // Red
-                'Alto': '#F48C06',    // Orange
-                'Medio': '#FFBA08',   // Gold/Yellow - Changed from 'Medio' to 'Media' to match your JSON
-                'Bajo': '#67D947',    // Green
-                'Info': '#ADD8E6'     // Light Blue (for general info/low severity)
+                'Crítico': '#FF0000', // Rojo
+                'Alto': '#F48C06',    // Naranja
+                'Medio': '#FFBA08',   // Amarrillo
+                'Bajo': '#67D947',    // Verde
+                'Info': '#ADD8E6'     // Azul
             };
 
             tickets.forEach(ticket => {
                 const ticketCard = document.createElement('div');
                 ticketCard.classList.add('card', 'mt-3', 'ticket-item', 'mb-3');
-                // Add position relative to the card for absolute positioning of the ribbon
+                // añade una posicion relativa a la tarjeta para poder colocar el ribbon(banner a la derecha)
                 ticketCard.style.position = 'relative';
-                ticketCard.style.overflow = 'hidden'; // Hide overflow of the ribbon
+                ticketCard.style.overflow = 'hidden'; 
 
-                const ribbonColor = severityColors[ticket.severity] || '#6c757d'; // Default grey if severity not found
-                const ribbonTextColor = '#FFFFFF'; // White text for the ribbon
+                const ribbonColor = severityColors[ticket.severity] || '#6c757d'; // color del ticket sera verde por default
+                const ribbonTextColor = '#FFFFFF'; // defino el color blanco para el texto que va dentro del ribbon
 
                 ticketCard.innerHTML = `
                     <div class="ribbon" style="background-color: ${ribbonColor}; color: ${ribbonTextColor};">
