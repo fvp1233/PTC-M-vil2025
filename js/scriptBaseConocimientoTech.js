@@ -47,7 +47,7 @@ function CargarContenido(data) {
         const tarjeta = document.createElement('div');
         tarjeta.className = 'tarjeta';
         tarjeta.innerHTML = `
-            <h5>${c.title}</h5>
+            <h5 style="font-size: 13px; font-weight: bold;">${c.title}</h5>
             <p>${c.description}</p>
             <p class="leer-mas"
                 data-id="${c.solutionId}"

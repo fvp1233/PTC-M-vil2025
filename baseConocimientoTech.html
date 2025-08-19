@@ -12,32 +12,35 @@
     <link rel="stylesheet" href="css/styleBaseConocimientoTech.css" />
     <link rel="stylesheet" type="text/css"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
 </head>
 
 <body>
-    <div class="imgFondo"></div>
-    <div class="informacion">
-        <div class="encabezado">
-            <h1>Base de conocimiento</h1>
-            <div class="search-container">
-                <i class="fas fa-search"></i>
-                <input type="text" placeholder="Busca un artículo">
+    <div class="fondo"></div>
+
+    <div class="main-container">
+        <div class="informacion">
+            <div class="encabezado">
+                <h1 style="font-size: 24px; margin-top: 15px; margin-bottom: 15px;">Base de conocimiento</h1>
+                <div class="search-container">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Busca un artículo">
+                </div>
+            </div>
+            <div class="texto-encabezado">
+                <div class="texto">
+                    <h2 style="font-size: 16px;">Tus soluciones rápidas</h2>
+                    <hr>
+                    <p>Agrega pasos detallados para que los clientes puedan seguirlos.</p>
+                </div>
+                <img src="img/base_conocimiento.png" alt="">
             </div>
         </div>
-        <div class="texto-encabezado">
-            <div class="texto">
-                <h2>Tus soluciones rápidas</h2>
-                <hr>
-                <p>Agrega pasos detallados para que los clientes puedan seguirlos.</p>
-            </div>
-            <img src="img/base_conocimiento.png" alt="">
 
+        <div class="contenido" id="contenido">
         </div>
     </div>
-    <div class="contenido" id="contenido">
-        <!--Tarjetas de artículos inyectadas por JS-->
-    </div>
-
 
     <div id="modal" class="modal oculto">
         <div class="modal-content">
@@ -105,6 +108,9 @@
 
     <script src="js/scriptBaseConocimientoTech.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>

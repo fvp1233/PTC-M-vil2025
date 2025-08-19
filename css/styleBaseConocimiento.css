@@ -20,7 +20,7 @@ body {
     width: 100%;
     height: 40vh;
     /* Combina el gradiente y la imagen en la misma propiedad background */
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), rgb(106, 4, 15)), url('../img/fondoperfil.png');
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgb(106, 4, 15, 0.9)), url('../img/fondoperfil.png');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
