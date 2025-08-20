@@ -18,9 +18,22 @@
     <div class="encabezado">
       <h1>Perfil</h1>
     </div>
-    <img src="img/fotoperfil.png" alt="" class="foto">
+    <div class="perfil-foto-container" id="fotoContainer">
+      <img src="img/fotoperfil.png" alt="Foto de perfil" class="foto" id="fotoPerfil" />
+      <div class="overlay" id="editarFotoOverlay">
+        <div class="content">
+          <svg xmlns="http://www.w3.org/2000/svg" height="32" width="32"
+            viewBox="0 0 640 640"><!--!Font Awesome Free v7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
+            <path fill="#ffffff"
+              d="M416.9 85.2L372 130.1L509.9 268L554.8 223.1C568.4 209.6 576 191.2 576 172C576 152.8 568.4 134.4 554.8 120.9L519.1 85.2C505.6 71.6 487.2 64 468 64C448.8 64 430.4 71.6 416.9 85.2zM338.1 164L122.9 379.1C112.2 389.8 104.4 403.2 100.3 417.8L64.9 545.6C62.6 553.9 64.9 562.9 71.1 569C77.3 575.1 86.2 577.5 94.5 575.2L222.3 539.7C236.9 535.6 250.2 527.9 261 517.1L476 301.9L338.1 164z" />
+          </svg>
+          <p>EDITAR FOTO</p>
+        </div>
+        <input type="file" id="fileInput" accept="image/*" style="display: none;">
+      </div>
+    </div>
     <h3 id="nombre"></h3>
-    <h5 id="rol"></h5>
+    <h5>Cliente</h5>
     <p>Tickets generados: 9</p>
   </div>
   <div class="contenido">
@@ -32,8 +45,7 @@
             fill="#6A040F" />
         </svg>
         <p>Usuario</p>
-        <svg id="edit" xmlns="http://www.w3.org/2000/svg" height="17" width="17"
-          viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
+        <svg id="edit" xmlns="http://www.w3.org/2000/svg" height="17" width="17" viewBox="0 0 512 512">
           <path fill="#811F20"
             d="M441 58.9L453.1 71c9.4 9.4 9.4 24.6 0 33.9L424 134.1 377.9 88 407 58.9c9.4-9.4 24.6-9.4 33.9 0zM209.8 256.2L344 121.9 390.1 168 255.8 302.2c-2.9 2.9-6.5 5-10.4 6.1l-58.5 16.7 16.7-58.5c1.1-3.9 3.2-7.5 6.1-10.4zM373.1 25L175.8 222.2c-8.7 8.7-15 19.4-18.3 31.1l-28.6 100c-2.4 8.4-.1 17.4 6.1 23.6s15.2 8.5 23.6 6.1l100-28.6c11.8-3.4 22.5-9.7 31.1-18.3L487 138.9c28.1-28.1 28.1-73.7 0-101.8L474.9 25C446.8-3.1 401.2-3.1 373.1 25zM88 64C39.4 64 0 103.4 0 152L0 424c0 48.6 39.4 88 88 88l272 0c48.6 0 88-39.4 88-88l0-112c0-13.3-10.7-24-24-24s-24 10.7-24 24l0 112c0 22.1-17.9 40-40 40L88 464c-22.1 0-40-17.9-40-40l0-272c0-22.1 17.9-40 40-40l112 0c13.3 0 24-10.7 24-24s-10.7-24-24-24L88 64z" />
         </svg>
@@ -83,8 +95,7 @@
     </div>
 
     <div class="logout" id="btnAbrirModalLogout">
-      <svg xmlns="http://www.w3.org/2000/svg" height="20" width="20"
-        viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
+      <svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 512 512">
         <path fill="#6a040f"
           d="M502.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L402.7 224 192 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l210.7 0-73.4 73.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l128-128zM160 96c17.7 0 32-14.3 32-32s-14.3-32-32-32L96 32C43 32 0 75 0 128L0 384c0 53 43 96 96 96l64 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-64 0c-17.7 0-32-14.3-32-32l0-256c0-17.7 14.3-32 32-32l64 0z" />
       </svg>
