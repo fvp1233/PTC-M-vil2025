@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cambiar Contraseña</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/styleCambiarContraseña.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+    <div class="imgFondo"></div>
+    
+
+    <div class="page-content-wrapper d-flex flex-column align-items-center" style="min-height: 100vh;">
+        <div class="container text-center">
+            <div class="row justify-content-center  align-self-stretch">
+                <div class="col-12 col-sm-12 col-md-12 pt-3">
+                    <div class="logoH2C">
+                        <img src="img/03adafb7-b591-41f4-84ab-616e388713f3.png" class="img-fluid" alt="logo H2C">
+                    </div>
+
+                    <div class="txtIn">
+                        <h5>Cambiar Contraseña</h5>
+                        <p>Para acceder debes de cambiar la contraseña</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container mt-2 text-center">
+            <div class="row justify-content-center  ms-1 me-1">
+                <div class="col-12 col-sm-12 col-md-12 custom-form-column ">
+                    <div class="inputs">
+
+                        <form class="formChangePassword">
+                            
+                            <div class="formCurrentPassword mt-1"> <!-- contenedor principal -->
+                                <input type="password" id="currentPassword" required> <!-- el input -->
+                                <label class="lblCurrentPassword"> <!-- el label contenedor -->
+                                    <span class="text-CurrentPassword">Contraseña</span> <!-- texto del label -->
+                                    <i class="eye-icon fa-solid fa-eye-slash"></i> <!-- icono del ojo -->
+                                </label>
+                            </div>
+                            
+                            <div class="formNewPassword mt-4"> <!-- contenedor principal -->
+                                <input type="password" id="NewPassword" required> <!-- el input -->
+                                <label class="lblNewPassword"> <!-- el label contenedor -->
+                                    <span class="text-NewPassword">Nueva contraseña</span> <!-- texto del label -->
+                                    <i class="eye-icon fa-solid fa-eye-slash"></i> <!-- icono del ojo -->
+                                </label>
+                            </div>
+                            
+
+                            <div class="formConfirmPassword mt-4"> <!-- contenedor principal -->
+                                <input type="password" id="ConfirmPassword" required> <!-- el input -->
+                                <label class="lblConfirmPassword"> <!-- el label contenedor -->
+                                    <span class="text-ConfirmPassword">Confirmar Contraseña</span> <!-- texto del label -->
+                                    <i class="eye-icon fa-solid fa-eye-slash"></i> <!-- icono del ojo -->
+                                </label>
+                            </div>
+
+
+                            <div class="btn-enter w-100 mt-5">
+                                <button type="submit">Cambiar Contraseña</button>
+                            </div>
+
+                            <div class="logIn mt-5">
+                                
+                                <a href="inicioSesion.html">Volver al Inicio de Sesión</a>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="js/scriptCambiarContraseña.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

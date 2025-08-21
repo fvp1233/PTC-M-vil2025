@@ -20,7 +20,6 @@
 <body>
     <div class="imgFondo"></div>
 
-
     <div class="page-content-wrapper d-flex flex-column align-items-center" style="min-height: 100vh;">
         <div class="container">
             <div class="row text-center align-self-stretch">
@@ -33,29 +32,27 @@
             </div>
         </div>
 
-
-
         <div class="container-fluid text-center">
-            <div class="row text-center  text-start  mt-5 ms-1  me-1">
+            <div class="row text-center text-start mt-5 ms-1 me-1">
                 <div class="col-12 col-sm-12 col-md-12 col-lg-12 ">
                     <div class="inputs">
-                        <form class="frmLogin">
+                        <form class="frmLogin" autocomplete="off">
                             <div class="formName">
-                                <input type="text" name="name" required>
+                                <input type="text" name="full-name" autocomplete="off" required>
                                 <label class="lblName">
                                     <span class="text-Name">Nombre completo</span>
                                 </label>
                             </div>
 
                             <div class="formUser mt-5">
-                                <input type="text" name="usuario" required>
+                                <input type="text" name="usuario" autocomplete="off" required>
                                 <label class="lblUser">
                                     <span class="text-User">Usuario</span>
                                 </label>
                             </div>
 
                             <div class="formEmail mt-5">
-                                <input type="text" name="email" required>
+                                <input type="text" name="email" autocomplete="off" required>
                                 <label class="lblEmail">
                                     <span class="text-Email">Correo electrónico</span>
                                 </label>
@@ -63,25 +60,25 @@
 
                             <div class="formPhone mt-4 text-start">
                                 <h5 class="phone-label-static">Número de teléfono</h5>
-                                <div class="input-group"> <span class="input-group-text country-code-prefix">
+                                <div class="input-group">
+                                    <span class="input-group-text country-code-prefix">
                                         <span class="iconify flag-icon" data-icon="flag:sv-4x3"></span>
                                         +503
                                     </span>
-                                    <input type="tel" name="phone" class="form-control" required>
+                                    <input type="tel" name="user-phone" class="form-control" autocomplete="off" required>
                                 </div>
                             </div>
 
-                            <div class="btn-enter mt-5  mb-3 w-100">
+                            <div class="btn-enter mt-5 mb-3 w-100">
                                 <button type="submit">Registrarse</button>
                             </div>
 
-                            <div class="d-flex align-items-center justify-content-center  my-4">
+                            <div class="d-flex align-items-center justify-content-center my-4">
                                 <div class="border-top mx-2"></div>
                                 <span class="txtRegistro"> Ó registrate con </span>
                                 <div class="border-top mx-2"></div>
                             </div>
                         </form>
-
                         <div class="btn-google mb-3 w-100">
                             <button class=" w-100">
                                 <img src="img/Google-Symbol.png" alt="logoGoogle">
@@ -93,15 +90,14 @@
                             <p>¿Ya tienes una cuenta?</p>
                             <a href="inicioSesion.html">Iniciar sesión</a>
                         </div>
-
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
 
-    <script src="js/registrarse.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="js/scriptRegistrarse.js"></script>
     <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO"
