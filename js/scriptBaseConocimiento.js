@@ -1,4 +1,13 @@
-API_URL = "https://687435d9dd06792b9c935e6c.mockapi.io/Daniela/tbSolution";
+const API_URL = "https://687435d9dd06792b9c935e6c.mockapi.io/Daniela/tbSolution";
+
+// Mapeo para traducir categoryId a nombres de categoría
+const categoryMap = {
+    1: 'Soporte técnico',
+    2: 'Consultas',
+    3: 'Gestión de usuarios',
+    4: 'Redes',
+    5: 'Incidentes críticos'
+};
 
 let todasLasTarjetas = []; // Aquí guardaremos los datos completos
 
@@ -7,11 +16,12 @@ const modal = document.getElementById("modal");
 const btnCerrar = document.getElementById("flechaIzquierda");
 
 // Elementos dentro del modal que vamos a rellenar dinámicamente
-const modalTitle = modal.querySelector('.modal-content .modal-titulo h3'); // Selecciona el h3 dentro del modal
-const modalAuthor = modal.querySelector('.modal-content .modal-datos p:first-child'); // El primer p en modal-datos (autor)
-const modalDate = modal.querySelector('.modal-content .modal-datos p:last-child'); // El segundo p en modal-datos (fecha)
-const modalInfo = modal.querySelector('.modal-content .modal-info p'); // El párrafo con la información completa
-
+const modalTitle = modal ? modal.querySelector('.modal-content .modal-titulo h3') : null;
+const modalCategory = document.getElementById('modalCategory'); 
+// CORRECCIÓN: Usar getElementById para una selección más precisa
+const modalAuthor = document.getElementById('modalAuthor');
+const modalDate = document.getElementById('modalDate'); 
+const modalInfo = modal ? modal.querySelector('.modal-content .modal-info p') : null;
 
 // Solicitud GET para cargar el contenido
 async function CargarDatos() {
@@ -19,8 +29,8 @@ async function CargarDatos() {
         const res = await fetch(API_URL);
         const data = await res.json();
         todasLasTarjetas = data; // Guardamos los datos completos
-        crearDropdown(); // Crear el dropdown una sola vez
-        CargarContenido(data);  // Mostramos todas al inicio
+        crearDropdown(); 
+        CargarContenido(data);
     } catch (error) {
         console.error('Error al cargar el contenido:', error);
     }
@@ -28,27 +38,39 @@ async function CargarDatos() {
 
 function CargarContenido(data) {
     const contenidoVista = document.getElementById('contenido');
+    if (!contenidoVista) {
+        console.error("El elemento con id 'contenido' no se encontró.");
+        return;
+    }
+
     // Elimina solo las tarjetas, no el dropdown
     const tarjetasExistentes = contenidoVista.querySelectorAll('.tarjeta');
     tarjetasExistentes.forEach(t => t.remove());
 
     data.forEach(c => {
         // Formatear la fecha para que se vea bien en el modal
-        const rawDate = new Date(c.updateDate); // Crea un objeto Date
-        // Formato DD/MM/YYYY
+        const rawDate = new Date(c.updateDate);
         const formattedDate = `${rawDate.getDate().toString().padStart(2, '0')}/${(rawDate.getMonth() + 1).toString().padStart(2, '0')}/${rawDate.getFullYear()}`;
+        const categoryName = categoryMap[c.categoryId] || 'Sin categoría';
+
+        // Sanitizar el texto para eliminar espacios extra y saltos de línea
+        const sanitizedDescription = c.description.replace(/\s+/g, ' ').trim();
 
         const tarjeta = document.createElement('div');
         tarjeta.className = 'tarjeta';
         tarjeta.innerHTML = `
             <h5 style="font-size: 13px; font-weight: bold;">${c.title}</h5>
-            <p>${c.description}</p>
+            <p>${sanitizedDescription}</p>
             <p class="leer-mas"
                 data-id="${c.solutionId}"
                 data-title="${c.title}"
                 data-description="${c.description}"
                 data-full-solution="${c.solutionSteps}"
-                data-author="${c.userId}"  data-date="${formattedDate}" >Leer más</p>
+                data-author="${c.userId}"
+                data-date="${formattedDate}"
+                data-category="${categoryName}">
+                Leer más
+            </p>
         `;
         contenidoVista.appendChild(tarjeta);
     });
@@ -61,24 +83,27 @@ function attachLeerMasEventListeners() {
 
     btnAbrirModalLeerMasList.forEach(button => {
         button.addEventListener("click", (event) => {
-            const currentButton = event.target; // El botón "Leer más" que fue clickeado
-
+            const currentButton = event.target;
             // Obtener los datos de los data-attributes
+            const currentSolutionId = currentButton.dataset.id;
             const articleTitle = currentButton.dataset.title;
             const articleFullSolution = currentButton.dataset.fullSolution;
             const articleAuthor = currentButton.dataset.author;
             const articleDate = currentButton.dataset.date;
+            const articleCategory = currentButton.dataset.category;
+
+            // Sanitizar la solución completa para eliminar espacios extra y saltos de línea
+            const sanitizedFullSolution = articleFullSolution.replace(/\s+/g, ' ').trim();
 
             // Rellenar el contenido del modal con los datos obtenidos
             if (modalTitle) modalTitle.textContent = articleTitle;
-            if (modalInfo) modalInfo.innerHTML = articleFullSolution; // Usar innerHTML si solutionSteps tiene tags HTML
-
-            // Rellenar los datos de autor y fecha
+            if (modalInfo) modalInfo.innerHTML = sanitizedFullSolution;
+            if (modalCategory) modalCategory.textContent = articleCategory;
             if (modalAuthor) modalAuthor.textContent = `Redactado por: ${articleAuthor}`;
             if (modalDate) modalDate.textContent = `Fecha: ${articleDate}`;
 
             // Mostrar el modal
-            modal.style.display = 'block'; // CAMBIO A display: block
+            if (modal) modal.classList.remove('oculto');
         });
     });
 }
@@ -86,7 +111,7 @@ function attachLeerMasEventListeners() {
 // Listener para el botón de cerrar modal (flechaIzquierda)
 if (btnCerrar) {
     btnCerrar.addEventListener("click", () => {
-        modal.style.display = 'none'; // CAMBIO A display: none
+        if (modal) modal.classList.add('oculto');
     });
 } else {
     console.error("El botón para cerrar el modal (flechaIzquierda) no se encontró.");
@@ -100,12 +125,15 @@ function filtrarPorCategoria(idCategoria) {
     CargarContenido(tarjetasFiltradas);
 }
 
+// Lógica del dropdown
 function crearDropdown() {
     const contenidoVista = document.getElementById('contenido');
+    if (!contenidoVista) {
+        console.error("El elemento con id 'contenido' no se encontró para el dropdown.");
+        return;
+    }
 
-    // Verifica si ya existe el dropdown
     if (document.getElementById('dropdownButton')) return;
-
 
     const dropdown = document.createElement('div');
     dropdown.className = 'dropdown w-100 mb-3';
@@ -124,11 +152,8 @@ function crearDropdown() {
         </ul>
     `;
 
-    // Lo agregamos al principio del .contenido para que esté encima de las tarjetas
     contenidoVista.insertBefore(dropdown, contenidoVista.firstChild);
 
-
-    // Evento para cambiar texto y filtrar
     dropdown.querySelectorAll('.dropdown-item').forEach(item => {
         item.addEventListener('click', function (e) {
             e.preventDefault();
@@ -139,6 +164,24 @@ function crearDropdown() {
 
             filtrarPorCategoria(selectedId);
         });
+    });
+}
+
+// Lógica de búsqueda
+const searchInput = document.getElementById('searchInput');
+if (searchInput) {
+    searchInput.addEventListener('input', () => {
+        const searchTerm = searchInput.value.toLowerCase();
+        const filteredData = todasLasTarjetas.filter(item => {
+            return (
+                (item.title && item.title.toLowerCase().includes(searchTerm)) ||
+                (item.description && item.description.toLowerCase().includes(searchTerm)) ||
+                (item.solutionSteps && item.solutionSteps.toLowerCase().includes(searchTerm)) ||
+                (item.keywords && item.keywords.toLowerCase().includes(searchTerm)) ||
+                (item.userId && item.userId.toLowerCase().includes(searchTerm))
+            );
+        });
+        CargarContenido(filteredData);
     });
 }
 
