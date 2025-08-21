@@ -6,7 +6,7 @@ body {
     padding: 0;
     margin: 0;
     min-height: 100vh;
-    background-color: black; 
+    background-color: black;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -19,7 +19,7 @@ body {
     width: 100%;
     height: 40vh;
     /* Combina el gradiente y la imagen en la misma propiedad background */
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgb(106, 4, 15, 0.9)), url('../img/fondoperfil.png');
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgb(106, 4, 15, 0.95)), url('../img/fondoperfil.png');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -36,11 +36,13 @@ body {
     color: white;
     display: flex;
     flex-direction: column;
-    align-items: start;
-    justify-content: center;
+    align-items: center;
+    justify-content: start;
     width: 100%;
-    height: 40vh; /* La altura debe coincidir con el div .fondo */
+    height: 40vh;
+    /* La altura debe coincidir con el div .fondo */
     background: transparent;
+    padding-top: 10px;
 }
 
 .encabezado {
@@ -61,7 +63,8 @@ h1 {
     width: 30%;
 }
 
-h3, h5 {
+h3,
+h5 {
     font-weight: 400;
 }
 
@@ -69,12 +72,18 @@ h5 {
     margin-top: -0.8rem;
 }
 
+h4 #modalCategory {
+    font-weight: 400;
+    color: #6A040F;
+    font-size: 12px;
+}
+
 p {
     font-size: 13px;
 }
 
 .informacion p {
-    margin-bottom: 1.5rem ;
+    margin-bottom: 1.5rem;
 }
 
 .contenido {
@@ -84,7 +93,7 @@ p {
     padding: 20px;
     margin-top: -30px;
     position: relative;
-    box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.1);
     z-index: 2;
     flex-grow: 1;
     overflow-y: auto;
@@ -96,9 +105,9 @@ p {
     justify-content: space-between;
     gap: 20px;
     padding-left: 20px;
-    padding-right: 20px; 
+    padding-right: 20px;
     padding-top: 10%;
-    padding-bottom: 3rem;
+    padding-bottom: 5rem;
 }
 
 .menu {
@@ -130,7 +139,7 @@ p {
     align-items: center;
     background-color: white;
     border-radius: 10px;
-    box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
     padding: 0 10px;
     box-sizing: border-box;
     margin-bottom: 1.5rem;
@@ -198,7 +207,8 @@ h5 {
     font-weight: bold;
 }
 
-.modal, .modal-agregar {
+.kc-modal,
+.modal-agregar {
     position: fixed;
     padding-top: 3rem;
     left: 0;
@@ -226,6 +236,7 @@ h5 {
     font-size: 1.5rem;
     margin-bottom: 1rem;
     text-align: center;
+    margin-top: 1rem;
 }
 
 .modal-datos {
@@ -255,7 +266,7 @@ h5 {
 }
 
 #modal-agregar .modal-content,
-.modal .modal-content {
+.kc-modal .modal-content {
     width: 100%;
     max-width: 600px;
     background-color: #FBF6F6;
@@ -266,14 +277,18 @@ h5 {
     max-height: 95vh;
     overflow-y: auto;
     padding-top: 0;
+
     &::-webkit-scrollbar {
         width: 0px;
         background: transparent;
     }
+
     &::-webkit-scrollbar-thumb {
         background: transparent;
     }
+
     scrollbar-width: none;
+    border: none;
 }
 
 .oculto {
@@ -285,7 +300,8 @@ h5 {
     margin-bottom: 10px;
 }
 
-.texto-final button, form button {
+.texto-final button,
+form button {
     background-color: #4a0e0e;
     color: white;
     border: none;
@@ -317,8 +333,9 @@ form button {
     z-index: 900;
 }
 
-form input, form textarea {
-    width: 95%;
+form input,
+form textarea {
+    width: 100%;
     padding: 0.5rem;
     border-radius: 5px;
     border: solid 1px #4a0e0e;
@@ -327,6 +344,10 @@ form input, form textarea {
 }
 
 form input:focus {
+    outline: #6A040F;
+}
+
+form textarea:focus {
     outline: #6A040F;
 }
 
@@ -360,4 +381,71 @@ form input:focus {
     width: 40px;
     height: 40px;
     margin-left: 1rem;
+}
+
+.dropdown-menu {
+    width: 100%;
+}
+
+.btn-custom {
+    background-color: #6A040F !important;
+    /* Fuerza el color rojo oscuro */
+    color: white !important;
+    border: none !important;
+    border-radius: 5px;
+    padding: 0.6rem 1rem;
+    font-size: 15px;
+    text-align: left;
+    width: 100%;
+    box-sizing: border-box;
+    transition: background-color 0.3s ease;
+}
+
+.btn-custom-form {
+    background-color: white !important;
+    border: solid 1px #4a0e0e !important;
+    color: #877575 !important;
+    text-align: left !important;
+}
+
+.btn-custom:active,
+.btn-custom:focus {
+    background-color: #6A040F;
+    color: white;
+    outline: none;
+}
+
+.dropdown-menu {
+    background-color: #FBF6F6;
+    border: none;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    width: 100% !important;
+    padding: 0.5rem 0;
+}
+
+#dropdownMenuForm {
+    width: 88% !important;
+}
+
+.dropdown-item {
+    color: #4a0e0e;
+    font-size: 15px;
+    padding: 0.6rem 1rem;
+    box-sizing: border-box;
+    transition: background-color 0.3s ease;
+}
+
+.dropdown-item:active {
+    background-color: #f0e0e0 !important;
+    color: #6A040F !important;
+}
+
+.kc-modal.oculto { display: none; }
+.kc-modal {
+  display: flex;
+  position: fixed;
+  inset: 0;
+  background: #FBF6F6;
+  z-index: 1060;
 }

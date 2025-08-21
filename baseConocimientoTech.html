@@ -39,18 +39,35 @@
         </div>
 
         <div class="contenido" id="contenido">
+            <!-- Dropdown para filtrar categorías -->
+            <div class="dropdown w-100 mb-3">
+                <button class="btn btn-custom dropdown-toggle w-100" type="button" data-bs-toggle="dropdown"
+                    aria-expanded="false" id="dropdownButton">
+                    Todas las categorías
+                </button>
+                <ul class="dropdown-menu w-100">
+                    <li><a class="dropdown-item" href="#" data-id="0">Todas las categorías</a></li>
+                    <li><a class="dropdown-item" href="#" data-id="1">Soporte técnico</a></li>
+                    <li><a class="dropdown-item" href="#" data-id="2">Consultas</a></li>
+                    <li><a class="dropdown-item" href="#" data-id="3">Gestión de usuarios</a></li>
+                    <li><a class="dropdown-item" href="#" data-id="4">Redes</a></li>
+                    <li><a class="dropdown-item" href="#" data-id="5">Incidentes críticos</a></li>
+                </ul>
+            </div>
         </div>
     </div>
+    </div>
 
-    <div id="modal" class="modal oculto">
+    <div id="modal" class="kc-modal oculto">
         <div class="modal-content">
             <div class="modal-titulo">
                 <img src="img/flechaIzquierda.png" alt="" id="flechaIzquierda">
                 <h3></h3>
             </div>
             <div class="modal-datos">
-                <p></p>
-                <p></p>
+                <h4 id="modalCategory" style="color: #6A040F; font-size: 15px; margin-bottom: 1rem;"></h4>
+                <p id="modalAuthor"></p>
+                <p id="modalDate"></p>
             </div>
             <div class="modal-info">
                 <p></p>
@@ -85,6 +102,17 @@
                 <textarea id="descripcion" placeholder="Descripción" aria-required="true"></textarea>
                 <textarea id="solucion" placeholder="Pasos para solucionar" aria-required="true"></textarea>
                 <input id="palabrasclave" placeholder="Palabras clave">
+                <button class="btn btn-custom-form dropdown-toggle w-100" type="button" data-bs-toggle="dropdown"
+                    aria-expanded="false" id="dropdownButtonForm">
+                    Categoría
+                </button>
+                <ul class="dropdown-menu" id="dropdownMenuForm">
+                    <li><a class="dropdown-item" href="#" data-id="1">Soporte técnico</a></li>
+                    <li><a class="dropdown-item" href="#" data-id="2">Consultas</a></li>
+                    <li><a class="dropdown-item" href="#" data-id="3">Gestión de usuarios</a></li>
+                    <li><a class="dropdown-item" href="#" data-id="4">Redes</a></li>
+                    <li><a class="dropdown-item" href="#" data-id="5">Incidentes críticos</a></li>
+                </ul>
                 <button type="submit" class="contrast">Guardar</button>
             </form>
         </div>

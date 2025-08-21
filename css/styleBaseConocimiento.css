@@ -20,7 +20,7 @@ body {
     width: 100%;
     height: 40vh;
     /* Combina el gradiente y la imagen en la misma propiedad background */
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgb(106, 4, 15, 0.9)), url('../img/fondoperfil.png');
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgb(106, 4, 15, 0.95)), url('../img/fondoperfil.png');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -39,14 +39,14 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: start;
     width: 100%;
     height: 40vh; /* La altura debe coincidir con el div .fondo */
     background: transparent;
+    padding-top: 10px;
 }
 
 .encabezado {
-    padding-top: 3%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -201,7 +201,7 @@ h5 {
     font-weight: bold;
 }
 
-.modal, .modal-agregar {
+.kc-modal, .modal-agregar {
     position: fixed;
     padding-top: 3rem;
     left: 0;
@@ -229,6 +229,7 @@ h5 {
     font-size: 1.5rem;
     margin-bottom: 1rem;
     text-align: center;
+    margin-top: 2.5rem;
 }
 
 .modal-datos {
@@ -258,7 +259,7 @@ h5 {
 }
 
 #modal-agregar .modal-content,
-.modal .modal-content {
+.kc-modal .modal-content {
     width: 100%;
     max-width: 600px;
     background-color: #FBF6F6;
@@ -277,6 +278,7 @@ h5 {
         background: transparent;
     }
     scrollbar-width: none;
+    border: none;
 }
 
 .oculto {
@@ -380,4 +382,31 @@ form button {
 .dropdown-item:active {
     background-color: #f0e0e0 !important;
     color: #6A040F !important;
+}
+
+#modal.modal.oculto,
+#modal-agregar.modal-agregar.oculto {
+  display: none !important;
+}
+
+#modal.modal:not(.oculto),
+#modal-agregar.modal-agregar:not(.oculto) {
+  display: flex !important;     /* tu layout */
+  top: 0;                        /* asegurar anclaje superior */
+  left: 0;
+  align-items: flex-start;       /* o center si prefieres */
+  justify-content: center;
+}
+
+#kc-modal {
+  z-index: 1060;
+}
+
+#flechaIzquierda {
+  position: absolute;
+  left: 1rem;
+  top: 0;
+  font-size: 2rem;
+  color: #000;
+  cursor: pointer;
 }
