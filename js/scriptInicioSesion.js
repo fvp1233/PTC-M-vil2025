@@ -50,11 +50,13 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 localStorage.setItem('jwt_token', data.token);
                 localStorage.setItem('user_username', data.username);
                 localStorage.setItem('user_rolId', data.rolId);
+                localStorage.setItem('userId', data.userId);
 
                 console.log('Login exitoso!');
                 console.log('Token JWT:', data.token);
                 console.log('Nombre de usuario:', data.username);
                 console.log('ID del Rol:', data.rolId);
+                console.log('ID del usuario:', data.userId);
 
                 // Lógica de redirección basada en el rol
                 switch (data.rolId) {
@@ -62,9 +64,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
                         window.location.href = '../dashboard.html';
                         break;
                     case 2:
-                    case 3:
                         window.location.href = '../dashboardTech.html';
                         break;
+                    case 3:
+                        
                     default:
                         window.location.href = '../dashboard.html';
                 }
