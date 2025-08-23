@@ -16,7 +16,7 @@
 
 <body>
     <div class="imgFondo"></div>
-    <div class="imgFondo"></div>
+    
 
     <div class="page-content-wrapper d-flex flex-column align-items-center" style="min-height: 100vh;">
         <div class="container text-center">
@@ -39,7 +39,7 @@
                 <div class="col-12 col-sm-12 col-md-12 custom-form-column ">
                     <div class="inputs">
                         
-                        <form class="formLogin">
+                        <form id="login-form"  class="formLogin">
                             <div class="formUser">
                                 <input type="text" id="username" required>
                                 <label class="lblUser">
@@ -51,7 +51,7 @@
                                 <input type="password" id="password" required>
                                 <label class="lblPassword">
                                     <span class="text-Password">Contraseña</span>
-                                    <i class="eye-icon fa-solid fa-eye"></i>
+                                    <i class="eye-icon fa-solid fa-eye-slash"></i>
                                 </label>
                             </div>
 
@@ -69,6 +69,8 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div id="error-message" class="text-danger mt-5 mb-3 w-100"></div>
 
                             <div class="btn-google mt-5  mb-3 w-100">
                                 <button class=" w-100">

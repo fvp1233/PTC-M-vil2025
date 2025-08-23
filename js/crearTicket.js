@@ -354,3 +354,37 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+
+const API_URL = "http://localhost:8080/api/PostTicket";
+
+document.getElementById("ticketForm").addEventListener("submit", async e =>{
+
+    e.preventDefault();
+
+    const title = document.getElementById("titulo").value.trim();
+    const category = document.getElementById("categoria").value.trim();
+    const priority = document.getElementById("prioridad").value.trim();
+    const descripcion = document.getElementById("descripcion").value.trim();
+    const photo = document.getElementById("imagen").value.trim();
+
+    if(!title ||category === '' ||priority ||descripcion){
+        alert("Complete todos los campos")
+        return;
+    }
+
+    const response = await fetch(API_URL, {
+        method: "POST",
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({title,category,priority,descripcion,photo})
+    });
+
+    if(response.ok){
+        alert("El registro fue exitoso");
+
+        document.getElementById("ticketForm").reset();
+    }
+    else{
+        alert("Eiste un error al agregar");
+    }
+});
