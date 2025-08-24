@@ -35,82 +35,67 @@
     </div>
 
     <div id="customNotification" class="custom-notification d-none">
-    <div class="notification-content">
-        <i id="notificationIcon" class="notification-icon"></i>
-        <span id="notificationMessage" class="notification-text"></span>
+        <div class="notification-content">
+            <i id="notificationIcon" class="notification-icon"></i>
+            <span id="notificationMessage" class="notification-text"></span>
+        </div>
     </div>
-</div>
 
     <div class="white-content-section">
         <div class="container">
-            <form id="ticketForm">
+            <form id="ticketForm" method="post">
                 <div class="form-section-padding">
                     <div class="mb-5">
-                        <label for="tituloTicket" class="form-label fw-bold">Título del ticket</label>
-                        <input type="text" class="form-control" id="tituloTicket"
-                            placeholder="Coloca un título a tu problema">
+                        <label for="title" class="form-label fw-bold">Título del ticket</label>
+                        <input type="text" class="form-control" id="title" name="title"
+                            placeholder="Coloca un título a tu problema" required>
                     </div>
 
                     <div class="mb-3">
-                        <label for="categoria" class="form-label fw-bold">Categoría</label>
-                        <select class="form-select" id="categoria">
+                        <label for="categoryId" class="form-label fw-bold">Categoría</label>
+                        <select class="form-select" id="categoryId" name="categoryId" required>
                             <option value="">Selecciona la categoría</option>
-                            <option value="1">Soporte Técnico</option>
-                            <option value="2">Consulta General</option>
-                            <option value="3">Problema de Facturación</option>
                         </select>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label fw-bold">Prioridad</label>
+                        <label for="priorityId" class="form-label fw-bold">Prioridad</label>
                         <div class="row row-cols-2 g-2" id="prioridad-buttons-container">
-                            <div class="col d-flex justify-content-center">
-                                <button type="button" class="btn btn-prioridad mt-2 mb-2"
-                                    data-priority="baja">Baja</button>
-                            </div>
-                            <div class="col d-flex justify-content-center">
-                                <button type="button" class="btn btn-prioridad mt-2 mb-2"
-                                    data-priority="media">Media</button>
-                            </div>
-                            <div class="col d-flex justify-content-center">
-                                <button type="button" class="btn btn-prioridad mt-2 mb-2"
-                                    data-priority="alta">Alta</button>
-                            </div>
-                            <div class="col d-flex justify-content-center">
-                                <button type="button" class="btn btn-prioridad mt-2 mb-2"
-                                    data-priority="critica">Crítica</button>
-                            </div>
                         </div>
                     </div>
 
                     <div class="mb-5">
-                        <label for="descripcion" class="form-label visually-hidden">Descripción</label>
-                        <textarea class="form-control" id="descripcion" rows="5" placeholder="Descripción"></textarea>
+                        <label for="description" class="form-label fw-bold">Descripción</label>
+                        <textarea class="form-control" id="description" name="description" rows="5"
+                            placeholder="Descripción" required></textarea>
                     </div>
 
-                    <div class="mb-5">
-                        <label class="form-label fw-bold">Subir una imagen</label>
+                    <div class="mb-3">
+                        <label for="imageUploadInput" class="form-label fw-bold">Subir una imagen</label>
                         <button type="button" class="btn btn-link text-decoration-none p-0" id="openCustomModal">
                             <i class="fas fa-upload fa-lg"></i>
                         </button>
+                        <span id="imageFileName" class="ms-3"></span>
                     </div>
 
+                    <div id="imagesPreviewContainer" class="d-flex flex-wrap mt-3"></div>
                     <div class="text-center mt-5 mb-2">
                         <button type="submit" class="btnCreateTicket" id="submitTicketBtn">Crear Ticket</button>
                     </div>
-
                 </div>
             </form>
         </div>
 
+        
+
         <div class="menu">
-            <a href="baseConocimiento.html"><img src="img/menu/baseconocimiento_inactive.png" alt="Base de conocimiento"></a>
+            <a href="baseConocimiento.html"><img src="img/menu/baseconocimiento_inactive.png"
+                    alt="Base de conocimiento"></a>
             <a href="ticketsDashboard.html"><img src="img/menu/tickets_inactive.png" alt="Tickets"></a>
             <a href="dashboard.html"><img src="img/menu/dashboard_activo.png" alt="Dashboard"></a>
-            <a href="notificaciones.html"><img src="img/menu/notificationes_inactivo.png" alt="Notificaciones"></a>
+            <a href="notificaciones.html"><img src="img/menu/notificaciones_inactive.png" alt="Notificaciones"></a>
             <a href="perfil.html"><img src="img/menu/perfil_inactive.png" alt="Perfil"></a>
         </div>
-
 
         <div id="customModal" class="custom-modal">
             <div class="custom-modal-content">
@@ -121,7 +106,7 @@
                         <img src="img/iconGaleria.png" alt="Subir desde la galería">
                     </button>
                     <p>Subir imagen</p>
-                    <input type="file" id="imageUploadInput" accept="image/*" multiple style="display:none">
+                    <input type="file" id="imageUploadInput" accept="image/*" multiple style="display:none" required>
                 </div>
                 <div>
                     <button type="button" id="takePictureBtn">
@@ -133,7 +118,7 @@
         </div>
 
     </div>
-    <script src="js/crearTicket.js"></script>
+    <script type="module" src="js/CreateTicket/Controller/CreateTicketController.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO"
         crossorigin="anonymous"></script>
