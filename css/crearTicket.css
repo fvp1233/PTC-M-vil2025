@@ -75,7 +75,7 @@ body {
 
 /* Estilos para los botones de prioridad */
 .btn-prioridad {
-    background-color: #e0e0e0 !important;
+    background-color: #e0e0e0; /* Sin !important, permitiendo que 'active' lo sobrescriba */
     color: #333 !important;
     border-color: #e0e0e0 !important;
     border-radius: 25px !important;
@@ -84,6 +84,7 @@ body {
     text-align: center !important;
     width: 100%;
     transition: all 0.2s ease-in-out;
+    box-shadow: none !important;
 }
 
 .btn-prioridad:hover {
@@ -95,6 +96,7 @@ body {
     background-color: #5C1D24 !important;
     color: white !important;
     border-color: #5C1D24 !important;
+    box-shadow: none !important;
 }
 
 .btn-prioridad.active:hover {
@@ -193,38 +195,37 @@ textarea.form-control::placeholder {
 
 /* Fondo oscuro que cubre toda la pantalla */
 .custom-modal {
-    display: none; /* Oculto por defecto */
-    position: fixed; /* Permanece fijo en la pantalla */
-    z-index: 2000; /* Asegura que esté por encima de todo lo demás (Bootstrap usa ~1000-1070) */
+    display: none;
+    position: fixed;
+    z-index: 2000;
     left: 0;
     top: 0;
-    width: 100%; /* Cubre todo el ancho */
-    height: 100%; /* Cubre toda la altura */
-    overflow: auto; /* Habilita el scroll si el contenido es demasiado grande */
-    background-color: rgba(0, 0, 0, 0.7); /* Fondo semi-transparente oscuro */
-    align-items: center; /* Centrado vertical */
-    justify-content: center; /* Centrado horizontal */
-    
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.7);
+    align-items: center;
+    justify-content: center;
 }
 
 /* Contenido del modal */
 .custom-modal-content {
     background-color: #fefefe;
-    margin: auto; /* Centrado automático */
+    margin: auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 80%; /* Ancho del modal */
-    max-width: 500px; /* Ancho máximo para pantallas grandes */
+    width: 80%;
+    max-width: 500px;
     border-radius: 8px;
-    position: relative; /* Necesario para el botón de cerrar */
+    position: relative;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    animation: fadeIn 0.3s ease-out; /* Animación de aparición */
+    animation: fadeIn 0.3s ease-out;
 }
 
 /* Botón de cerrar */
 .custom-close-button {
     color: #aaa;
-    float: right; /* Para posicionar a la derecha */
+    float: right;
     font-size: 28px;
     font-weight: bold;
     position: absolute;
@@ -302,14 +303,12 @@ textarea.form-control::placeholder {
     visibility: visible;
 }
 
-/* Importante: Estas reglas se aplican al contenedor general del contenido de la notificación.
-   Las estructuras internas de éxito/error tienen sus propios diseños. */
 .custom-notification .notification-content {
     display: flex;
-    flex-direction: column; /* Apila el encabezado y el cuerpo verticalmente */
-    align-items: center; /* Centra el contenido horizontalmente */
-    gap: 15px; /* Espacio entre el encabezado y el cuerpo (si aplica) */
-    width: 100%; /* Asegura que ocupe el ancho disponible para su contenido */
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
 }
 
 /* --- Estilos específicos para Éxito --- */
@@ -348,7 +347,7 @@ textarea.form-control::placeholder {
     font-weight: 500;
     color: black;
     display: block;
-    line-height: 1.6; /* Aumenta el espacio entre la línea del ID y la siguiente */
+    line-height: 1.6;
 }
 
 #insertedTicketId {
@@ -359,59 +358,57 @@ textarea.form-control::placeholder {
 .custom-notification .ticket-message {
     font-size: 0.9rem;
     color: black;
-    /* Ajustamos line-height para todo el mensaje */
-    line-height: 1.6; /* Un valor como 1.6 o 1.7 suele ser bueno */
-    display: block; /* Aseguramos que ocupe su propia línea si no lo hacía ya */
+    line-height: 1.6;
+    display: block;
 }
 
 /* --- Estilos específicos para Error (mantienen la estructura simple) --- */
 .custom-notification.error {
-    background-color: #dc3545; /* Rojo Bootstrap */
+    background-color: #dc3545;
 }
 
-/* Estos estilos genéricos de icono y texto solo se aplicarán si la estructura HTML del error los usa */
 .custom-notification.error .notification-icon {
-    font-size: 3rem; /* Tamaño del icono */
-    margin-bottom: 5px; /* Pequeño margen bajo el icono */
+    font-size: 3rem;
+    margin-bottom: 5px;
 }
 
 .custom-notification.error .notification-icon:before {
-    content: "\f06a"; /* Código Unicode para fa-exclamation-circle */
+    content: "\f06a";
     font-family: "Font Awesome 5 Free";
     font-weight: 900;
 }
 
 .custom-notification.error .notification-text {
-    font-size: 1.2rem; /* Tamaño del texto del mensaje */
-    font-weight: 600; /* Negrita */
+    font-size: 1.2rem;
+    font-weight: 600;
 }
 
 .custom-notification .ticket-id-info {
-    margin-bottom: 15px; /* Ejemplo: más espacio entre el ID y el mensaje */
+    margin-bottom: 15px;
 }
 
 /* Estilos para el botón de eliminar imagen en la previsualización */
 .remove-image-btn {
-    background: none; /* Sin fondo */
-    border: none; /* Sin borde */
-    color: #fff; /* Color blanco para la 'X' (o el color que desees) */
-    font-size: 1.5rem; /* Tamaño de la 'X' */
-    font-weight: bold; /* Hacer la 'X' más negrita */
-    padding: 0; /* Quitar padding interno */
-    line-height: 1; /* Ajustar line-height */
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding: 0;
+    line-height: 1;
     cursor: pointer;
-    text-shadow: 0 0 3px rgba(0, 0, 0, 0.7); /* Sombra para que se vea bien en cualquier imagen */
-    transition: color 0.2s ease-in-out; /* Transición suave al pasar el ratón */
+    text-shadow: 0 0 3px rgba(0, 0, 0, 0.7);
+    transition: color 0.2s ease-in-out;
 }
 
 .remove-image-btn:hover {
-    color: #ff0000; 
+    color: #ff0000;
 }
 
 /* Estilos para el botón personalizado de "Crear Ticket" */
 .btnCreateTicket {
-    background-color: #5C1D24; 
-    color: white; 
+    background-color: #5C1D24;
+    color: white;
     border: 1px solid #5C1D24;
     padding: 12px 20px;
     font-size: 1rem;
@@ -419,13 +416,22 @@ textarea.form-control::placeholder {
     cursor: pointer;
     font-family: 'Montserrat', sans-serif;
     outline: none;
-    box-shadow: none; /* Asegurar que no tenga sombra de focus por defecto de Bootstrap si la clase 'btn' está presente */
+    box-shadow: none;
 }
 
 .btn.btnCreateTicket {
     background-color: #5C1D24;
     border-color: #5C1D24;
-    color: white; 
-    outline: none !important; /* !important para anular estilos fuertes de Bootstrap */
-    box-shadow: none !important; /* !important para anular estilos fuertes de Bootstrap */
+    color: white;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* Limita el tamaño de la imagen de previsualización */
+#imagesPreviewContainer img {
+    max-width: 100%; /* Asegura que la imagen no desborde el contenedor */
+    max-height: 20vh; /* Limita la altura a 200px */
+    object-fit: cover; /* Recorta la imagen para que cubra el espacio sin distorsión */
+    border-radius: 8px; /* Opcional: añade bordes redondeados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Opcional: añade una sombra sutil */
 }

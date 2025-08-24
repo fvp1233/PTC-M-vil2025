@@ -18,11 +18,9 @@ export async function fetchWithAuth(url, options = {}) {
     }
 
     // Clonamos las cabeceras existentes y añadimos el encabezado de autorización.
+    const headers = options.headers? new Headers(options.headers) : new Headers();
+    headers.set('Authorization', `Bearer ${token}`);
     // El formato 'Bearer ' es un estándar de la industria.
-    const headers = {
-        ...options.headers,
-        'Authorization': `Bearer ${token}`
-    };
 
     // Configuramos la petición con las nuevas cabeceras.
     const config = {
@@ -37,7 +35,7 @@ export async function fetchWithAuth(url, options = {}) {
         if (response.status === 401 || response.status === 403) {
             console.error('Sesión expirada o token inválido. Por favor, vuelve a iniciar sesión.');
             localStorage.removeItem('jwt_token'); // Limpiamos el token viejo
-           // window.location.href = 'inicioSesion.html'; // Redirigimos al login
+          //  window.location.href = 'inicioSesion.html'; // Redirigimos al login
         }
         
         return response; // Devolvemos la respuesta para que la usemos en el siguiente paso.
@@ -45,4 +43,8 @@ export async function fetchWithAuth(url, options = {}) {
         console.error("Error en la petición:", error);
         throw error;
     }
+}
+
+export function getUserId(){
+    return localStorage.getItem('userId')
 }
