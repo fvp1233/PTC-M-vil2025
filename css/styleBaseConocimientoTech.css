@@ -311,7 +311,7 @@ h5 {
 }
 
 .oculto {
-    display: none;
+    display: none !important;
 }
 
 .texto-final p {
@@ -474,7 +474,7 @@ form textarea:focus {
     max-width: 400px;
     margin: 0 auto;
     display: block;
-    margin-top: -2rem;
+    margin-top: -1rem;
 }
 
 /* Contenedor principal de la paginación */
