@@ -1,11 +1,9 @@
-import { fetchWithAuth, getUserId } from './auth.js';
+import { getRecentTicketsByUser } from './Dashboard/dashboardService/ticketService.js';
+import { getAuthToken, getUserId } from './authService.js';
 
-const API_URL  = 'https://api.tuservidor.com/tickets';  // Ajusta a tu endpoint real
-let ticketData = [];
+// Variable para almacenar los tickets cargados
+let allTickets = [];
 
-/**
- * Trunca el texto de las descripciones en pantallas ≤768px
- */
 function truncateDescriptions(maxChars = 23) {
   const descriptions = document.querySelectorAll('.description p');
   descriptions.forEach(desc => {
@@ -25,9 +23,7 @@ function truncateDescriptions(maxChars = 23) {
             break;
           }
         }
-        desc.textContent = truncated.trim()
-          ? truncated.trim() + '...'
-          : originalText.slice(0, maxChars) + '...';
+        desc.textContent = truncated.trim() ? truncated.trim() + '...' : originalText.slice(0, maxChars) + '...';
       } else {
         desc.textContent = originalText;
       }
@@ -37,11 +33,8 @@ function truncateDescriptions(maxChars = 23) {
   });
 }
 
-/**
- * Renderiza las tarjetas de tickets en el DOM
- */
 function renderTickets(tickets) {
-  const container = document.querySelector('.row.gx-0 .col-12');
+  const container = document.querySelector('#ticketsContainer');
   container.innerHTML = '';
 
   if (tickets.length === 0) {
@@ -49,16 +42,14 @@ function renderTickets(tickets) {
     if (!document.querySelector('.noTickets')) {
       const noTicketsHTML =
         `<div class="row text-center g-0 noTickets">
-           <div class="col">
-             <img src="img/gigapixel-image_23-removebg-preview (1).png"
-                  alt="No hay Tickets" />
-             <div class="Ntext">
-               <strong><p>No tienes Tickets</p></strong>
-               <p>Parece que no tienes ningún ticket en proceso.
-                  Por favor crea uno para reportar un problema</p>
-             </div>
-           </div>
-         </div>`;
+          <div class="col">
+            <img class="" src="img/gigapixel-image_23-removebg-preview (1).png" alt="No hay Tickets">
+            <div class="Ntext">
+              <strong><p>No tienes Tickets</p></strong>
+              <p>Parece que no tienes ningún ticket en proceso. Por favor crea uno para reportar un problema</p>
+            </div>
+          </div>
+        </div>`;
       main.insertAdjacentHTML('beforeend', noTicketsHTML);
     }
     return;
@@ -68,145 +59,125 @@ function renderTickets(tickets) {
   if (noTicketsDiv) noTicketsDiv.remove();
 
   tickets.forEach((ticket, index) => {
-    const isLast      = index === tickets.length - 1;
-    const estadoClase = {
-      'pendiente': 'bg-danger',
-      'en espera': 'bg-warning',
-      'en proceso': 'bg-orange',
-      'completado': 'bg-success'
-    }[ticket.estado.toLowerCase()] || 'bg-secondary';
+    const isLast = index === tickets.length - 1;
 
-    const prioridadClase       = ticket.prioridad.toLowerCase();
-    const prioridadCapitalizada = ticket.prioridad.charAt(0).toUpperCase()
-                                + ticket.prioridad.slice(1);
-    const dia   = ticket.fecha.dia;
-    const mes   = ticket.fecha.mes.slice(0, 3);
-    const año   = ticket.fecha.año.toString().slice(-2);
+    const estadoClase = {
+      'En espera': 'bg-warning',
+      'En progreso': 'bg-orange',
+      'Completado': 'bg-success'
+    }[ticket.status.displayName] || 'bg-secondary';
+
+    const prioridadClase = ticket.priority.displayName.toLowerCase();
+    const prioridadCapitalizada = ticket.priority.displayName.charAt(0).toUpperCase() + ticket.priority.displayName.slice(1);
+
+    const creationDate = new Date(ticket.creationDate);
+    const dia = creationDate.getDate();
+    const mes = creationDate.toLocaleString('es-ES', { month: 'long' }).slice(0, 3);
+    const año = creationDate.getFullYear().toString().slice(-2);
 
     const card = document.createElement('div');
-    card.className   = 'card mx-auto';
+    card.className = 'card mx-auto';
     card.style.width = '97%';
     if (isLast) card.style.marginBottom = '90px';
 
     card.innerHTML =
       `<div class="card-body">
-         <div class="d-flex flex-wrap align-items-start ticket-row">
-           <div class="ticket-col1">
-             <div class="idText"><strong><p>${dia}</p></strong></div>
-             <div class="date"><strong><p>${mes},${año}</p></strong></div>
-           </div>
-           <div class="ticket-col2">
-             <div class="description"><p>${ticket.descripcion}</p></div>
-             <div class="id"><p>#${ticket.id}</p></div>
-             <div class="TicketStatus">
-               <span class="badge ${estadoClase}">
-                 ${ticket.estado.charAt(0).toUpperCase() + ticket.estado.slice(1)}
-               </span>
-             </div>
-           </div>
-           <div class="ticket-col3">
-             <button class="btn-icon1" type="button">
-               <svg class="iconSVG" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                 <path fill="currentColor" d="M12 21q-3.15 0-5.575-1.912T3.275 14.2q-.1-.375.
-                   . . (ruta SVG completa)"/>
-               </svg>
-             </button>
-             <div class="AnotherDiv">
-               <p class="TicketPriority">
-                 Prioridad: <span class="${prioridadClase}">
-                   ${prioridadCapitalizada}
-                 </span>
-               </p>
-               <svg class="iconSVG svg2" xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24">
-                 <path fill="#989494"
-                       d="M2 22V4q0-.825.588-1.412T4 2h16q.825 0 1.413.588T22 4v12q0 .825
-                         -.587 1.413T20 18H6zm4-8h8v-2H6zm0-3h12V9H6zm0-3h12V6H6z"/>
-               </svg>
-             </div>
-           </div>
-         </div>
-       </div>`;
+        <div class="d-flex flex-wrap align-items-start ticket-row">
+          <div class="ticket-col1">
+            <div class="idText"><strong><p>${dia}</p></strong></div>
+            <div class="date"><strong><p>${mes},${año}</p></strong></div>
+          </div>
+          <div class="ticket-col2">
+            <div class="description"><p>${ticket.description}</p></div>
+            <div class="id"><p>#${ticket.ticketId}</p></div>
+            <div class="TicketStatus">
+              <span class="badge ${estadoClase}">${ticket.status.displayName.charAt(0).toUpperCase() + ticket.status.displayName.slice(1)}</span>
+            </div>
+          </div>
+          <div class="ticket-col3">
+            <button class="btn-icon1" type="button">
+              <svg class="iconSVG" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M12 21q-3.15 0-5.575-1.912T3.275 14.2q-.1-.375.15-.687t.675-.363q.4-.05.725.15t.45.6q.6 2.25 2.475 3.675T12 19q2.925 0 4.963-2.037T19 12t-2.037-4.962T12 5q-1.725 0-3.225.8T6.25 8H8q.425 0 .713.288T9 9t-.288.713T8 10H4q-.425 0-.712-.288T3 9V5q0-.425.288-.712T4 4t.713.288T5 5v1.35q1.275-1.6 3.113-2.475T12 3q1.875 0 3.513.713t2.85 1.924t1.925 2.85T21 12t-.712 3.513t-1.925 2.85t-2.85 1.925T12 21m1-9.4l2.5 2.5q.275.275.275.7t-.275.7t-.7.275t-.7-.275l-2.8-2.8q-.15-.15-.225-.337T11 11.975V8q0-.425.288-.712T12 7t.713.288T13 8z"/>
+              </svg>
+            </button>
+            <div class="AnotherDiv">
+              <p class="TicketPriority">Prioridad: <span class="${prioridadClase}">${prioridadCapitalizada}</span></p>
+              <svg class="iconSVG svg2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path fill="#989494" d="M2 22V4q0-.825.588-1.412T4 2h16q.825 0 1.413.588T22 4v12q0 .825-.587 1.413T20 18H6zm4-8h8v-2H6zm0-3h12V9H6zm0-3h12V6H6z"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>`;
     container.appendChild(card);
   });
-
   truncateDescriptions();
 }
 
-/**
- * Carga los tickets desde la API usando fetchWithAuth y filtra por userId
- */
-async function loadTicketsFromAPI() {
-  const userId = getUserId();
-  if (!userId) {
-    console.error('No se encontró userId. Redirigiendo al inicio de sesión.');
-    window.location.href = 'inicioSesion.html';
+document.addEventListener('DOMContentLoaded', async () => {
+  const token = getAuthToken();
+  const loggedInUserId = getUserId();
+  
+  if (!token || !loggedInUserId) {
+    console.error('No se encontró el token de autenticación o el ID de usuario. Redirigiendo...');
     return;
   }
-
-  const url = `${API_URL}?userId=${encodeURIComponent(userId)}`;
-
+  
   try {
-    const response = await fetchWithAuth(url, { method: 'GET' });
-
-    if (!response.ok) {
-      console.error(`Error ${response.status}: ${response.statusText}`);
-      throw new Error('La API devolvió un estado no OK');
+    allTickets = await getRecentTicketsByUser(loggedInUserId);
+    renderTickets(allTickets);
+  } catch (error) {
+    console.error('Error al cargar los tickets en el dashboard:', error);
+    const container = document.querySelector('#ticketsContainer');
+    if (container) {
+      container.innerHTML = `<p class="text-danger text-center">Ocurrió un error al cargar los tickets.</p>`;
     }
-
-    const data = await response.json();
-    ticketData  = Array.isArray(data) ? data : [];
-    renderTickets(ticketData);
-
-  } catch (err) {
-    console.error('No se pudieron cargar los tickets:', err);
-    const main = document.querySelector('main');
-    main.insertAdjacentHTML('beforeend', `
-      <div class="alert alert-danger" role="alert">
-        Ocurrió un error al cargar tus tickets.
-        Por favor, inténtalo de nuevo más tarde.
-      </div>
-    `);
   }
-}
 
-document.addEventListener('DOMContentLoaded', () => {
-  loadTicketsFromAPI();
   window.addEventListener('resize', truncateDescriptions);
 
-  // Configura los filtros
   document.querySelectorAll('.filter-btn').forEach(button => {
     button.addEventListener('click', () => {
-      document.querySelectorAll('.filter-btn')
-              .forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
       button.classList.add('active');
-
-      const filtro = button.textContent.trim().toLowerCase();
-      const dataFiltrada = filtro === 'todo'
-        ? ticketData
-        : ticketData.filter(t => t.estado.toLowerCase() === filtro);
-
+      
+      let filtro = button.textContent.trim().toLowerCase();
+      
+      // Mapea 'pendiente' a 'en espera'
+      if (filtro === 'pendiente') {
+        filtro = 'en espera';
+      }
+      // Mapea 'en proceso' a 'en progreso'
+      if (filtro === 'en proceso') {
+        filtro = 'en progreso';
+      }
+      
+      const dataFiltrada = (filtro === 'todo')
+        ? allTickets
+        : allTickets.filter(t => t.status.displayName.toLowerCase() === filtro);
       renderTickets(dataFiltrada);
     });
   });
 
-  // Maneja clics en iconos de auditoría y tarjetas
   document.addEventListener('click', e => {
     const iconBtn = e.target.closest('.btn-icon1');
-    if (iconBtn) {
-      const tarjeta = iconBtn.closest('.card');
-      const idNum   = tarjeta.querySelector('.id p')
-                         .textContent.replace('#', '').trim();
-      localStorage.setItem('ticketAuditoriaID', idNum);
-      window.location.href = 'TicketAuditory.html';
-      return;
-    }
-
     const tarjeta = e.target.closest('.card');
+    
     if (tarjeta) {
-      const idNum = tarjeta.querySelector('.id p')
-                         .textContent.replace('#', '').trim();
-      window.location.href = `TicketInformation.html?id=${idNum}`;
+      const idElemento = tarjeta.querySelector('.id p');
+      if (idElemento) {
+        const idNum = idElemento.textContent.replace('#', '').trim();
+        if (idNum) {
+          if (iconBtn) {
+            // Navegación para el historial
+            localStorage.setItem('ticketAuditoriaID', idNum);
+            window.location.href = 'TicketAuditory.html';
+          } else {
+            // Navegación para el resto de la tarjeta
+            window.location.href = `TicketInformation.html?id=${idNum}`;
+          }
+        }
+      }
     }
   });
 });

@@ -45,3 +45,20 @@ export const getUserById = async (userId) => {
         throw error;
     }
 };
+
+
+
+// Obtiene un ticket específico y su historial por ID.
+export const getTicketById = async (ticketId) => {
+    try {
+        const response = await fetchWithAuth(`${API_URL}/GetTicketById/${ticketId}`);
+        if (!response.ok) {
+            throw new Error(`Error al obtener el ticket: ${response.statusText}`);
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error en la llamada a la API para el ticket:', error);
+        throw error;
+    }
+};

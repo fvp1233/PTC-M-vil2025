@@ -1,90 +1,80 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const ticketData = [
-    {
-      id: "1001",
-      titulo: "No funcionan los filtros",
-      descripcion: "Los filtros del dashboard no responden.",
-      tecnico_asignado: "Carlos Mendoza",
-      fecha_creacion: "2025-04-10",
-      fecha_cierre: "2025-04-12",
-      estado: "Pendiente",
-      observaciones: "Cliente reportó que no puede ordenar por fecha."
-    },
-    {
-      id: "1002",
-      titulo: "Error al subir archivos",
-      descripcion: "El sistema lanza un error al subir archivos PDF.",
-      tecnico_asignado: "Lucía Hernández",
-      fecha_creacion: "2025-05-03",
-      fecha_cierre: "2025-05-04",
-      estado: "En proceso",
-      observaciones: "Se sospecha de incompatibilidad con el navegador."
-    },
-    {
-      id: "1003",
-      titulo: "Pantalla congelada",
-      descripcion: "La interfaz se congela al cerrar un modal.",
-      tecnico_asignado: "Mario Ayala",
-      fecha_creacion: "2025-06-15",
-      fecha_cierre: "2025-06-16",
-      estado: "Completado",
-      observaciones: "Fue necesario actualizar librerías JS."
-    },
-    {
-      id: "1004",
-      titulo: "Notificaciones no llegan",
-      descripcion: "El usuario no recibe notificaciones de cambios.",
-      tecnico_asignado: "Sofía López",
-      fecha_creacion: "2025-07-01",
-      fecha_cierre: "2025-07-03",
-      estado: "En espera",
-      observaciones: "Correo bloqueado por el firewall del servidor."
+import { getTicketById } from './Dashboard/dashboardService/ticketService.js';
+import { getAuthToken, getUserId } from './authService.js';
+
+document.addEventListener("DOMContentLoaded", async () => {
+    // 1. Get the ticket ID from the URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const ticketId = urlParams.get("id");
+
+    const main = document.querySelector("main");
+
+    // 2. Check for authentication and a valid ticket ID
+    const token = getAuthToken();
+    const userId = getUserId();
+    if (!token || !userId || !ticketId) {
+        console.error("Authentication or Ticket ID missing.");
+        main.innerHTML = `
+            <div class="row text-center g-0 noTickets">
+                <div class="col">
+                    <img src="img/gigapixel-image_23-removebg-preview (1).png" alt="No se encontró la información del ticket">
+                    <div class="Ntext">
+                        <strong><p>No se encontró la información del Ticket</p></strong>
+                        <p>Parece que la información del ticket se ha perdido, estamos trabajando para solucionarlo</p>
+                    </div>
+                </div>
+            </div>
+        `;
+        return;
     }
-  ];
 
-  const urlParams = new URLSearchParams(window.location.search);
-  const ticketId = urlParams.get("id");
+    try {
+        // 3. Fetch the real ticket data from the API
+        const ticket = await getTicketById(ticketId);
 
-  const main = document.querySelector("main");
+        if (!ticket) {
+            throw new Error("Ticket not found.");
+        }
 
-  if (!ticketId || !ticketData.some(t => t.id === ticketId)) {
-    // Limpiar todo el contenido de main
-    main.innerHTML = `
-      <div class="row text-center g-0 noTickets">
-        <div class="col">
-          <img src="img/gigapixel-image_23-removebg-preview (1).png" alt="No se encontró la información del ticket">
-          <div class="Ntext">
-            <strong><p>No se encontró la información del Ticket</p></strong>
-            <p>Parece que la información del ticket se ha perdido, estamos trabajando para solucionarlo</p>
-          </div>
-        </div>
-      </div>
-    `;
-    return;
-  }
+        // 4. Populate the HTML elements with the API data
+        
+        // Populate the main card
+        const fechaCreacion = new Date(ticket.creationDate);
+        const dia = fechaCreacion.getDate().toString().padStart(2, "0");
+        const mesAnio = fechaCreacion.toLocaleString("es-ES", { month: "short", year: "2-digit" });
 
-  const ticket = ticketData.find(t => t.id === ticketId);
+        document.getElementById("ticket-day").textContent = dia + ",";
+        document.getElementById("ticket-month-year").textContent = mesAnio;
+        document.getElementById("ticket-title").textContent = ticket.title;
+        document.getElementById("ticket-id").textContent = `#${ticket.ticketId}`;
 
-  // Fecha en formato abreviado
-  const fecha = new Date(ticket.fecha_creacion);
-  const dia = fecha.getDate().toString().padStart(2, "0");
-  const mes = fecha.toLocaleString("es-ES", { month: "short" });
-  const anio = fecha.getFullYear().toString().slice(-2);
+        // Populate the details card
+        const fechaResolucion = ticket.closeDate ? new Date(ticket.closeDate).toLocaleDateString() : "No resuelto";
+        
+        document.getElementById("ticket-description").textContent = ticket.description;
+        document.getElementById("ticket-assigned-to").textContent = ticket.assignedTech?.displayName || "Sin asignar";
+        document.getElementById("ticket-created").textContent = new Date(ticket.creationDate).toLocaleDateString();
+        document.getElementById("ticket-closed").textContent = fechaResolucion;
+        document.getElementById("ticket-observations").textContent = ticket.observations || "Sin observaciones.";
 
-  document.querySelector(".date").innerHTML = `<p>${dia},</p><p>${mes},${anio}</p>`;
-  document.querySelector(".description p").textContent = ticket.titulo;
-  document.querySelector(".id p").textContent = `#${ticket.id}`;
+        // Update the status banner
+        const statusBanner = document.getElementById("ticket-status");
+        const estado = ticket.status.displayName.toLowerCase().replace(/\s/g, "-");
+        
+        statusBanner.textContent = ticket.status.displayName;
+        statusBanner.className = `ticket-status-banner status-${estado}`;
 
-  const dataFields = document.querySelectorAll(".ContentTicket .Data p");
-  dataFields[0].textContent = ticket.descripcion;
-  dataFields[1].textContent = ticket.tecnico_asignado;
-  dataFields[2].textContent = ticket.fecha_creacion;
-  dataFields[3].textContent = ticket.fecha_cierre;
-  dataFields[4].textContent = ticket.observaciones;
-
-  const statusBanner = document.querySelector(".ticket-status-banner");
-  const estado = ticket.estado.toLowerCase().replace(/\s/g, "-"); // ejemplo: "en espera" → "en-espera"
-
-  statusBanner.textContent = ticket.estado;
-  statusBanner.className = `ticket-status-banner status-${estado}`;
+    } catch (error) {
+        console.error("Error al cargar la información del ticket:", error);
+        main.innerHTML = `
+            <div class="row text-center g-0 noTickets">
+                <div class="col">
+                    <img src="img/gigapixel-image_23-removebg-preview (1).png" alt="Error de carga">
+                    <div class="Ntext">
+                        <strong><p>Error al cargar el Ticket</p></strong>
+                        <p>Hubo un problema de conexión o el ticket no existe.</p>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
 });
