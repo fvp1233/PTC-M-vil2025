@@ -14,12 +14,23 @@ export const categoryMap = {
     5: 'Incidentes críticos'
 };
 
-export async function getSolutions(page = 0, size = 10) {
-    // 2. Construimos la URL con los parámetros de paginación
-    const url = `${API_URL}/GetSolutions?page=${page}&size=${size}`;
+/**
+ * Función que obtiene las soluciones con paginación y filtro de categoría.
+ * @param {number} page - El número de página (base 0).
+ * @param {number} size - El tamaño de la página.
+ * @param {number} categoryId - El ID de la categoría a filtrar, 0 para todas.
+ */
+export async function getSolutions(page = 0, size = 10, categoryId = 0) {
+    // 2. Construimos la URL base con la paginación
+    let url = `${API_URL}/GetSolutions?page=${page}&size=${size}`;
+    
+    // 3. CORRECCIÓN CRÍTICA: Añadimos el filtro de categoría si es diferente de 0
+    if (categoryId !== 0) {
+        url += `&categoryId=${categoryId}`; // <-- AÑADIDO: Agrega el parámetro de categoría
+    }
 
-    // 3. Usamos fetchWithAuth en lugar de fetch.
-    const response = await fetchWithAuth(url); // <-- Ahora usa la URL completa con parámetros
+    // 4. Usamos fetchWithAuth en lugar de fetch.
+    const response = await fetchWithAuth(url); // <-- Ahora usa la URL con el filtro
 
     if (!response.ok) {
         throw new Error(`No se pudieron cargar las soluciones. Código: ${response.status}`);
@@ -37,16 +48,12 @@ export async function getSolutions(page = 0, size = 10) {
 export async function saveSolution(solutionId, solutionData) {
     const isUpdating = !!solutionId;
     const url = isUpdating ? `${API_URL}/UpdateSolution/${solutionId}` : `${API_URL}/PostSolution`;
-
-    // 1. CORRECCIÓN: Usar PATCH para actualización
     const method = isUpdating ? 'PATCH' : 'POST';
 
-    // Si estamos creando, añadimos el userId del usuario logueado.
     if (!isUpdating) {
         solutionData.userId = getUserId();
     }
 
-    // 2. Usamos fetchWithAuth para la petición de guardado.
     const response = await fetchWithAuth(url, {
         method: method,
         headers: {
@@ -55,77 +62,53 @@ export async function saveSolution(solutionId, solutionData) {
         body: JSON.stringify(solutionData),
     });
 
-    // 3. CORRECCIÓN: Manejo de errores
     if (!response.ok) {
         let errorText = 'Error al guardar la solución.';
-
-        // Intenta leer el cuerpo de error si no está vacío
         const contentType = response.headers.get("content-type");
         if (contentType && contentType.includes("application/json")) {
             try {
                 const errorData = await response.json();
-                // Usamos el mensaje de error del backend (si existe)
                 errorText = errorData.error || errorData.message || errorText;
             } catch (e) {
-                // Si falla al leer JSON, usamos el estado de texto (ej: "Forbidden")
                 errorText = response.statusText;
             }
         } else {
-            // Si la respuesta es 403 (Forbidden) o 500 (y no devuelve JSON), usamos el statusText
             errorText = response.statusText || errorText;
         }
-
         throw new Error(errorText);
     }
 
-    // 4. CORRECCIÓN: Evitar response.json() si es una respuesta exitosa sin contenido (PATCH 204 o 200 sin cuerpo)
     if (response.status === 204 || response.headers.get('content-length') === '0') {
-        return null; // Éxito sin contenido para PATCH/DELETE
+        return null;
     }
 
-    // Solo si se espera un cuerpo (normalmente POST exitoso o GET)
     return response.json();
 }
 
 export async function deleteSolution(solutionId) {
     const url = `${API_URL}/DeleteSolution/${solutionId}`;
-
-    // 2. Usamos fetchWithAuth para la petición de eliminación.
     const response = await fetchWithAuth(url, {
         method: 'DELETE',
     });
-
     if (!response.ok) {
         throw new Error('Error al eliminar la solución.');
     }
-    // Para DELETE, a menudo no hay un cuerpo JSON de respuesta, así que no lo procesamos.
 }
 
 export async function searchSolutionsByTitle(searchTerm) {
-    // 1. Codificamos el término de búsqueda para que sea seguro en la URL
     const encodedTerm = encodeURIComponent(searchTerm);
-    
-    // 2. Construimos la URL: /api/searchSolution?title={searchTerm}
     const url = `${API_URL}/searchSolution?title=${encodedTerm}`; 
-
     try {
         const response = await fetchWithAuth(url);
-
         if (!response.ok) {
-            // El backend devuelve 404 si no encuentra resultados.
             if (response.status === 404) {
-                // Devolvemos un array vacío en lugar de lanzar un error.
                 return []; 
             }
             throw new Error(`Error al buscar soluciones. Código: ${response.status}`);
         }
-
-        // El backend devuelve una lista de objetos (List<SolutionDTO>), la leemos como JSON.
         return await response.json();
-
     } catch (error) {
         console.error("Error al buscar soluciones:", error);
-        // Si hay error de red o similar, devolvemos un array vacío para no romper la UI.
         return []; 
     }
 }
