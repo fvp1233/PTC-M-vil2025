@@ -233,7 +233,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 userId: parseInt(userId),
                 category: { id: parseInt(categoriaId) },
                 priority: { id: parseInt(prioridadId) },
-                assignedTech: { id: parseInt(tecnicoId) }
+                assignedTechUser: { id: parseInt(tecnicoId) }
             };
 
             const result = await createTicket(ticketData);
