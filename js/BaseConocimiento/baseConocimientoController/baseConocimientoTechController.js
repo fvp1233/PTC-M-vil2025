@@ -6,6 +6,7 @@ import {
     getSolutions,
     saveSolution,
     deleteSolution,
+    searchSolutionsByTitle, // <--- AÑADIDO: Función de búsqueda
     categoryMap
 } from "../baseConocimientoService/baseConocimientoTechService.js";
 
@@ -78,8 +79,27 @@ function renderContent(data) {
         return;
     }
 
-    contenidoVista.querySelectorAll('.tarjeta').forEach(t => t.remove());
+    // 1. Limpiamos cualquier contenido previo (tarjetas o mensajes)
+    contenidoVista.querySelectorAll('.tarjeta, .mensaje-sin-resultados').forEach(t => t.remove());
+    
+    // 2. VERIFICACIÓN: Si no hay datos, mostramos un mensaje
+    if (data.length === 0) {
+        const mensaje = document.createElement('div');
+        mensaje.className = 'mensaje-sin-resultados';
+        mensaje.style.textAlign = 'center';
+        mensaje.style.padding = '20px';
+        mensaje.style.color = '#888';
+        mensaje.style.fontSize = '16px';
+        mensaje.innerHTML = `
+            <img src="img/no-results.jpg" alt="" class="busqueda-no-results">
+            <h3>¡Vaya!</h3>
+            <p>No se encontraron resultados que coincidan con tu búsqueda.</p>
+        `;
+        contenidoVista.appendChild(mensaje);
+        return; // Detenemos la ejecución aquí
+    }
 
+    // 3. Si hay datos, procedemos a renderizar las tarjetas
     data.forEach(c => {
         // CORRECCIÓN: La API devuelve la fecha generada por el backend
         const formattedDate = formatFecha(c.updateDate);
@@ -94,11 +114,11 @@ function renderContent(data) {
         const tarjeta = document.createElement('div');
         tarjeta.className = 'tarjeta';
         tarjeta.innerHTML = `
-            <h5 style="font-size: 13px; font-weight: bold;">${c.solutionTitle}</h5>  <p>${description}</p>
+            <h5 style="font-size: 13px; font-weight: bold;">${c.solutionTitle}</h5>  <p>${description}</p>
             <p class="leer-mas"
                 data-id="${c.solutionId}"
-                data-title="${c.solutionTitle}"   data-description="${c.descriptionS}" data-full-solution="${c.solutionSteps}"
-                data-keywords="${c.keyWords}"      data-author="${c.authorName}" 
+                data-title="${c.solutionTitle}"   data-description="${c.descriptionS}" data-full-solution="${c.solutionSteps}"
+                data-keywords="${c.keyWords}"      data-author="${c.authorName}" 
                 
                 data-date="${formattedDate}"
                 data-category="${categoryName}">
@@ -164,7 +184,7 @@ async function CargarDatosIniciales() {
             return map;
         }, {});
 
-        // 5. "Enriquecemos" cada solución con el nombre del autor.
+        // 5. "Enriquecemos" cada solución con el nombre del autor (y lo simplificamos).
         const enrichedSolutions = solutions.map(solution => {
 
             // Obtenemos el nombre completo que viene del authorMap (ej: "Daniela Elizabeth Villalta Sorto")
@@ -177,8 +197,8 @@ async function CargarDatosIniciales() {
 
                 // Verificamos que haya al menos dos partes (Nombre y Apellido)
                 if (nameParts.length >= 2) {
-                    // Tomamos la primera palabra (Nombre) y la última palabra (Apellido).
-                    displayName = `${nameParts[0]} ${nameParts[2]}`;
+                    // Tomamos la primera palabra (Nombre) y la ÚLTIMA palabra (Apellido).
+                    displayName = `${nameParts[0]} ${nameParts[nameParts.length - 1]}`;
                 }
             }
 
@@ -213,7 +233,7 @@ async function CargarDatosIniciales() {
 function filtrarPorCategoria(idCategoria) {
     const tarjetasFiltradas = idCategoria === 0 ?
         todasLasTarjetas :
-        todasLasTarjetas.filter(t => t.categoryId === idCategoria);
+        todasLasTarjetas.filter(t => t.category.id === idCategoria);
     renderContent(tarjetasFiltradas);
 }
 
@@ -262,14 +282,17 @@ async function handleFormSubmit(e) {
     const solucion = solucionInput.value.trim();
     const palabrasClave = palabrasClaveInput.value.trim();
 
-    // ELIMINAR LA FECHA: const date = new Date().toISOString(); 
-
     // Leer el ID de la categoría y el NOMBRE para construir el CategoryDTO
     const categoryId = parseInt(dropdownButtonForm.dataset.id || '1');
     const categoryName = dropdownButtonForm.textContent.trim(); // Se necesita el nombre
 
     if (!titulo || !descripcion || !solucion) {
-        // ... (alerta)
+        Swal.fire({
+            icon: 'warning',
+            title: 'Campos vacíos',
+            text: 'Por favor, rellena al menos el título, la descripción y la solución.',
+            width: "90%"
+        });
         return;
     }
 
@@ -287,7 +310,6 @@ async function handleFormSubmit(e) {
         },
 
         "userId": getUserId()
-        // ELIMINAR: updateDate: date, ya que el backend lo genera
     };
 
     try {
@@ -359,12 +381,9 @@ async function handleDelete() {
 // --- Event Listeners Globales (Inicialización) ---
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("Token directo desde localStorage:", localStorage.getItem('jwt_token'));
-    // NUEVO: Verificación de autenticación al cargar la página.
-    // Esto es idéntico a lo que hiciste en dashboardController.
     const token = getAuthToken();
     if (!token) {
-        // Si no hay token, no hacemos nada más y redirigimos al login.
+        // Si no hay token, redirigimos al login.
         window.location.href = '../../inicioSesion.html'; // Ajusta la ruta si es necesario
         return;
     }
@@ -414,6 +433,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const selectedText = this.textContent;
                 const selectedId = parseInt(this.dataset.id);
                 if (dropdownButton) dropdownButton.textContent = selectedText;
+                // Al filtrar por categoría, limpiamos la barra de búsqueda.
+                //if (searchInput) searchInput.value = ''; 
                 filtrarPorCategoria(selectedId);
             });
         });
@@ -435,15 +456,67 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 6. Configurar la Búsqueda
+    // 6. Configurar la Búsqueda (USANDO LA API)
     if (searchInput) {
-        searchInput.addEventListener('input', () => {
-            const searchTerm = searchInput.value.toLowerCase();
-            const filteredData = todasLasTarjetas.filter(item => {
-                const searchFields = [item.title, item.description, item.solutionSteps, item.keywords, item.userId];
-                return searchFields.some(field => field && field.toLowerCase().includes(searchTerm));
-            });
-            renderContent(filteredData);
+        searchInput.addEventListener('input', async () => {
+            const searchTerm = searchInput.value.trim();
+
+            // Si el término es muy corto (ej: 2 letras o menos) o vacío, mostramos todo.
+            if (searchTerm.length <= 2 && searchTerm.length > 0) {
+                 // No buscamos aún, pero evitamos el error.
+                 return;
+            } else if (searchTerm.length === 0) {
+                // Si está vacío, volvemos a mostrar TODAS las tarjetas.
+                renderContent(todasLasTarjetas); 
+                return;
+            }
+
+            // Si el usuario escribe 3 caracteres o más, buscamos en la API
+            try {
+                const results = await searchSolutionsByTitle(searchTerm);
+                
+                // --- Lógica de Enriquecimiento (Similar a CargarDatosIniciales) ---
+                
+                // 1. Obtenemos IDs de autor únicos de los resultados
+                const authorIds = [...new Set(results.map(s => s.userId))];
+                const authorPromises = authorIds.map(id => getUserById(id));
+                const authors = await Promise.all(authorPromises);
+                
+                // 2. Creamos el mapa de autores
+                const authorMap = authors.reduce((map, author) => {
+                    map[author.id] = author.name;
+                    return map;
+                }, {});
+                
+                // 3. Enriquecemos los resultados
+                const enrichedResults = results.map(solution => {
+                    const fullName = authorMap[solution.userId] || 'Usuario desconocido';
+                    let displayName = fullName;
+                    // Lógica para tomar solo primer nombre y último apellido (si aplica)
+                    if (fullName !== 'Usuario desconocido') {
+                        const nameParts = fullName.split(' ');
+                        if (nameParts.length >= 2) {
+                            // Usamos el último elemento
+                            displayName = `${nameParts[0]} ${nameParts[nameParts.length - 1]}`;
+                        }
+                    }
+                    return { ...solution, authorName: displayName };
+                });
+                
+                // --- Fin de Lógica de Enriquecimiento ---
+
+                renderContent(enrichedResults); // Renderiza solo los resultados de la búsqueda
+
+            } catch (error) {
+                // Si hay un error de API (ej: 500, aunque ya manejamos 404 en el service)
+                console.error("Error al buscar en la API:", error);
+                renderContent([]); // Mostrar resultados vacíos
+            }
+            
+            // Desactivamos el filtro de categoría cuando buscamos
+            if (dropdownButton) {
+                dropdownButton.textContent = "Todas las categorías";
+            }
         });
     }
 });
