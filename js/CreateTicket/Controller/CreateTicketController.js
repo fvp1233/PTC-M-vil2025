@@ -199,16 +199,23 @@ document.addEventListener('DOMContentLoaded', () => {
         const imageFile = imageUploadInput?.files[0];
         const userId = getUserId(); 
 
-        if (!title || !categoriaId || !description || !prioridadId || !imageFile) {
+        if (!title || !categoriaId || !description || !prioridadId ) {
             showNotification('error', 'Por favor, completa todos los campos y selecciona una imagen.');
             return;
         }
+        console.log("Campos validados")
 
         submitBtn.disabled = true;
         submitBtn.textContent = 'Creando...';
 
         try {
-            const uploadedImageUrl = (await uploadImageToFolder(imageFile, 'tickets')).secure_url;
+            let uploadedImageUrl = null;
+            console.log("Comprobando si hay una imagen para subir");
+            if(imageFile){
+                console.log("Archivo de imagen encontrado, sera subido a cloudinary");
+                uploadedImageUrl = (await uploadImageToFolder(imageFile, 'tickets')).url;
+                console.log("URL de la imagen obtenida", uploadedImageUrl);
+            }
             const tecnicoId = await asignarTecnico(categoriaId);
 
             if (!tecnicoId) {
@@ -222,6 +229,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 title,
                 description,
                 imageUrl: uploadedImageUrl,
+                percentage: 0,
                 userId: parseInt(userId),
                 category: { id: parseInt(categoriaId) },
                 priority: { id: parseInt(prioridadId) },
