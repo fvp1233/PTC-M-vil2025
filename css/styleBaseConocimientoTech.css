@@ -30,6 +30,11 @@ body {
     position: relative;
     z-index: 1;
     width: 100%;
+    /* Añadido: Se convierte en un contenedor flex para gestionar el layout vertical */
+    display: flex;
+    flex-direction: column;
+    /* Añadido: Oculta el overflow horizontal para evitar barras de desplazamiento no deseadas */
+    overflow-x: hidden;
 }
 
 .informacion {
@@ -43,6 +48,8 @@ body {
     /* La altura debe coincidir con el div .fondo */
     background: transparent;
     padding-top: 10px;
+    /* Añadido: Padding inferior para separar del contenido */
+    padding-bottom: 2rem;
 }
 
 .encabezado {
@@ -86,7 +93,8 @@ p {
     margin-bottom: 1.5rem;
 }
 
-.contenido {
+/* NUEVO: Contenedor para el contenido que se desplazará */
+.scroll-content {
     background-color: white;
     border-top-left-radius: 30px;
     border-top-right-radius: 30px;
@@ -96,18 +104,29 @@ p {
     box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.1);
     z-index: 2;
     flex-grow: 1;
-    overflow-y: auto;
+    overflow-y: auto; /* AHORA este contenedor es el que tiene la barra de desplazamiento */
     width: 100%;
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column; /* Cambiado a columna para que los elementos se apilen */
+    padding-bottom: 5rem; /* Asegura espacio al final para los botones */
+}
+
+/* Contenedor de las tarjetas de solución */
+.contenido {
+    /* Eliminado: padding-bottom, flex-direction, flex-wrap, justify-content, gap */
+    /* Ahora es un simple contenedor flex para las tarjetas */
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-between;
     gap: 20px;
-    padding-left: 20px;
-    padding-right: 20px;
-    padding-top: 10%;
-    padding-bottom: 5rem;
+}
+
+/* Estilos para los botones de paginación */
+.pagination {
+    margin-top: 1.5rem; /* Añade espacio entre las tarjetas y la paginación */
+    margin-bottom: 2rem;
 }
 
 .menu {
@@ -318,7 +337,8 @@ form button {
 .add {
     background-color: #6A040F;
     position: fixed;
-    bottom: 3.5rem;
+    /* Ajustado: Sube la posición del botón para que no quede detrás del menú */
+    bottom: 5.5rem;
     right: 25px;
     color: white;
     border: none;
@@ -330,7 +350,8 @@ form button {
     justify-content: center;
     align-items: center;
     transition: transform 0.4s;
-    z-index: 900;
+    /* CORRECCIÓN CRÍTICA: Asegura que el botón esté por encima del menú */
+    z-index: 1001; 
 }
 
 form input,
@@ -443,9 +464,65 @@ form textarea:focus {
 
 .kc-modal.oculto { display: none; }
 .kc-modal {
-  display: flex;
-  position: fixed;
-  inset: 0;
-  background: #FBF6F6;
-  z-index: 1060;
+    display: flex;
+    position: fixed;
+    inset: 0;
+    background: #FBF6F6;
+    z-index: 1060;
+}
+
+.busqueda-no-results {
+    width: 80%;
+    max-width: 400px;
+    margin: 0 auto;
+    display: block;
+    margin-top: -2rem;
+}
+
+/* Contenedor principal de la paginación */
+.pagination-container {
+    display: flex;
+    justify-content: center; /* Centra los elementos */
+    align-items: center;
+    padding-top: 30px;
+    gap: 15px; /* Espacio entre flechas y centro */
+}
+
+/* Contenedor central de la información de la página */
+.page-info {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 1.1em;
+}
+
+/* Estilo de los botones de flecha */
+.pagination-arrow {
+    background: none;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 1.2em;
+    color: #333;
+    transition: background-color 0.2s, opacity 0.2s;
+}
+
+.pagination-arrow:hover:not(:disabled) {
+    background-color: #f0f0f0;
+}
+
+.pagination-arrow:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* Estilo del input para escribir la página */
+#page-input {
+    width: 45px; /* Ancho ajustado para números de 2-3 dígitos */
+    text-align: center;
+    padding: 5px 2px;
+    border: 1px solid #c0c0c0;
+    border-radius: 4px;
+    font-size: 1em;
 }
