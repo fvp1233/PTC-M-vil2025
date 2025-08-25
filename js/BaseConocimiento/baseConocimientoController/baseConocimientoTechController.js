@@ -6,6 +6,7 @@ import {
     getSolutions,
     saveSolution,
     deleteSolution,
+    searchSolutionsByTitle, // <--- AÑADIDO: Función de búsqueda
     categoryMap
 } from "../baseConocimientoService/baseConocimientoTechService.js";
 
@@ -13,12 +14,19 @@ import {
     getUserById
 } from "../../Usuarios/usuarioService/usuarioService.js";
 
-// Variables de estado global
+// --- Variables de estado global para PAGINACIÓN y CACHÉ ---
 let todasLasTarjetas = [];
-let currentSolutionId = null; // ID del elemento actualmente abierto/editado
+let currentSolutionId = null; 
+
+// Variables para Paginación
+let currentPage = 0; // Índice de página (0-base)
+let currentSize = 10; 
+let currentCategoryFilter = 0; // 0 = Todas las categorías
+let totalPages = 1; // <--- CORRECCIÓN: Variable global para el total de páginas
 
 // Referencias a elementos del DOM (Lectura/Modal de info)
 const contenidoVista = document.getElementById('contenido');
+const paginationContainer = document.getElementById('pagination'); // <-- Contenedor de la paginación
 const modal = document.getElementById("modal");
 const btnCerrar = document.getElementById("flechaIzquierda");
 const modalTitle = modal ? modal.querySelector('.modal-content .modal-titulo h3') : null;
@@ -48,58 +56,62 @@ const dropdownMenuFormItems = document.querySelectorAll('#dropdownMenuForm a.dro
 const searchInput = document.getElementById('searchInput');
 const dropdownButton = document.getElementById('dropdownButton');
 const dropdownMenuItems = document.querySelectorAll('.dropdown-menu a.dropdown-item');
+const pageInput = document.getElementById('page-input');
+const prevButton = document.getElementById('prev-page');
+const nextButton = document.getElementById('next-page');
+const totalPagesDisplay = document.getElementById('total-pages-display');
 
 // --- Funciones de Utilidad ---
 
-/**
- * Formatea una fecha en string "dd/mm/yyyy".
- */
 function formatFecha(dateString) {
     const rawDate = new Date(dateString);
     return `${rawDate.getDate().toString().padStart(2, '0')}/${(rawDate.getMonth() + 1).toString().padStart(2, '0')}/${rawDate.getFullYear()}`;
 }
 
-/**
- * Sanea un texto para eliminar espacios extra y saltos de línea.
- */
 function sanitizeText(text) {
     return text ? text.replace(/\s+/g, ' ').trim() : '';
 }
 
 // --- Funciones de Lógica Principal ---
 
-/**
- * Renderiza el contenido (tarjetas) en el DOM.
- * @param {Array<Object>} data - Arreglo de soluciones a mostrar.
- */
 function renderContent(data) {
     if (!contenidoVista) {
         console.error("El elemento con id 'contenido' no se encontró.");
         return;
     }
 
-    contenidoVista.querySelectorAll('.tarjeta').forEach(t => t.remove());
+    contenidoVista.querySelectorAll('.tarjeta, .mensaje-sin-resultados').forEach(t => t.remove());
+
+    if (data.length === 0) {
+        const mensaje = document.createElement('div');
+        mensaje.className = 'mensaje-sin-resultados';
+        mensaje.style.textAlign = 'center';
+        mensaje.style.padding = '20px';
+        mensaje.style.color = '#888';
+        mensaje.style.fontSize = '16px';
+        mensaje.innerHTML = `
+            <img src="img/no-results.jpg" alt="" class="busqueda-no-results">
+            <h3>¡Vaya!</h3>
+            <p>No se encontraron resultados que coincidan con tu búsqueda.</p>
+        `;
+        contenidoVista.appendChild(mensaje);
+        return;
+    }
 
     data.forEach(c => {
-        // CORRECCIÓN: La API devuelve la fecha generada por el backend
         const formattedDate = formatFecha(c.updateDate);
-
-        // CORRECCIÓN: La API devuelve el objeto 'category', no 'categoryId'
         const categoryId = c.category.id;
         const categoryName = categoryMap[categoryId] || 'Sin categoría';
-
-        // CORRECCIÓN: Usar el nombre del DTO: descriptionS
         const description = sanitizeText(c.descriptionS);
 
         const tarjeta = document.createElement('div');
         tarjeta.className = 'tarjeta';
         tarjeta.innerHTML = `
-            <h5 style="font-size: 13px; font-weight: bold;">${c.solutionTitle}</h5>  <p>${description}</p>
+            <h5 style="font-size: 13px; font-weight: bold;">${c.solutionTitle}</h5>  <p>${description}</p>
             <p class="leer-mas"
                 data-id="${c.solutionId}"
-                data-title="${c.solutionTitle}"   data-description="${c.descriptionS}" data-full-solution="${c.solutionSteps}"
-                data-keywords="${c.keyWords}"      data-author="${c.authorName}" 
-                
+                data-title="${c.solutionTitle}"   data-description="${c.descriptionS}" data-full-solution="${c.solutionSteps}"
+                data-keywords="${c.keyWords}"      data-author="${c.authorName}" 
                 data-date="${formattedDate}"
                 data-category="${categoryName}">
                 Leer más
@@ -111,99 +123,84 @@ function renderContent(data) {
     attachLeerMasEventListeners();
 }
 
-/**
- * Agrega event listeners a los botones "Leer más" de las tarjetas.
- */
 function attachLeerMasEventListeners() {
     document.querySelectorAll(".leer-mas").forEach(button => {
         button.addEventListener("click", (event) => {
             const currentButton = event.target;
-
-            // Establecer el ID global para uso en Edición/Eliminación
             currentSolutionId = currentButton.dataset.id;
-
-            // Rellenar el modal de lectura
             if (modalTitle) modalTitle.textContent = currentButton.dataset.title;
             if (modalInfo) modalInfo.innerHTML = sanitizeText(currentButton.dataset.fullSolution);
             if (modalCategory) modalCategory.textContent = currentButton.dataset.category;
             if (modalAuthor) modalAuthor.textContent = `Redactado por: ${currentButton.dataset.author}`;
             if (modalDate) modalDate.textContent = `Fecha: ${currentButton.dataset.date}`;
-
-            // Mostrar el modal de lectura
             if (modal) modal.classList.remove('oculto');
         });
     });
 }
 
 /**
- * Obtiene los datos, los guarda localmente y renderiza el contenido.
+ * FUNCIÓN CLAVE: Carga soluciones, maneja enriquecimiento de autor y renderiza la paginación.
  */
-async function CargarDatosIniciales() {
+async function cargarSoluciones(page = currentPage, size = currentSize, categoryId = currentCategoryFilter) {
     try {
-        // 1. Obtenemos la respuesta paginada completa.
-        // Opcional: puedes aumentar el 'size' si tienes muchos datos y quieres traerlos todos.
-        const solutionsResponse = await getSolutions(0, 1000);
-
-        // **¡SOLUCIÓN AL ERROR DE CONEXIÓN!** Extraemos el array del objeto Page.
-        // Si la respuesta tiene 'content', lo usamos; si no (ej. si API cambia), usamos la respuesta completa.
+        const solutionsResponse = await getSolutions(page, size, categoryId);
+        
         const solutions = solutionsResponse.content || solutionsResponse;
+        let totalPagesFromApi = solutionsResponse.totalPages || 1;
+        let currentPageIndex = solutionsResponse.number || 0;
+        
+        // Sincronizar las variables globales con la respuesta (para el próximo clic/llamada)
+        currentPage = currentPageIndex;
+        totalPages = totalPagesFromApi; // <-- Aquí se actualiza la variable global
 
-        // --- El resto del código de enriquecimiento ahora funcionará ---
-
-        // 2. Creamos un conjunto de IDs de autor únicos. 
-        // Esta línea ya no fallará porque 'solutions' es un Array válido.
+        // --- Lógica de Enriquecimiento ---
         const authorIds = [...new Set(solutions.map(s => s.userId))];
-
-        // 3. Hacemos peticiones para cada ID de autor único en paralelo.
         const authorPromises = authorIds.map(id => getUserById(id));
         const authors = await Promise.all(authorPromises);
-
-        // 4. Creamos un "mapa" para buscar fácilmente el nombre de un autor por su ID.
         const authorMap = authors.reduce((map, author) => {
-            map[author.id] = author.name; // O el campo que contenga el nombre completo
+            map[author.id] = author.name; 
             return map;
         }, {});
 
-        // 5. "Enriquecemos" cada solución con el nombre del autor.
         const enrichedSolutions = solutions.map(solution => {
-
-            // Obtenemos el nombre completo que viene del authorMap (ej: "Daniela Elizabeth Villalta Sorto")
             const fullName = authorMap[solution.userId] || 'Usuario desconocido';
-
-            let displayName = fullName; // Inicializamos con el nombre completo (en caso de que solo sea un nombre)
+            let displayName = fullName; 
 
             if (fullName !== 'Usuario desconocido') {
                 const nameParts = fullName.split(' ');
-
-                // Verificamos que haya al menos dos partes (Nombre y Apellido)
                 if (nameParts.length >= 2) {
-                    // Tomamos la primera palabra (Nombre) y la última palabra (Apellido).
-                    displayName = `${nameParts[0]} ${nameParts[2]}`;
+                    displayName = `${nameParts[0]} ${nameParts[nameParts.length - 1]}`;
                 }
             }
-
-            return {
-                ...solution,
-                authorName: displayName // Asignamos el nombre simplificado
-            };
+            return { ...solution, authorName: displayName };
         });
 
-        todasLasTarjetas = enrichedSolutions; // Guardamos las tarjetas ya enriquecidas
+        todasLasTarjetas = enrichedSolutions; // Guardamos SOLO la página actual
 
-        // 6. Renderizamos el contenido con los datos ya completos.
+        // 1. Renderizamos las tarjetas de la página actual.
         renderContent(enrichedSolutions);
-
-        if (dropdownButton) {
-            dropdownButton.textContent = "Todas las categorías";
+        
+        // 2. ACTUALIZACIÓN DE LA PAGINACIÓN
+        if (totalPagesDisplay) totalPagesDisplay.textContent = `de ${totalPagesFromApi}`;
+        if (pageInput) {
+             pageInput.value = currentPageIndex + 1; // UI es 1-base
+             pageInput.setAttribute('max', totalPagesFromApi);
         }
+        if (prevButton) prevButton.disabled = currentPageIndex === 0;
+        if (nextButton) nextButton.disabled = currentPageIndex >= totalPagesFromApi - 1;
+        if (paginationContainer) paginationContainer.style.display = 'flex'; // Aseguramos que se muestre
 
     } catch (error) {
+        if (contenidoVista) {
+             contenidoVista.innerHTML = '<div>Error al cargar las soluciones. Por favor, intente de nuevo más tarde.</div>';
+        }
         Swal.fire({
             icon: 'error',
             title: 'Error de conexión',
             text: 'No se pudieron cargar los datos de la API. Por favor, asegúrate de que el enlace esté activo.',
             width: "90%"
         });
+        console.error("Error al cargar soluciones:", error);
     }
 }
 
@@ -211,35 +208,31 @@ async function CargarDatosIniciales() {
  * Filtra las tarjetas por categoría y renderiza el resultado.
  */
 function filtrarPorCategoria(idCategoria) {
-    const tarjetasFiltradas = idCategoria === 0 ?
-        todasLasTarjetas :
-        todasLasTarjetas.filter(t => t.categoryId === idCategoria);
-    renderContent(tarjetasFiltradas);
+    currentCategoryFilter = idCategoria; 
+    currentPage = 0; 
+    
+    // CORRECCIÓN CRÍTICA: Llamar a la función principal con el filtro
+    cargarSoluciones(currentPage, currentSize, currentCategoryFilter);
 }
 
-// --- Manejo de Formularios y CRUD ---
+// --- MANEJO DE FORMULARIOS Y CRUD ---
 
 /**
  * Prepara el formulario para el modo Editar.
  */
 function prepareForEdit() {
     if (!currentSolutionId) return;
-
     if (modal) modal.classList.add("oculto");
 
     const articuloSeleccionado = todasLasTarjetas.find(t => t.solutionId == currentSolutionId);
 
     if (articuloSeleccionado) {
-        // Rellenar campos (CORRECCIÓN DE NOMBRES)
-        if (tituloInput) tituloInput.value = articuloSeleccionado.solutionTitle; // CORRECCIÓN
-        if (descripcionInput) descripcionInput.value = articuloSeleccionado.descriptionS; // CORRECCIÓN
+        if (tituloInput) tituloInput.value = articuloSeleccionado.solutionTitle; 
+        if (descripcionInput) descripcionInput.value = articuloSeleccionado.descriptionS;
         if (solucionInput) solucionInput.value = articuloSeleccionado.solutionSteps;
-        if (palabrasClaveInput) palabrasClaveInput.value = articuloSeleccionado.keyWords; // CORRECCIÓN
+        if (palabrasClaveInput) palabrasClaveInput.value = articuloSeleccionado.keyWords; 
 
-        // Rellenar dropdown
-        // CORRECCIÓN: Obtener el ID desde el objeto 'category'
         const categoryId = articuloSeleccionado.category.id;
-
         const selectedCategory = document.querySelector(`#dropdownMenuForm a[data-id='${categoryId}']`);
         if (selectedCategory && dropdownButtonForm) {
             dropdownButtonForm.textContent = selectedCategory.textContent;
@@ -262,36 +255,33 @@ async function handleFormSubmit(e) {
     const solucion = solucionInput.value.trim();
     const palabrasClave = palabrasClaveInput.value.trim();
 
-    // ELIMINAR LA FECHA: const date = new Date().toISOString(); 
-
-    // Leer el ID de la categoría y el NOMBRE para construir el CategoryDTO
     const categoryId = parseInt(dropdownButtonForm.dataset.id || '1');
-    const categoryName = dropdownButtonForm.textContent.trim(); // Se necesita el nombre
+    const categoryName = dropdownButtonForm.textContent.trim(); 
 
     if (!titulo || !descripcion || !solucion) {
-        // ... (alerta)
+        Swal.fire({
+            icon: 'warning',
+            title: 'Campos vacíos',
+            text: 'Por favor, rellena al menos el título, la descripción y la solución.',
+            width: "90%"
+        });
         return;
     }
 
     const dataToSend = {
-        // CORRECCIÓN DE NOMBRES DE CAMPOS para coincidir con el DTO
         "solutionTitle": titulo,
         "descriptionS": descripcion,
         "solutionSteps": solucion,
         "keyWords": palabrasClave,
-
-        // CORRECCIÓN CRÍTICA: Se envía el objeto 'category' con su 'id' y 'displayName'
         "category": {
             "id": categoryId,
             "displayName": categoryName
         },
-
         "userId": getUserId()
-        // ELIMINAR: updateDate: date, ya que el backend lo genera
     };
 
     try {
-        await saveSolution(currentSolutionId, dataToSend); // Llama al servicio
+        await saveSolution(currentSolutionId, dataToSend); 
 
         Swal.fire({
             position: "center",
@@ -304,7 +294,9 @@ async function handleFormSubmit(e) {
 
         if (frmAgregar) frmAgregar.reset();
         if (modalAgregar) modalAgregar.classList.add("oculto");
-        CargarDatosIniciales(); // Recarga los datos y la UI
+        
+        currentPage = 0; 
+        cargarSoluciones(); 
     } catch (error) {
         Swal.fire({
             icon: 'error',
@@ -334,7 +326,7 @@ async function handleDelete() {
 
     if (result.isConfirmed) {
         try {
-            await deleteSolution(currentSolutionId); // Llama al servicio
+            await deleteSolution(currentSolutionId); 
 
             Swal.fire({
                 title: 'Eliminado!',
@@ -344,7 +336,7 @@ async function handleDelete() {
                 timer: 1500,
             });
             if (modal) modal.classList.add('oculto');
-            CargarDatosIniciales(); // Recarga los datos y la UI
+            cargarSoluciones();
         } catch (error) {
             Swal.fire({
                 icon: 'error',
@@ -356,94 +348,87 @@ async function handleDelete() {
     }
 }
 
+// ------------------------------------------------------------------
 // --- Event Listeners Globales (Inicialización) ---
+// ------------------------------------------------------------------
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("Token directo desde localStorage:", localStorage.getItem('jwt_token'));
-    // NUEVO: Verificación de autenticación al cargar la página.
-    // Esto es idéntico a lo que hiciste en dashboardController.
-    const token = getAuthToken();
-    if (!token) {
-        // Si no hay token, no hacemos nada más y redirigimos al login.
-        window.location.href = '../../inicioSesion.html'; // Ajusta la ruta si es necesario
-        return;
-    }
+    // 1. Manejadores de Eventos de Paginación
+    if (prevButton) prevButton.addEventListener('click', () => {
+        if (currentPage > 0) {
+            cargarSoluciones(currentPage - 1, currentSize, currentCategoryFilter);
+        }
+    });
 
-    // Si hay token, todo el código de inicialización se ejecuta normalmente.
-    // 1. Cargar datos iniciales
-    CargarDatosIniciales();
+    if (nextButton) nextButton.addEventListener('click', () => {
+        if (currentPage < totalPages - 1) {
+            cargarSoluciones(currentPage + 1, currentSize, currentCategoryFilter);
+        }
+    });
 
-    // 2. Configurar el modal de lectura
-    if (btnCerrar && modal) {
-        btnCerrar.addEventListener("click", () => modal.classList.add('oculto'));
-    }
-    if (btnEdit) {
-        btnEdit.addEventListener("click", prepareForEdit);
-    }
-    if (btnDelete) {
-        btnDelete.addEventListener("click", handleDelete);
-    }
+    if (pageInput) pageInput.addEventListener('change', (e) => {
+        const desiredPageUI = parseInt(e.target.value, 10);
+        const desiredPageIndex = desiredPageUI - 1; 
 
-    // 3. Configurar el modal de Agregar/Editar
-    if (btnAgregar) {
-        btnAgregar.addEventListener("click", () => {
-            if (frmAgregar) frmAgregar.reset();
-            currentSolutionId = null; // Reiniciar a modo 'Agregar'
-            if (modalAgregarTitulo) modalAgregarTitulo.textContent = "Agregar solución";
-            if (modalAgregar) modalAgregar.classList.remove("oculto");
-            // Reiniciar el dropdown del formulario
-            if (dropdownButtonForm) {
-                dropdownButtonForm.textContent = "Categoría";
-                dropdownButtonForm.dataset.id = '';
-                dropdownButtonForm.style.color = '#877575';
-            }
+        if (isNaN(desiredPageIndex) || desiredPageIndex < 0 || desiredPageIndex >= totalPages) {
+            e.target.value = currentPage + 1;
+            alert(`Por favor, ingrese un número de página entre 1 y ${totalPages}.`);
+            return;
+        }
+
+        cargarSoluciones(desiredPageIndex, currentSize, currentCategoryFilter);
+    });
+    
+    // 2. Otros Listeners
+    if (btnCerrar) btnCerrar.addEventListener("click", () => modal.classList.add('oculto'));
+    if (btnAgregar) btnAgregar.addEventListener("click", () => {
+        currentSolutionId = null;
+        if (modalAgregarTitulo) modalAgregarTitulo.textContent = "Agregar solución";
+        if (frmAgregar) frmAgregar.reset();
+        if (dropdownButtonForm) {
+            dropdownButtonForm.textContent = 'Categoría';
+            dropdownButtonForm.dataset.id = '';
+        }
+        if (modalAgregar) modalAgregar.classList.remove("oculto");
+    });
+    if (btnCerrarAgregar) btnCerrarAgregar.addEventListener("click", () => modalAgregar.classList.add('oculto'));
+    if (frmAgregar) frmAgregar.addEventListener('submit', handleFormSubmit);
+    if (btnEdit) btnEdit.addEventListener("click", prepareForEdit);
+    if (btnDelete) btnDelete.addEventListener("click", handleDelete);
+    
+    dropdownMenuItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+            e.preventDefault();
+            dropdownButton.textContent = e.target.textContent;
+            const categoryId = parseInt(e.target.dataset.id, 10);
+            
+            // CRÍTICO: Limpia el campo de búsqueda cuando se selecciona un filtro de categoría
+            searchInput.value = '';
+            
+            filtrarPorCategoria(categoryId);
         });
-    }
-    if (btnCerrarAgregar) {
-        btnCerrarAgregar.addEventListener("click", () => modalAgregar.classList.add("oculto"));
-    }
-    if (frmAgregar) {
-        frmAgregar.addEventListener("submit", handleFormSubmit);
-    }
+    });
 
-    // 4. Configurar el dropdown de Filtro
-    if (dropdownMenuItems) {
-        dropdownMenuItems.forEach(item => {
-            item.addEventListener('click', function (e) {
-                e.preventDefault();
-                const selectedText = this.textContent;
-                const selectedId = parseInt(this.dataset.id);
-                if (dropdownButton) dropdownButton.textContent = selectedText;
-                filtrarPorCategoria(selectedId);
-            });
+    dropdownMenuFormItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+            e.preventDefault();
+            dropdownButtonForm.textContent = e.target.textContent;
+            dropdownButtonForm.dataset.id = e.target.dataset.id;
         });
-    }
+    });
+    
+    searchInput.addEventListener('input', async (e) => {
+        const searchTerm = e.target.value.trim();
+        if (searchTerm.length >= 3) {
+            const searchResults = await searchSolutionsByTitle(searchTerm);
+            renderContent(searchResults);
+            if (paginationContainer) paginationContainer.style.display = 'none';
+        } else if (searchTerm.length === 0) {
+            if (paginationContainer) paginationContainer.style.display = 'flex';
+            cargarSoluciones();
+        }
+    });
 
-    // 5. Configurar el dropdown del Formulario
-    if (dropdownMenuFormItems) {
-        dropdownMenuFormItems.forEach(item => {
-            item.addEventListener('click', function (e) {
-                e.preventDefault();
-                const selectedText = this.textContent;
-                const selectedId = this.dataset.id;
-                if (dropdownButtonForm) {
-                    dropdownButtonForm.textContent = selectedText;
-                    dropdownButtonForm.dataset.id = selectedId;
-                    dropdownButtonForm.style.setProperty('color', '#000', 'important');
-                }
-            });
-        });
-    }
-
-    // 6. Configurar la Búsqueda
-    if (searchInput) {
-        searchInput.addEventListener('input', () => {
-            const searchTerm = searchInput.value.toLowerCase();
-            const filteredData = todasLasTarjetas.filter(item => {
-                const searchFields = [item.title, item.description, item.solutionSteps, item.keywords, item.userId];
-                return searchFields.some(field => field && field.toLowerCase().includes(searchTerm));
-            });
-            renderContent(filteredData);
-        });
-    }
+    // 3. Inicialización: Cargar la primera página al iniciar
+    cargarSoluciones();
 });

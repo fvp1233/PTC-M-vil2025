@@ -4,7 +4,7 @@
 import { fetchWithAuth, getUserId } from '../../authService.js';
 
 // La URL base de tu API para las soluciones. AJÚSTALA SI ES NECESARIO.
-const API_URL = 'http://localhost:8080/api'; 
+const API_URL = 'http://localhost:8080/api';
 
 export const categoryMap = {
     1: 'Soporte técnico',
@@ -14,19 +14,30 @@ export const categoryMap = {
     5: 'Incidentes críticos'
 };
 
-export async function getSolutions(page = 0, size = 10) { 
-    // 2. Construimos la URL con los parámetros de paginación
-    const url = `${API_URL}/GetSolutions?page=${page}&size=${size}`;
+/**
+ * Función que obtiene las soluciones con paginación y filtro de categoría.
+ * @param {number} page - El número de página (base 0).
+ * @param {number} size - El tamaño de la página.
+ * @param {number} categoryId - El ID de la categoría a filtrar, 0 para todas.
+ */
+export async function getSolutions(page = 0, size = 10, categoryId = 0) {
+    // 2. Construimos la URL base con la paginación
+    let url = `${API_URL}/GetSolutions?page=${page}&size=${size}`;
     
-    // 3. Usamos fetchWithAuth en lugar de fetch.
-    const response = await fetchWithAuth(url); // <-- Ahora usa la URL completa con parámetros
+    // 3. CORRECCIÓN CRÍTICA: Añadimos el filtro de categoría si es diferente de 0
+    if (categoryId !== 0) {
+        url += `&categoryId=${categoryId}`; // <-- AÑADIDO: Agrega el parámetro de categoría
+    }
+
+    // 4. Usamos fetchWithAuth en lugar de fetch.
+    const response = await fetchWithAuth(url); // <-- Ahora usa la URL con el filtro
 
     if (!response.ok) {
         throw new Error(`No se pudieron cargar las soluciones. Código: ${response.status}`);
     }
-    
+
     // Devuelve el objeto Page<SolutionDTO> completo
-    return response.json(); 
+    return response.json();
 }
 
 /**
@@ -37,14 +48,12 @@ export async function getSolutions(page = 0, size = 10) {
 export async function saveSolution(solutionId, solutionData) {
     const isUpdating = !!solutionId;
     const url = isUpdating ? `${API_URL}/UpdateSolution/${solutionId}` : `${API_URL}/PostSolution`;
-    const method = isUpdating ? 'PUT' : 'POST';
+    const method = isUpdating ? 'PATCH' : 'POST';
 
-    // Si estamos creando, añadimos el userId del usuario logueado.
     if (!isUpdating) {
-        solutionData.userId = getUserId(); 
+        solutionData.userId = getUserId();
     }
 
-    // 2. Usamos fetchWithAuth para la petición de guardado.
     const response = await fetchWithAuth(url, {
         method: method,
         headers: {
@@ -54,26 +63,52 @@ export async function saveSolution(solutionId, solutionData) {
     });
 
     if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Error al guardar la solución.');
+        let errorText = 'Error al guardar la solución.';
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+            try {
+                const errorData = await response.json();
+                errorText = errorData.error || errorData.message || errorText;
+            } catch (e) {
+                errorText = response.statusText;
+            }
+        } else {
+            errorText = response.statusText || errorText;
+        }
+        throw new Error(errorText);
     }
+
+    if (response.status === 204 || response.headers.get('content-length') === '0') {
+        return null;
+    }
+
     return response.json();
 }
 
-/**
- * Elimina una solución por su ID.
- * @param {string} solutionId - El ID de la solución a eliminar.
- */
 export async function deleteSolution(solutionId) {
     const url = `${API_URL}/DeleteSolution/${solutionId}`;
-    
-    // 2. Usamos fetchWithAuth para la petición de eliminación.
     const response = await fetchWithAuth(url, {
         method: 'DELETE',
     });
-
     if (!response.ok) {
         throw new Error('Error al eliminar la solución.');
     }
-    // Para DELETE, a menudo no hay un cuerpo JSON de respuesta, así que no lo procesamos.
+}
+
+export async function searchSolutionsByTitle(searchTerm) {
+    const encodedTerm = encodeURIComponent(searchTerm);
+    const url = `${API_URL}/searchSolution?title=${encodedTerm}`; 
+    try {
+        const response = await fetchWithAuth(url);
+        if (!response.ok) {
+            if (response.status === 404) {
+                return []; 
+            }
+            throw new Error(`Error al buscar soluciones. Código: ${response.status}`);
+        }
+        return await response.json();
+    } catch (error) {
+        console.error("Error al buscar soluciones:", error);
+        return []; 
+    }
 }
