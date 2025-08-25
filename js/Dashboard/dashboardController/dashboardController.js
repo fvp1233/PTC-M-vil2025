@@ -3,6 +3,7 @@ import { getAuthToken } from '../../authService.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
     const token = getAuthToken();
+    console.log('Token directo desde localStorage:', localStorage.getItem('jwt_token'));
     const loggedInUserId = localStorage.getItem('userId');
     if (!token || !loggedInUserId) return;
 
