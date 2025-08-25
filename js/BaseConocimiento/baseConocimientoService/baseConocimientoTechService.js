@@ -23,7 +23,7 @@ export const categoryMap = {
 export async function getSolutions(page = 0, size = 10, categoryId = 0) {
     // 2. Construimos la URL base con la paginación
     let url = `${API_URL}/GetSolutions?page=${page}&size=${size}`;
-    
+
     // 3. CORRECCIÓN CRÍTICA: Añadimos el filtro de categoría si es diferente de 0
     if (categoryId !== 0) {
         url += `&categoryId=${categoryId}`; // <-- AÑADIDO: Agrega el parámetro de categoría
@@ -95,20 +95,24 @@ export async function deleteSolution(solutionId) {
     }
 }
 
-export async function searchSolutionsByTitle(searchTerm) {
-    const encodedTerm = encodeURIComponent(searchTerm);
-    const url = `${API_URL}/searchSolution?title=${encodedTerm}`; 
+export async function searchSolutionsByTitle(title, page = 0, size = 10) {
+    const url = `${API_URL}/searchSolution?title=${encodeURIComponent(title)}&page=${page}&size=${size}`;
+
     try {
-        const response = await fetchWithAuth(url);
+        // CAMBIO CRÍTICO: Usamos fetchWithAuth en lugar de fetch, para no necesitar getAuthToken
+        const response = await fetchWithAuth(url, {
+            method: 'GET',
+        });
+
         if (!response.ok) {
-            if (response.status === 404) {
-                return []; 
-            }
-            throw new Error(`Error al buscar soluciones. Código: ${response.status}`);
+            const errorText = await response.text();
+            throw new Error(`Error ${response.status}: ${errorText}`);
         }
-        return await response.json();
+
+        const data = await response.json();
+        return data;
     } catch (error) {
-        console.error("Error al buscar soluciones:", error);
-        return []; 
+        console.error("Error en la búsqueda:", error);
+        throw error;
     }
 }
