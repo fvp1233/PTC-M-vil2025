@@ -449,3 +449,10 @@ form textarea:focus {
   background: #FBF6F6;
   z-index: 1060;
 }
+.busqueda-no-results {
+    width: 80%;
+    max-width: 400px;
+    margin: 0 auto;
+    display: block;
+    margin-top: -2rem;
+}

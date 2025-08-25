@@ -87,10 +87,6 @@ export async function saveSolution(solutionId, solutionData) {
     return response.json();
 }
 
-/**
- * Elimina una solución por su ID.
- * @param {string} solutionId - El ID de la solución a eliminar.
- */
 export async function deleteSolution(solutionId) {
     const url = `${API_URL}/DeleteSolution/${solutionId}`;
 
@@ -103,4 +99,33 @@ export async function deleteSolution(solutionId) {
         throw new Error('Error al eliminar la solución.');
     }
     // Para DELETE, a menudo no hay un cuerpo JSON de respuesta, así que no lo procesamos.
+}
+
+export async function searchSolutionsByTitle(searchTerm) {
+    // 1. Codificamos el término de búsqueda para que sea seguro en la URL
+    const encodedTerm = encodeURIComponent(searchTerm);
+    
+    // 2. Construimos la URL: /api/searchSolution?title={searchTerm}
+    const url = `${API_URL}/searchSolution?title=${encodedTerm}`; 
+
+    try {
+        const response = await fetchWithAuth(url);
+
+        if (!response.ok) {
+            // El backend devuelve 404 si no encuentra resultados.
+            if (response.status === 404) {
+                // Devolvemos un array vacío en lugar de lanzar un error.
+                return []; 
+            }
+            throw new Error(`Error al buscar soluciones. Código: ${response.status}`);
+        }
+
+        // El backend devuelve una lista de objetos (List<SolutionDTO>), la leemos como JSON.
+        return await response.json();
+
+    } catch (error) {
+        console.error("Error al buscar soluciones:", error);
+        // Si hay error de red o similar, devolvemos un array vacío para no romper la UI.
+        return []; 
+    }
 }
