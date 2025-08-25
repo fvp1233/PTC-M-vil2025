@@ -1,17 +1,17 @@
 // NUEVO: Importamos el servicio de autenticación para la verificación inicial.
-import { getAuthToken, getUserId } from '../../authService.js'; 
+import { getAuthToken, getUserId } from '../../authService.js';
 
 // Importamos las funciones del servicio (que ahora ya están protegidas)
-import { 
-    getSolutions, 
-    saveSolution, 
-    deleteSolution, 
-    categoryMap 
+import {
+    getSolutions,
+    saveSolution,
+    deleteSolution,
+    categoryMap
 } from "../baseConocimientoService/baseConocimientoTechService.js";
 
 import {
     getUserById
-}from "../../Usuarios/usuarioService/usuarioService.js";
+} from "../../Usuarios/usuarioService/usuarioService.js";
 
 // Variables de estado global
 let todasLasTarjetas = [];
@@ -82,14 +82,14 @@ function renderContent(data) {
 
     data.forEach(c => {
         // CORRECCIÓN: La API devuelve la fecha generada por el backend
-        const formattedDate = formatFecha(c.updateDate); 
-        
+        const formattedDate = formatFecha(c.updateDate);
+
         // CORRECCIÓN: La API devuelve el objeto 'category', no 'categoryId'
         const categoryId = c.category.id;
-        const categoryName = categoryMap[categoryId] || 'Sin categoría'; 
-        
+        const categoryName = categoryMap[categoryId] || 'Sin categoría';
+
         // CORRECCIÓN: Usar el nombre del DTO: descriptionS
-        const description = sanitizeText(c.descriptionS); 
+        const description = sanitizeText(c.descriptionS);
 
         const tarjeta = document.createElement('div');
         tarjeta.className = 'tarjeta';
@@ -118,10 +118,10 @@ function attachLeerMasEventListeners() {
     document.querySelectorAll(".leer-mas").forEach(button => {
         button.addEventListener("click", (event) => {
             const currentButton = event.target;
-            
+
             // Establecer el ID global para uso en Edición/Eliminación
-            currentSolutionId = currentButton.dataset.id; 
-            
+            currentSolutionId = currentButton.dataset.id;
+
             // Rellenar el modal de lectura
             if (modalTitle) modalTitle.textContent = currentButton.dataset.title;
             if (modalInfo) modalInfo.innerHTML = sanitizeText(currentButton.dataset.fullSolution);
@@ -142,12 +142,12 @@ async function CargarDatosIniciales() {
     try {
         // 1. Obtenemos la respuesta paginada completa.
         // Opcional: puedes aumentar el 'size' si tienes muchos datos y quieres traerlos todos.
-        const solutionsResponse = await getSolutions(0, 1000); 
-        
+        const solutionsResponse = await getSolutions(0, 1000);
+
         // **¡SOLUCIÓN AL ERROR DE CONEXIÓN!** Extraemos el array del objeto Page.
         // Si la respuesta tiene 'content', lo usamos; si no (ej. si API cambia), usamos la respuesta completa.
         const solutions = solutionsResponse.content || solutionsResponse;
-        
+
         // --- El resto del código de enriquecimiento ahora funcionará ---
 
         // 2. Creamos un conjunto de IDs de autor únicos. 
@@ -160,20 +160,38 @@ async function CargarDatosIniciales() {
 
         // 4. Creamos un "mapa" para buscar fácilmente el nombre de un autor por su ID.
         const authorMap = authors.reduce((map, author) => {
-            map[author.userId] = author.name; // O el campo que contenga el nombre completo
+            map[author.id] = author.name; // O el campo que contenga el nombre completo
             return map;
         }, {});
 
         // 5. "Enriquecemos" cada solución con el nombre del autor.
-        const enrichedSolutions = solutions.map(solution => ({
-            ...solution,
-            authorName: authorMap[solution.userId] || 'Usuario desconocido' // Añadimos el nombre
-        }));
-        
+        const enrichedSolutions = solutions.map(solution => {
+
+            // Obtenemos el nombre completo que viene del authorMap (ej: "Daniela Elizabeth Villalta Sorto")
+            const fullName = authorMap[solution.userId] || 'Usuario desconocido';
+
+            let displayName = fullName; // Inicializamos con el nombre completo (en caso de que solo sea un nombre)
+
+            if (fullName !== 'Usuario desconocido') {
+                const nameParts = fullName.split(' ');
+
+                // Verificamos que haya al menos dos partes (Nombre y Apellido)
+                if (nameParts.length >= 2) {
+                    // Tomamos la primera palabra (Nombre) y la última palabra (Apellido).
+                    displayName = `${nameParts[0]} ${nameParts[2]}`;
+                }
+            }
+
+            return {
+                ...solution,
+                authorName: displayName // Asignamos el nombre simplificado
+            };
+        });
+
         todasLasTarjetas = enrichedSolutions; // Guardamos las tarjetas ya enriquecidas
-        
+
         // 6. Renderizamos el contenido con los datos ya completos.
-        renderContent(enrichedSolutions); 
+        renderContent(enrichedSolutions);
 
         if (dropdownButton) {
             dropdownButton.textContent = "Todas las categorías";
@@ -210,17 +228,17 @@ function prepareForEdit() {
     if (modal) modal.classList.add("oculto");
 
     const articuloSeleccionado = todasLasTarjetas.find(t => t.solutionId == currentSolutionId);
-    
+
     if (articuloSeleccionado) {
         // Rellenar campos (CORRECCIÓN DE NOMBRES)
         if (tituloInput) tituloInput.value = articuloSeleccionado.solutionTitle; // CORRECCIÓN
         if (descripcionInput) descripcionInput.value = articuloSeleccionado.descriptionS; // CORRECCIÓN
         if (solucionInput) solucionInput.value = articuloSeleccionado.solutionSteps;
         if (palabrasClaveInput) palabrasClaveInput.value = articuloSeleccionado.keyWords; // CORRECCIÓN
-        
+
         // Rellenar dropdown
         // CORRECCIÓN: Obtener el ID desde el objeto 'category'
-        const categoryId = articuloSeleccionado.category.id; 
+        const categoryId = articuloSeleccionado.category.id;
 
         const selectedCategory = document.querySelector(`#dropdownMenuForm a[data-id='${categoryId}']`);
         if (selectedCategory && dropdownButtonForm) {
@@ -243,11 +261,11 @@ async function handleFormSubmit(e) {
     const descripcion = descripcionInput.value.trim();
     const solucion = solucionInput.value.trim();
     const palabrasClave = palabrasClaveInput.value.trim();
-    
+
     // ELIMINAR LA FECHA: const date = new Date().toISOString(); 
-    
+
     // Leer el ID de la categoría y el NOMBRE para construir el CategoryDTO
-    const categoryId = parseInt(dropdownButtonForm.dataset.id || '1'); 
+    const categoryId = parseInt(dropdownButtonForm.dataset.id || '1');
     const categoryName = dropdownButtonForm.textContent.trim(); // Se necesita el nombre
 
     if (!titulo || !descripcion || !solucion) {
@@ -261,14 +279,14 @@ async function handleFormSubmit(e) {
         "descriptionS": descripcion,
         "solutionSteps": solucion,
         "keyWords": palabrasClave,
-        
+
         // CORRECCIÓN CRÍTICA: Se envía el objeto 'category' con su 'id' y 'displayName'
-        "category": { 
+        "category": {
             "id": categoryId,
             "displayName": categoryName
         },
-        
-        "userId": getUserId() 
+
+        "userId": getUserId()
         // ELIMINAR: updateDate: date, ya que el backend lo genera
     };
 
@@ -348,7 +366,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!token) {
         // Si no hay token, no hacemos nada más y redirigimos al login.
         window.location.href = '../../inicioSesion.html'; // Ajusta la ruta si es necesario
-        return; 
+        return;
     }
 
     // Si hay token, todo el código de inicialización se ejecuta normalmente.
@@ -416,7 +434,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
-    
+
     // 6. Configurar la Búsqueda
     if (searchInput) {
         searchInput.addEventListener('input', () => {
