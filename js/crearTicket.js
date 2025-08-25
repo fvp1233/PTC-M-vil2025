@@ -1,3 +1,5 @@
+import { fetchWithAuth } from "./authService";
+
 document.addEventListener('DOMContentLoaded', function() {
     // --- Lógica para la selección de botones de prioridad ---
     const priorityButtonsContainer = document.getElementById('prioridad-buttons-container');
@@ -373,7 +375,7 @@ document.getElementById("ticketForm").addEventListener("submit", async e =>{
         return;
     }
 
-    const response = await fetch(API_URL, {
+    const response = await fetchWithAuth(API_URL, {
         method: "POST",
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({title,category,priority,descripcion,photo})
