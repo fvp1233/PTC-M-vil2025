@@ -45,3 +45,46 @@ export const getUserById = async (userId) => {
         throw error;
     }
 };
+
+
+
+// Obtiene un ticket específico y su historial por ID.
+export const getTicketById = async (ticketId) => {
+    try {
+        const response = await fetchWithAuth(`${API_URL}/GetTicketById/${ticketId}`);
+        if (!response.ok) {
+            throw new Error(`Error al obtener el ticket: ${response.statusText}`);
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error en la llamada a la API para el ticket:', error);
+        throw error;
+    }
+};
+
+export const getPrioridades = async () => {
+    try {
+        const token = getAuthToken();
+        const response = await fetch(`${API_BASE_URL}/priorities`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (!response.ok) {
+            if (response.status === 404) {
+                return []; 
+            }
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error("Error fetching priorities:", error);
+        throw error;
+    }
+};
+
