@@ -1,12 +1,7 @@
-// js/ticketsDashboardTech.js
+import { getAssignedTicketsByTech, getUserById } from "../dashboardTechService/ticketTechService.js";
+import { getUserId } from "./authService.js";
 
-const ticketData = [
-  { id: 1001, fecha: { dia: 14, mes: "Julio", año: 2025 }, descripcion: "Error en la base de datos de clientes", prioridad: "alta", tech: "Juan Pérez" },
-  { id: 1002, fecha: { dia: 12, mes: "Julio", año: 2025 }, descripcion: "Solicitud de cambio de contraseña", prioridad: "media", tech: "María García" },
-  { id: 1003, fecha: { dia: 10, mes: "Julio", año: 2025 }, descripcion: "Actualización de sistema completada", prioridad: "baja", tech: "Carlos López" },
-  { id: 1004, fecha: { dia: 13, mes: "Julio", año: 2025 }, descripcion: "Problema con inicio de sesión", prioridad: "critica", tech: "Ana Martínez" }
-];
-
+// Utility functions (truncateDescriptions, renderTickets) remain the same
 function truncateDescriptions(maxChars = 23) {
   document.querySelectorAll('.description p').forEach(desc => {
     if (!desc.dataset.fullText) desc.dataset.fullText = desc.textContent.trim();
@@ -51,7 +46,7 @@ function renderTickets(tickets) {
 
   tickets.forEach((ticket, idx) => {
     const isLast = idx === tickets.length - 1;
-    const prio = ticket.prioridad.toLowerCase();
+    const prio = ticket.prioridad?.toLowerCase() || 'baja';
     const badgeClass = {
       baja: 'bg-success',
       media: 'bg-warning',
@@ -60,9 +55,10 @@ function renderTickets(tickets) {
     }[prio] || 'bg-secondary';
     const prioText = prio.charAt(0).toUpperCase() + prio.slice(1);
 
-    const dia = ticket.fecha.dia;
-    const mes = ticket.fecha.mes.slice(0, 3);
-    const año = ticket.fecha.año.toString().slice(-2);
+    const fecha = new Date(ticket.creationDate);
+    const dia = fecha.getDate();
+    const mes = fecha.toLocaleDateString('es-ES', { month: 'short' });
+    const año = fecha.getFullYear().toString().slice(-2);
 
     const card = document.createElement('div');
     card.className = 'card mx-auto';
@@ -77,8 +73,8 @@ function renderTickets(tickets) {
             <div class="date"><strong><p>${mes},${año}</p></strong></div>
           </div>
           <div class="ticket-col2">
-            <div class="description"><p>${ticket.descripcion}</p></div>
-            <div class="id"><p>#${ticket.id}</p></div>
+            <div class="description"><p>${ticket.description || ticket.title}</p></div>
+            <div class="id"><p>#${ticket.id || ticket.ticketId}</p></div>
             <div class="TicketStatus">
               <span class="badge ${badgeClass}">${prioText}</span>
             </div>
@@ -90,7 +86,7 @@ function renderTickets(tickets) {
               </svg>
             </button>
             <div class="AnotherDiv">
-              <p class="TicketTech">Técnico: <span>${ticket.tech}</span></p> 
+              <p class="TicketTech">Técnico: <span>${ticket.tech}</span></p>
               <svg class="iconSVG svg2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                 <path fill="#989494" d="M2 22V4q0-.825.588-1.412T4 2h16q.825 0 1.413.588T22 4v12q0 .825-.587 1.413T20 18H6zm4-8h8v-2H6zm0-3h12V9H6zm0-3h12V6H6z"/>
               </svg>
@@ -105,26 +101,73 @@ function renderTickets(tickets) {
   truncateDescriptions();
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  renderTickets(ticketData);
+// Global variables for data and filter state
+let allTickets = [];
+
+document.addEventListener('DOMContentLoaded', async () => {
+  const loggedInUserId = getUserId();
+  if (!loggedInUserId) {
+    console.error('No se encontró el ID de usuario. Redirigiendo al inicio de sesión.');
+    window.location.href = 'inicioSesion.html';
+    return;
+  }
+
+  async function loadAndRenderTickets() {
+    try {
+      const ticketsFromAPI = await getAssignedTicketsByTech(loggedInUserId);
+      
+      const ticketsWithTechName = await Promise.all(ticketsFromAPI.map(async (t) => {
+          let techName = 'N/A';
+          // Check if assignedTech is an object and has a userId property
+          const techId = t.assignedTech?.userId || t.assignedTech?.id;
+          if (techId) {
+              try {
+                  const techUser = await getUserById(techId);
+                  techName = techUser.displayName || techUser.name || 'N/A';
+              } catch (userError) {
+                  console.error(`Error al obtener el técnico con ID ${techId}:`, userError);
+              }
+          }
+          
+          return {
+              id: t.ticketId,
+              creationDate: t.creationDate,
+              description: t.description || t.title,
+              prioridad: t.priority?.displayName || 'Baja',
+              tech: techName
+          };
+      }));
+      
+      allTickets = ticketsWithTechName;
+      renderTickets(allTickets);
+    } catch (error) {
+      console.error('Error al cargar los tickets:', error);
+      const container = document.querySelector('.row.gx-0 .col-12');
+      if (container) {
+        container.innerHTML = '<p class="text-center text-danger mt-5">Ocurrió un error al cargar los tickets.</p>';
+      }
+    }
+  }
+
+  await loadAndRenderTickets();
+
   window.addEventListener('resize', truncateDescriptions);
 
-  // Filtro por prioridad
   document.querySelectorAll('.filter-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
 
       const filtro = btn.textContent.trim().toLowerCase();
-      if (filtro === 'todo') renderTickets(ticketData);
-      else {
-        const filtrados = ticketData.filter(t => t.prioridad.toLowerCase() === filtro);
+      if (filtro === 'todo') {
+        renderTickets(allTickets);
+      } else {
+        const filtrados = allTickets.filter(t => t.prioridad?.toLowerCase() === filtro);
         renderTickets(filtrados);
       }
     });
   });
 
-  // Eventos para los botones SVG y AHORA TAMBIÉN PARA TODA LA TARJETA
   document.addEventListener('click', e => {
     const iconBtn1 = e.target.closest('.btn-icon1');
     if (iconBtn1) {
@@ -134,18 +177,15 @@ document.addEventListener('DOMContentLoaded', () => {
       return window.location.href = 'TicketApplication.html';
     }
 
-    // Este manejador para iconBtn2 estaba en tu código, lo mantengo.
-    // Asumo que 'btn-icon2' es el SVG del "chat" o similar.
-    const iconBtn2 = e.target.closest('.svg2'); // Usar la clase del SVG directamente si no hay un botón wrapper
+    const iconBtn2 = e.target.closest('.svg2');
     if (iconBtn2) {
       const card = iconBtn2.closest('.card');
       const idNum = card.querySelector('.id p').textContent.replace('#', '').trim();
       return window.location.href = `TicketInformationTech.html?id=${idNum}`;
     }
 
-    // ¡NUEVO!: Manejador de clic para cualquier parte de la tarjeta (excepto los botones)
     const tarjeta = e.target.closest('.card');
-    if (tarjeta && !iconBtn1 && !iconBtn2) { // Asegúrate de que no sea un clic en los botones
+    if (tarjeta && !iconBtn1 && !iconBtn2) {
       const idNum = tarjeta.querySelector('.id p')?.textContent.replace('#', '').trim();
       if (idNum) {
         window.location.href = `TicketInformationTech.html?id=${idNum}`;

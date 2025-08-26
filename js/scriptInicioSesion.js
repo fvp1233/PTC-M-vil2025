@@ -61,10 +61,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 // Lógica de redirección basada en el rol
                 switch (data.rolId) {
                     case 1:
-                        window.location.href = '../Interfaces/dashboard.html';
+                        window.location.href = './dashboard.html';
                         break;
                     case 2:
-                        window.location.href = '../Interfaces/dashboardTech.html';
+                        window.location.href = '../dashboardTech.html';
                         break;
                     case 3:
                         
