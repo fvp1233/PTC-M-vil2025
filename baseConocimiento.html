@@ -25,7 +25,7 @@
                 <h1 style="font-size: 24px; margin-top: 15px; margin-bottom: 15px;">Base de conocimiento</h1>
                 <div class="search-container">
                     <i class="fas fa-search"></i>
-                    <input type="text" placeholder="Busca un artículo">
+                    <input type="text" placeholder="Busca un artículo" id="searchInput">
                 </div>
             </div>
             <div class="texto-encabezado">
@@ -39,7 +39,41 @@
             </div>
         </div>
 
-        <div class="contenido" id="contenido">
+        <div class="scroll-content">
+            <!-- Contenido principal: aquí se renderizan las tarjetas de solución -->
+            <div class="contenido" id="contenido">
+                <!-- Dropdown para filtrar categorías -->
+                <div class="dropdown w-100 mb-3">
+                    <button class="btn btn-custom dropdown-toggle w-100" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false" id="dropdownButton">
+                        Todas las categorías
+                    </button>
+                    <ul class="dropdown-menu w-100">
+                        <li><a class="dropdown-item" href="#" data-id="0">Todas las categorías</a></li>
+                        <li><a class="dropdown-item" href="#" data-id="1">Soporte técnico</a></li>
+                        <li><a class="dropdown-item" href="#" data-id="2">Consultas</a></li>
+                        <li><a class="dropdown-item" href="#" data-id="3">Gestión de usuarios</a></li>
+                        <li><a class="dropdown-item" href="#" data-id="4">Redes</a></li>
+                        <li><a class="dropdown-item" href="#" data-id="5">Incidentes críticos</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- Controles de paginación. Ahora están DENTRO del área de desplazamiento. -->
+            <nav aria-label="Navegación de soluciones" class="pagination-container" id="pagination">
+                <button id="prev-page" class="pagination-arrow" disabled>
+                    &leftarrow;
+                </button>
+
+                <div class="page-info">
+                    <span>Página</span>
+                    <input type="number" id="page-input" value="1" min="1" aria-label="Número de página actual">
+                    <span id="total-pages-display">de 10</span>
+                </div>
+
+                <button id="next-page" class="pagination-arrow">
+                    &rightarrow;
+                </button>
+            </nav>
         </div>
 
         <div class="final">
