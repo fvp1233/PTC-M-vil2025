@@ -1,4 +1,4 @@
-import { getAssignedTicketsByTech, getUserById } from "../dashboardTechService/ticketTechService.js";
+import { getAssignedTicketsByTech, getUserById } from "../js/DashboardTech/dashboardTechService/ticketTechService.js";
 import { getUserId } from "./authService.js";
 
 // Utility functions (truncateDescriptions, renderTickets) remain the same
