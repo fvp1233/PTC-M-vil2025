@@ -1,33 +1,8 @@
-const ticketData = [
-  {
-    id: 1001,
-    fecha: { dia: 14, mes: "Julio", año: 2025 },
-    descripcion: "Error en la base de datos de clientes",
-    estado: "pendiente",
-    prioridad: "alta"
-  },
-  {
-    id: 1002,
-    fecha: { dia: 12, mes: "Julio", año: 2025 },
-    descripcion: "Solicitud de cambio de contraseña",
-    estado: "en proceso",
-    prioridad: "media"
-  },
-  {
-    id: 1003,
-    fecha: { dia: 10, mes: "Julio", año: 2025 },
-    descripcion: "Actualización de sistema completada",
-    estado: "completado",
-    prioridad: "baja"
-  },
-  {
-    id: 1004,
-    fecha: { dia: 13, mes: "Julio", año: 2025 },
-    descripcion: "Problema con inicio de sesión",
-    estado: "en espera",
-    prioridad: "alta"
-  }
-];
+import { getRecentTicketsByUser } from './Dashboard/dashboardService/ticketService.js';
+import { getAuthToken, getUserId } from './authService.js';
+
+// Variable para almacenar los tickets cargados
+let allTickets = [];
 
 function truncateDescriptions(maxChars = 23) {
   const descriptions = document.querySelectorAll('.description p');
@@ -59,13 +34,11 @@ function truncateDescriptions(maxChars = 23) {
 }
 
 function renderTickets(tickets) {
-  const container = document.querySelector('.row.gx-0 .col-12');
+  const container = document.querySelector('#ticketsContainer');
   container.innerHTML = '';
 
   if (tickets.length === 0) {
     const main = document.querySelector('main');
-
-    // Evita duplicados si ya está el mensaje mostrado
     if (!document.querySelector('.noTickets')) {
       const noTicketsHTML =
         `<div class="row text-center g-0 noTickets">
@@ -79,7 +52,6 @@ function renderTickets(tickets) {
         </div>`;
       main.insertAdjacentHTML('beforeend', noTicketsHTML);
     }
-
     return;
   }
 
@@ -90,17 +62,18 @@ function renderTickets(tickets) {
     const isLast = index === tickets.length - 1;
 
     const estadoClase = {
-      'pendiente': 'bg-danger',
-      'en espera': 'bg-warning',
-      'en proceso': 'bg-orange',
-      'completado': 'bg-success'
-    }[ticket.estado.toLowerCase()] || 'bg-secondary';
+      'En espera': 'bg-warning',
+      'En progreso': 'bg-orange',
+      'Completado': 'bg-success'
+    }[ticket.status.displayName] || 'bg-secondary';
 
-    const prioridadClase = ticket.prioridad.toLowerCase();
-    const prioridadCapitalizada = ticket.prioridad.charAt(0).toUpperCase() + ticket.prioridad.slice(1);
-    const dia = ticket.fecha.dia;
-    const mes = ticket.fecha.mes.slice(0, 3);
-    const año = ticket.fecha.año.toString().slice(-2);
+    const prioridadClase = ticket.priority.displayName.toLowerCase();
+    const prioridadCapitalizada = ticket.priority.displayName.charAt(0).toUpperCase() + ticket.priority.displayName.slice(1);
+
+    const creationDate = new Date(ticket.creationDate);
+    const dia = creationDate.getDate();
+    const mes = creationDate.toLocaleString('es-ES', { month: 'long' }).slice(0, 3);
+    const año = creationDate.getFullYear().toString().slice(-2);
 
     const card = document.createElement('div');
     card.className = 'card mx-auto';
@@ -115,10 +88,10 @@ function renderTickets(tickets) {
             <div class="date"><strong><p>${mes},${año}</p></strong></div>
           </div>
           <div class="ticket-col2">
-            <div class="description"><p>${ticket.descripcion}</p></div>
-            <div class="id"><p>#${ticket.id}</p></div>
+            <div class="description"><p>${ticket.description}</p></div>
+            <div class="id"><p>#${ticket.ticketId}</p></div>
             <div class="TicketStatus">
-              <span class="badge ${estadoClase}">${ticket.estado.charAt(0).toUpperCase() + ticket.estado.slice(1)}</span>
+              <span class="badge ${estadoClase}">${ticket.status.displayName.charAt(0).toUpperCase() + ticket.status.displayName.slice(1)}</span>
             </div>
           </div>
           <div class="ticket-col3">
@@ -138,46 +111,72 @@ function renderTickets(tickets) {
       </div>`;
     container.appendChild(card);
   });
-
   truncateDescriptions();
 }
 
+document.addEventListener('DOMContentLoaded', async () => {
+  const token = getAuthToken();
+  const loggedInUserId = getUserId();
+  
+  if (!token || !loggedInUserId) {
+    console.error('No se encontró el token de autenticación o el ID de usuario. Redirigiendo...');
+    return;
+  }
+  
+  try {
+    allTickets = await getRecentTicketsByUser(loggedInUserId);
+    renderTickets(allTickets);
+  } catch (error) {
+    console.error('Error al cargar los tickets en el dashboard:', error);
+    const container = document.querySelector('#ticketsContainer');
+    if (container) {
+      container.innerHTML = `<p class="text-danger text-center">Ocurrió un error al cargar los tickets.</p>`;
+    }
+  }
 
-document.addEventListener('DOMContentLoaded', () => {
-  renderTickets(ticketData);
   window.addEventListener('resize', truncateDescriptions);
 
-  // Filtros
   document.querySelectorAll('.filter-btn').forEach(button => {
     button.addEventListener('click', () => {
       document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
       button.classList.add('active');
-      const filtro = button.textContent.trim().toLowerCase();
+      
+      let filtro = button.textContent.trim().toLowerCase();
+      
+      // Mapea 'pendiente' a 'en espera'
+      if (filtro === 'pendiente') {
+        filtro = 'en espera';
+      }
+      // Mapea 'en proceso' a 'en progreso'
+      if (filtro === 'en proceso') {
+        filtro = 'en progreso';
+      }
+      
       const dataFiltrada = (filtro === 'todo')
-        ? ticketData
-        : ticketData.filter(t => t.estado.toLowerCase() === filtro);
+        ? allTickets
+        : allTickets.filter(t => t.status.displayName.toLowerCase() === filtro);
       renderTickets(dataFiltrada);
     });
   });
 
-  // Manejador de clics para iconos de auditoría y tarjetas
   document.addEventListener('click', e => {
     const iconBtn = e.target.closest('.btn-icon1');
-    if (iconBtn) {
-      const tarjeta = iconBtn.closest('.card');
-      const idNum = tarjeta.querySelector('.id p')?.textContent.replace('#', '').trim();
-      localStorage.setItem('ticketAuditoriaID', idNum);
-      window.location.href = 'TicketAuditory.html';
-      return; // Salir para no disparar la otra redirección
-    }
-
-    // Click en cualquier otra parte de la card → abrir TicketInformation
     const tarjeta = e.target.closest('.card');
+    
     if (tarjeta) {
-      const idNum = tarjeta.querySelector('.id p')?.textContent.replace('#', '').trim();
-      if (idNum) {
-        // Navegamos pasando el ID como query param
-        window.location.href = `TicketInformation.html?id=${idNum}`;
+      const idElemento = tarjeta.querySelector('.id p');
+      if (idElemento) {
+        const idNum = idElemento.textContent.replace('#', '').trim();
+        if (idNum) {
+          if (iconBtn) {
+            // Navegación para el historial
+            localStorage.setItem('ticketAuditoriaID', idNum);
+            window.location.href = 'TicketAuditory.html';
+          } else {
+            // Navegación para el resto de la tarjeta
+            window.location.href = `TicketInformation.html?id=${idNum}`;
+          }
+        }
       }
     }
   });
