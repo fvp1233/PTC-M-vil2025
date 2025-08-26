@@ -311,7 +311,7 @@ h5 {
 }
 
 .oculto {
-    display: none;
+    display: none !important;
 }
 
 .texto-final p {
@@ -337,8 +337,7 @@ form button {
 .add {
     background-color: #6A040F;
     position: fixed;
-    /* Ajustado: Sube la posición del botón para que no quede detrás del menú */
-    bottom: 5.5rem;
+    bottom: 8rem;
     right: 25px;
     color: white;
     border: none;
@@ -350,7 +349,6 @@ form button {
     justify-content: center;
     align-items: center;
     transition: transform 0.4s;
-    /* CORRECCIÓN CRÍTICA: Asegura que el botón esté por encima del menú */
     z-index: 1001; 
 }
 
@@ -476,7 +474,7 @@ form textarea:focus {
     max-width: 400px;
     margin: 0 auto;
     display: block;
-    margin-top: -2rem;
+    margin-top: -1rem;
 }
 
 /* Contenedor principal de la paginación */
