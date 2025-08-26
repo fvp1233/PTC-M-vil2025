@@ -62,3 +62,29 @@ export const getTicketById = async (ticketId) => {
         throw error;
     }
 };
+
+export const getPrioridades = async () => {
+    try {
+        const token = getAuthToken();
+        const response = await fetch(`${API_BASE_URL}/priorities`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (!response.ok) {
+            if (response.status === 404) {
+                return []; 
+            }
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error("Error fetching priorities:", error);
+        throw error;
+    }
+};
+

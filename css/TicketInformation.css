@@ -486,6 +486,253 @@ main {
   height: 35px;    /* Define la altura exacta */
 }
 
+#ticket-img img{
+ max-width: 100%;
+ max-height: 20vh;
+ object-fit: cover ;
+ border-radius: 8px;
+ box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.Headers{
+color: #000;
+}
+
+.ContentTicket{
+font-size: 14px;
+padding-bottom: 20px;
+}
+
+.Data{
+color: #7c7c7c;
+}
+
+.menu {
+position: fixed;
+bottom: 0;
+left: 0;
+width: 100%;
+max-width: 100vw;
+display: flex;
+justify-content: space-around;
+align-items: center;
+border-top: 1px solid #929292;
+padding: 0.5rem 0;
+z-index: 1000;
+background-color: #FBF6F6;
+}
+
+.menu img {
+height: 18px;
+}
+
+.menu a {
+font-size: 1.5rem;
+}
+
+.ticket-actions {
+display: flex;
+flex-direction: column;
+gap: 8px;
+margin-top: 20px;
+align-items: center;
+}
+
+.btn-edit-ticket {
+width: 65%;
+padding: 8px 0;
+background-color: #bc3233;
+color: #fff;
+border: none;
+border-radius: 6px;
+font-size: 12px;
+font-weight: bold;
+text-transform: uppercase;
+cursor: pointer;
+margin: 0 auto;
+}
+
+.btn-delete {
+width: 40px;
+height: 40px;
+padding: 0;
+background: transparent;
+border: none;
+display: flex; align-items: center;
+justify-content: center;
+cursor: pointer;
+margin-right: 10px;
+align-self: flex-end;
+margin-bottom: 65px;
+}
+
+.btn-delete svg {
+width: 35px;
+height: 35px;
+}
+
+/* --- Estilos de Creacion de ticket reusados --- */
+
+.btn-prioridad {
+    background-color: #e9ecef;
+    border: 1px solid #ced4da;
+    color: #495057;
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-prioridad.active {
+    background-color: #6c040f;
+    color: white;
+    border-color: #6c040f;
+    font-weight: bold;
+}
+
+/* Notificacion */
+.custom-notification {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 300px;
+    padding: 10px 20px;
+    color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 2000;
+    transition: all 0.4s ease;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.custom-notification.show {
+    opacity: 1;
+    visibility: visible;
+    top: 40px;
+}
+
+.custom-notification.success {
+    background-color: #5cb85c;
+}
+
+.custom-notification.error {
+    background-color: #d9534f;
+}
+
+.notification-content {
+    display: flex;
+    align-items: center;
+}
+
+.notification-icon {
+    font-size: 24px;
+    margin-right: 15px;
+}
+
+.notification-text {
+    font-weight: 500;
+    font-size: 14px;
+}
+
+
+/* Modal para subir imagen */
+.custom-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.custom-modal-content {
+    background-color: #fefefe;
+    padding: 20px;
+    border-radius: 10px 10px 0 0;
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+}
+
+.custom-close-button {
+    color: #aaa;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.custom-close-button:hover,
+.custom-close-button:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.custom-modal-content img {
+    width: 50px;
+    height: 50px;
+}
+
+.custom-modal-content button {
+    border: none;
+    background: none;
+    padding: 0;
+}
+
+.custom-modal-content div p {
+    margin-top: 5px;
+    font-size: 14px;
+    color: #6c040f;
+}
+
+.image-preview-item {
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    padding: 5px;
+    margin-right: 10px;
+    background-color: #fff;
+}
+
+.image-preview-item img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    max-height: 200px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.remove-image-btn {
+    top: 0;
+    right: 0;
+    background-color: rgba(220, 53, 69, 0.8);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transform: translate(50%, -50%);
+}
+
 
 
 
