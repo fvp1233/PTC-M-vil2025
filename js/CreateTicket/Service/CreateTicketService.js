@@ -44,3 +44,39 @@ export async function updateTicket(id, ticketData) {
   });
   return res.text(); // Devuelve el toString del ticket
 }
+
+export const getTicketById = async (ticketId) => {
+    try {
+        const response = await fetchWithAuth(`${API_URL}/GetTicketById/${ticketId}`);
+        if (!response.ok) {
+            throw new Error(`Error al obtener el ticket: ${response.statusText}`);
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error en la llamada a la API para el ticket:', error);
+        throw error;
+    }
+};
+
+export async function deleteTicket(id) {
+    try {
+        const response = await fetchWithAuth(`http://localhost:8080/api/DeleteTicket/${id}`, {
+            method: 'DELETE'
+        });
+
+        // Verificamos si la respuesta es exitosa (código 200-299)
+        if (!response.ok) {
+            // Si no es exitosa, leemos el error y lo lanzamos.
+            const errorText = await response.text();
+            throw new Error(`Error al eliminar el ticket: ${response.status} - ${errorText}`);
+        }
+
+        // Si la respuesta es exitosa, simplemente devolvemos true sin intentar leer el cuerpo
+        // Esto evita el error de "Unexpected end of JSON input"
+        return true; 
+    } catch (error) {
+        console.error('Error en la llamada a la API para eliminar ticket:', error);
+        throw error;
+    }
+}
