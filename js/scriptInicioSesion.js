@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                     case 3:
                         
                     default:
-                        window.location.href = '../dashboardTech.html';
+                        window.location.href = '../Interfaces/dashboardTech.html';
                 }
 
             } catch (error) {
