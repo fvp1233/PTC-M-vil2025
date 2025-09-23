@@ -1,7 +1,7 @@
-import { getAssignedTicketsByTech, getUserById } from "../dashboardTechService/ticketTechService.js";
+import { getAssignedTicketsByTech, getUserById } from "./DashboardTech/dashboardTechService/ticketTechService.js";
 import { getUserId } from "./authService.js";
 
-// Utility functions (truncateDescriptions, renderTickets) remain the same
+// Funciones de utilidad que se mantienen
 function truncateDescriptions(maxChars = 23) {
   document.querySelectorAll('.description p').forEach(desc => {
     if (!desc.dataset.fullText) desc.dataset.fullText = desc.textContent.trim();
@@ -101,7 +101,7 @@ function renderTickets(tickets) {
   truncateDescriptions();
 }
 
-// Global variables for data and filter state
+// Variables globales para la data y el estado de filtrado
 let allTickets = [];
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -118,14 +118,12 @@ document.addEventListener('DOMContentLoaded', async () => {
       
       const ticketsWithTechName = await Promise.all(ticketsFromAPI.map(async (t) => {
           let techName = 'N/A';
-          // Check if assignedTech is an object and has a userId property
-          const techId = t.assignedTech?.userId || t.assignedTech?.id;
-          if (techId) {
+          if (t.assignedTech) {
               try {
-                  const techUser = await getUserById(techId);
+                  const techUser = await getUserById(t.assignedTech);
                   techName = techUser.displayName || techUser.name || 'N/A';
               } catch (userError) {
-                  console.error(`Error al obtener el técnico con ID ${techId}:`, userError);
+                  console.error(`Error al obtener el técnico con ID ${t.assignedTech}:`, userError);
               }
           }
           
