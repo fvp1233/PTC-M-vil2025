@@ -52,13 +52,17 @@ export async function fetchWithAuth(url, options = {}) {
         //Contruye la URL COMPLETA por si viene con algun error, aqui se solciona, asi es mas flexible
         const fullUrl = url.startsWith('http') ? url : `${API_URL}${url.startsWith('/') ? '' : '/'}${url}`;
 
+        const isFormData = options.body instanceof FormData;
+        const headers = { ...options.headers};
+
+        if(!isFormData){
+            headers['Content-Type'] = 'application/json';
+        }
+
         const config = {
             ...options,
             credentials: 'include', //Para enviar cookies
-            headers: {
-                'Content-Type': 'application/json',
-                ...options.headers // Mantener headers personalizados
-            }
+            headers: headers
         };
                 console.log('📤 Request config:', config);
         
@@ -119,8 +123,14 @@ export async function fetchWithAuth(url, options = {}) {
     }
 }
 
-export function getUserId() {
-    return localStorage.getItem('userId');
+export async function getUserId() {
+    try{
+        const userData = await me();
+        return userData.userId;
+
+    } catch (error){
+        return null;
+    }
 }
 
  function clearUserData(){

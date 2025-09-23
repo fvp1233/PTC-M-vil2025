@@ -224,7 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const ticketData = {
                 title,
                 description,
-                imageUrl: uploadedImageUrl,
+               // imageUrl: uploadedImageUrl,
                 percentage: 0,
                 userId: parseInt(userId),
                 category: { id: parseInt(categoriaId) },
@@ -232,7 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 assignedTech: { id: parseInt(tecnicoId) }
             };
 
-            const result = await createTicket(ticketData);
+            const result = await createTicket(ticketData, uploadedImageUrl);
             showNotification('success', 'Ticket creado correctamente.', result.ticketId);
 
             // Limpiar el formulario y el estado del botón
