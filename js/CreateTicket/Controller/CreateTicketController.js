@@ -1,10 +1,6 @@
 import { getCategorias, getPrioridades, getTecnicosDisponibles, createTicket } from "../Service/CreateTicketService.js";
 import { uploadImageToFolder } from "../Service/imageService.js";
-import { getUserId } from "../../authService.js";
-import { getAuthToken } from "../../authService.js";
-
-console.log('Token desde authService:', getAuthToken());
-console.log('Token directo desde localStorage:', localStorage.getItem('jwt_token'));
+import { getUserId } from "../../Login/AuthService/authService.js";
 
 document.addEventListener('DOMContentLoaded', () => {
     console.log("entramos");

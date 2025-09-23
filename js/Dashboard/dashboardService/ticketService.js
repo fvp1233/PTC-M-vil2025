@@ -1,17 +1,14 @@
-import { fetchWithAuth } from '../../authService.js';
+import { fetchWithAuth } from "../../Login/AuthService/authService.js";
 
 const API_URL = 'http://localhost:8080/api';
 
 // Obtiene todos los tickets de la API.
 export async function getTickets() {
     try {
-        const response = await fetchWithAuth(`${API_URL}/GetTickets`);
+        // ✅ fetchWithAuth ahora devuelve el JSON directamente
+        const data = await fetchWithAuth(`${API_URL}/admin/GetTickets`);
+        return data;
         
-        if (!response.ok) {
-            throw new Error(`HTTP error status: ${response.status}`);
-        }
-
-        return await response.json();
     } catch (error) {
         console.error("Error al obtener tickets:", error);
         throw error;
@@ -20,12 +17,10 @@ export async function getTickets() {
 
 export const getRecentTicketsByUser = async (userId) => {
     try {
-        const response = await fetchWithAuth(`${API_URL}/GetRecentTicketsByUser/${userId}`);
-        if (!response.ok) {
-            throw new Error(`Error al obtener los tickets: ${response.statusText}`);
-        }
-        const data = await response.json();
+        // ✅ fetchWithAuth devuelve datos, no response
+        const data = await fetchWithAuth(`${API_URL}/client/GetRecentTicketsByUser/${userId}`);
         return data;
+        
     } catch (error) {
         console.error('Error en la llamada a la API:', error);
         throw error;
@@ -34,29 +29,22 @@ export const getRecentTicketsByUser = async (userId) => {
 
 export const getUserById = async (userId) => {
     try {
-        const response = await fetchWithAuth(`${API_URL}/GetUserById/${userId}`);
-        if (!response.ok) {
-            throw new Error(`Error al obtener usuario: ${response.statusText}`);
-        }
-        const user = await response.json();
+        // ✅ Directamente obtenemos los datos
+        const user = await fetchWithAuth(`${API_URL}/GetUser/${userId}`);
         return user;
+        
     } catch (error) {
         console.error('Error en la llamada a la API:', error);
         throw error;
     }
 };
 
-
-
-// Obtiene un ticket específico y su historial por ID.
 export const getTicketById = async (ticketId) => {
     try {
-        const response = await fetchWithAuth(`${API_URL}/GetTicketById/${ticketId}`);
-        if (!response.ok) {
-            throw new Error(`Error al obtener el ticket: ${response.statusText}`);
-        }
-        const data = await response.json();
+        // ✅ Sin .json(), sin .ok
+        const data = await fetchWithAuth(`${API_URL}/client/GetTicketById/${ticketId}`);
         return data;
+        
     } catch (error) {
         console.error('Error en la llamada a la API para el ticket:', error);
         throw error;
@@ -65,26 +53,18 @@ export const getTicketById = async (ticketId) => {
 
 export const getPrioridades = async () => {
     try {
-        const token = getAuthToken();
-        const response = await fetch(`${API_BASE_URL}/priorities`, {
+        // ✅ Para requests con configuración especial
+        const data = await fetchWithAuth(`${API_URL}/priority`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
             }
         });
 
-        if (!response.ok) {
-            if (response.status === 404) {
-                return []; 
-            }
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        return await response.json();
+        return data;
+        
     } catch (error) {
         console.error("Error fetching priorities:", error);
         throw error;
     }
 };
-

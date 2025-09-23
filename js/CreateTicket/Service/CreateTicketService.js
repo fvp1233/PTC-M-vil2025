@@ -1,4 +1,4 @@
-import { fetchWithAuth } from "../../authService.js";
+import { fetchWithAuth } from "../../Login/AuthService/authService.js";
 
 const API_URL = 'http://localhost:8080/api';
 
@@ -10,13 +10,23 @@ export async function getCategorias() {
   return response.json();
 }
 
-export async function getPrioridades() {
-  const response = await fetchWithAuth(`${API_URL}/priority`)
-  if(!response.ok){
-    throw new Error('No se pudieron obtener las prioridades');
+export const getPrioridades = async () => {
+    try {
+        // ✅ Para requests con configuración especial
+        const data = await fetchWithAuth(`${API_URL}/priority`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+              },
+        });
+
+        return data;
+        
+    } catch (error) {
+        console.error("Error fetching priorities:", error);
+        throw error;
+    }
   }
-  return response.json();
-}
 
 export async function getTecnicosDisponibles() {
   const response = await fetchWithAuth(`${API_URL}/GetTech`)
@@ -79,4 +89,4 @@ export async function deleteTicket(id) {
         console.error('Error en la llamada a la API para eliminar ticket:', error);
         throw error;
     }
-}
+  }
