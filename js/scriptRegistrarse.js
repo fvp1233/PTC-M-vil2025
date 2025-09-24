@@ -76,7 +76,7 @@ registrationForm.addEventListener('submit', async (e) => {
         }).then(() => {
             // Después de que el usuario acepta la alerta, limpia todos los campos del formulario.
             registrationForm.reset();
-            window.location.href = '../Interfaces/inicioSesion.html';
+            window.location.href = '../inicioSesion.html';
         });
     // Si la función 'registerUser' lanzó un error, este bloque lo captura.
     } catch (error) {

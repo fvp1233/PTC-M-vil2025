@@ -27,16 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const newPassword = newPasswordInput.value;
         const confirmPassword = confirmPasswordInput.value;
 
-        // Obtener el nombre de usuario y token con las claves correctas
-        // Las claves 'user_username' y 'jwt_token' deben coincidir
-        // con las usadas en tu script de login.
-        const username = localStorage.getItem('user_username'); 
-        const token = localStorage.getItem('jwt_token');
-
-        // Línea de depuración añadida
-        console.log("HOLAAAAAAAAAAAAAAAAAA")
-        console.log('Username from localStorage:', username);
-        console.log('Token from localStorage:', token);
+        const username = localStorage.getItem('user_username');
 
         // Validaciones del lado del cliente
         if (newPassword !== confirmPassword) {
@@ -53,8 +44,8 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // VERIFICACIÓN CLAVE: Comprobar si el nombre de usuario y el token existen
-        if (!username || !token) {
+        // VERIFICACIÓN CLAVE: Comprobar si el nombre de usuario
+        if (!username) {
             console.error('Error: Nombre de usuario o token faltante en localStorage.');
             messageContainer.textContent = 'Faltan credenciales. Por favor, inicie sesión de nuevo.';
             messageContainer.classList.add('text-danger');
@@ -70,8 +61,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
                 },
+                credentials: 'include',
                 body: JSON.stringify({
                     username: username,
                     newPassword: newPassword,
@@ -86,9 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 messageContainer.classList.add('text-success');
                 messageContainer.classList.remove('text-danger');
                 
-                // Borra el token obsoleto y el username del localStorage
-                localStorage.removeItem('jwt_token'); 
-                localStorage.removeItem('user_username');
+                localStorage.setItem('passwordExpired', 'false');
                 
                 setTimeout(() => {
                     window.location.href = 'inicioSesion.html';

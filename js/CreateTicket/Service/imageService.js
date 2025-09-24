@@ -1,4 +1,4 @@
-import { fetchWithAuth } from "../../authService.js";
+import { fetchWithAuth } from "../../Login/AuthService/authService.js";
 
 const IMAGE_API = 'http://localhost:8080/api/image';
 

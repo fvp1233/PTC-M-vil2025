@@ -1,10 +1,6 @@
 import { getCategorias, getPrioridades, getTecnicosDisponibles, createTicket } from "../Service/CreateTicketService.js";
 import { uploadImageToFolder } from "../Service/imageService.js";
-import { getUserId } from "../../authService.js";
-import { getAuthToken } from "../../authService.js";
-
-console.log('Token desde authService:', getAuthToken());
-console.log('Token directo desde localStorage:', localStorage.getItem('jwt_token'));
+import { getUserId } from "../../Login/AuthService/authService.js";
 
 document.addEventListener('DOMContentLoaded', () => {
     console.log("entramos");
@@ -228,7 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const ticketData = {
                 title,
                 description,
-                imageUrl: uploadedImageUrl,
+               // imageUrl: uploadedImageUrl,
                 percentage: 0,
                 userId: parseInt(userId),
                 category: { id: parseInt(categoriaId) },
@@ -236,7 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 assignedTech: { id: parseInt(tecnicoId) }
             };
 
-            const result = await createTicket(ticketData);
+            const result = await createTicket(ticketData, uploadedImageUrl);
             showNotification('success', 'Ticket creado correctamente.', result.ticketId);
 
             // Limpiar el formulario y el estado del botón
