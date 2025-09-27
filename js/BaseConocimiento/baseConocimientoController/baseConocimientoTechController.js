@@ -1,5 +1,5 @@
 // Se importan las funciones getAuthToken y getUserId desde el servicio de autenticación.
-import { getAuthToken, getUserId } from '../../authService.js';
+import { getAuthToken, getUserId } from '../../Login/AuthService/authService.js';
 
 // Se importan las funciones necesarias para interactuar con el servicio de soluciones de la base de conocimiento.
 import {
