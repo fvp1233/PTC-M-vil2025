@@ -4,10 +4,8 @@ const API_URL = 'http://localhost:8080/api';
 
 export async function getCategorias() {
   const response = await fetchWithAuth(`${API_URL}/categories`)
-  if(!response.ok){
-    throw new Error('No se pudieron obtener las categorias');
-  }
-  return response.json();
+ 
+  return await response;
 }
 
 export const getPrioridades = async () => {
@@ -33,16 +31,22 @@ export async function getTecnicosDisponibles() {
   if(!response.ok){
     throw new Error('No se pudieron obtener los tecnicos disponibles');
   }
-  return response.json();
+  return response;
 }
 
 
-export async function createTicket(ticketData) {
-  const res = await fetchWithAuth(`${API_URL}/PostTicket`, {
+export async function createTicket(ticketData, imageUrl) {
+  const payload = {...ticketData, imageUrl};
+  const res = await fetchWithAuth(`${API_URL}/client/PostTicket`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(ticketData)
+    body: JSON.stringify(payload)
   });
+
+  if(!res.ok){
+    const errorData = await res.json();
+    throw new Error(errorData.error || 'Error al crear el ticket');
+  }
   return res.json();
 }
 
