@@ -1,5 +1,6 @@
 import { getRecentTicketsByUser } from './Dashboard/dashboardService/ticketService.js';
-import { getAuthToken, getUserId } from './authService.js';
+// La siguiente línea ha sido removida para que el código no use directamente authService
+// import { getAuthToken, getUserId } from './authService.js';
 
 // Variable para almacenar los tickets cargados
 let allTickets = [];
@@ -115,15 +116,19 @@ function renderTickets(tickets) {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-  const token = getAuthToken();
-  const loggedInUserId = getUserId();
-  
-  if (!token || !loggedInUserId) {
-    console.error('No se encontró el token de autenticación o el ID de usuario. Redirigiendo...');
+  // Aquí se ha modificado la lógica para obtener el ID de usuario directamente del localStorage
+  const loggedInUserId = localStorage.getItem('userId');
+
+  // La validación ahora solo verifica el ID del usuario
+  if (!loggedInUserId) {
+    console.error('No se encontró el ID de usuario. Redirigiendo...');
+    // Puedes descomentar la siguiente línea para redirigir al usuario si no hay ID
+    // window.location.href = 'inicioSesion.html';
     return;
   }
-  
+
   try {
+    // Se mantiene la llamada a la función de servicio, que a su vez usa fetchWithAuth
     allTickets = await getRecentTicketsByUser(loggedInUserId);
     renderTickets(allTickets);
   } catch (error) {
@@ -140,9 +145,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     button.addEventListener('click', () => {
       document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
       button.classList.add('active');
-      
+
       let filtro = button.textContent.trim().toLowerCase();
-      
+
       // Mapea 'pendiente' a 'en espera'
       if (filtro === 'pendiente') {
         filtro = 'en espera';
@@ -151,7 +156,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (filtro === 'en proceso') {
         filtro = 'en progreso';
       }
-      
+
       const dataFiltrada = (filtro === 'todo')
         ? allTickets
         : allTickets.filter(t => t.status.displayName.toLowerCase() === filtro);
@@ -162,7 +167,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.addEventListener('click', e => {
     const iconBtn = e.target.closest('.btn-icon1');
     const tarjeta = e.target.closest('.card');
-    
+
     if (tarjeta) {
       const idElemento = tarjeta.querySelector('.id p');
       if (idElemento) {
