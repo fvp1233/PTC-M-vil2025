@@ -5,6 +5,7 @@ const API_URL = 'http://localhost:8080/api';
 export async function getCategorias() {
   const response = await fetchWithAuth(`${API_URL}/categories`)
  
+  
   return await response;
 }
 
@@ -28,9 +29,7 @@ export const getPrioridades = async () => {
 
 export async function getTecnicosDisponibles() {
   const response = await fetchWithAuth(`${API_URL}/GetTech`)
-  if(!response.ok){
-    throw new Error('No se pudieron obtener los tecnicos disponibles');
-  }
+  
   return response;
 }
 
@@ -43,11 +42,7 @@ export async function createTicket(ticketData, imageUrl) {
     body: JSON.stringify(payload)
   });
 
-  if(!res.ok){
-    const errorData = await res.json();
-    throw new Error(errorData.error || 'Error al crear el ticket');
-  }
-  return res.json();
+  return res;
 }
 
 export async function updateTicket(id, ticketData) {

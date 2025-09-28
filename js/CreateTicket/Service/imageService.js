@@ -12,8 +12,7 @@ export async function uploadImage(file) {
     body: formData
   });
 
-  if (!res.ok) throw new Error('Error al subir imagen');
-  return await res.json();
+  return await res;
 }
 
 
@@ -27,6 +26,5 @@ export async function uploadImageToFolder(file, folder) {
     body: formData
   });
 
-  if (!res.ok) throw new Error('Error al subir imagen a carpeta');
-  return await res.json();
+  return await res;
 }
