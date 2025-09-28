@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
             });
 
 
-            // ✅ DEBUG DETALLADO de la respuesta
+            // DEBUG DETALLADO de la respuesta
             console.log('📨 Response status:', response.status);
             console.log('🔤 Response headers:');
             for (const [key, value] of response.headers.entries()) {    
@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
         const roleRoutes = {
             'CLIENTE': '../../../dashboard.html',
-            'TECNICO': '../Dashboard/dashboardTech.html',
+            'TECNICO': '../../../dashboardTech.html',
             'ADMINISTRADOR': '../Dashboard/dashboard.html'
         };
 

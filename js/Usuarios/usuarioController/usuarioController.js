@@ -8,6 +8,13 @@ import {
 import {
     uploadImageToFolder
 } from '../../CreateTicket/Service/imageService.js';
+import {
+     fetchWithAuth, logout 
+} from '../../Login/AuthService/authService.js';
+
+import {
+     me 
+} from '../../Login/AuthService/authService.js';
 
 const nombre = document.getElementById('nombre');
 const usuario = document.getElementById('usuario');
@@ -24,24 +31,24 @@ let overlayVisible = false;
 
 // Variables globales para el usuario
 let currentUser = null;
-let userId = null;
+let loggedInUser = null;
 
 // Solicitud GET para cargar los datos del usuario desde la API
 async function CargarDatos() {
     try {
-        const storedUserId = localStorage.getItem('userId');
+        loggedInUser = await me();
 
-        if (!storedUserId) {
+        if (!loggedInUser || !loggedInUser.userId) {
             console.error("No se encontró un ID de usuario en el localStorage. Por favor, inicie sesión.");
             return;
         }
 
-        currentUser = await getUserById(storedUserId);
+        const user = await getUserById(loggedInUser.userId);
 
-        if (currentUser) {
-            userId = currentUser.id;
-            CargarUsuario(currentUser);
-            console.log("Datos del usuario cargados:", currentUser);
+        if (user) {
+            currentUser =user;
+            CargarUsuario(user);
+            console.log("Datos del usuario cargados:", user);
         } else {
             console.error("No se encontraron datos de usuario para el ID proporcionado.");
         }
@@ -109,10 +116,8 @@ if (btnConfirmarLogout) {
     btnConfirmarLogout.addEventListener("click", async (event) => {
         event.preventDefault();
         modalLogout.close();
-
-        localStorage.removeItem("jwt_token");
-        localStorage.removeItem("userId");
-        window.location.href = '../Interfaces/inicioSesion.html';
+        await logout();
+        window.location.href = '../inicioSesion.html';
     });
 }
 
@@ -268,7 +273,7 @@ async function uploadImage(file) {
 
     try {
         const data = await uploadImageToFolder(file, 'usuarios');
-        const newPhotoUrl = data.secure_url;
+        const newPhotoUrl = data.url;
 
         console.log('URL de la nueva foto:', newPhotoUrl);
 
@@ -300,16 +305,15 @@ async function updateProfilePicture(photoUrl) {
     }
 
     try {
-        const res = await fetch(`http://localhost:8080/api/users/${currentUser.id}/profile-picture`, {
+        const res = await fetchWithAuth(`http://localhost:8080/api/users/${currentUser.id}/profile-picture`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('jwt_token')}`
             },
             body: JSON.stringify({ profilePictureUrl: photoUrl }),
         });
 
-        if (res.ok) {
+        if (res) {
             currentUser.profilePictureUrl = photoUrl;
             fotoPerfil.src = photoUrl;
             Swal.fire({

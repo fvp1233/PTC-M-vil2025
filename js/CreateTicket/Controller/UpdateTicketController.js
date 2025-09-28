@@ -1,7 +1,8 @@
 import { getPrioridades, updateTicket } from "../Service/CreateTicketService.js";
 import { getTicketById } from "../../Dashboard/dashboardService/ticketService.js";
 import { uploadImageToFolder } from "../Service/imageService.js";
-import { getUserId } from "../../authService.js";
+// Se ha eliminado la importación de getUserId desde authService.js
+// import { getUserId } from "../../authService.js";
 
 document.addEventListener('DOMContentLoaded', () => {
     const ticketForm = document.getElementById('ticketForm');
@@ -248,7 +249,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (err.message.includes('401') || err.message.includes('403') || err.message.includes('No se encontró el token') || err.message.includes('400')) {
                  showNotification('error', 'Ocurrió un error. Por favor, revisa tus permisos o contacta a soporte.');
                  setTimeout(() => {
-                    window.location.href = 'inicioSesion.html';
+                     window.location.href = 'inicioSesion.html';
                  }, 3000);
             } else {
                  showNotification('error', 'Ocurrió un error al actualizar el ticket.');
