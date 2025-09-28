@@ -1,14 +1,10 @@
-import { fetchWithAuth } from "../../authService.js";
+import { fetchWithAuth } from "../../Login/AuthService/authService.js";
 
 const API_URL = 'http://localhost:8080/api'
 
 export async function getAssignedTicketsByTech(technicianId) {
     try {
-        const response = await fetchWithAuth(`${API_URL}/GetAssignedTicketsByTech/${technicianId}`);
-        if (!response.ok) {
-            throw new Error(`Error al obtener los tickets: ${response.statusText}`);
-        }
-        const data = await response.json();
+        const data = await fetchWithAuth(`${API_URL}/tech/GetAssignedTicketsByTech/${technicianId}`);
         return data;
     } catch (error) {
         console.error('Error en la llamada a la API:', error);
@@ -16,16 +12,42 @@ export async function getAssignedTicketsByTech(technicianId) {
     }
 }
 
-export const getUserById = async (userId) => {
+
+export async function acceptTicket(ticketId, technicianId) {
     try {
-        const response = await fetchWithAuth(`${API_URL}/GetUserById/${userId}`);
-        if (!response.ok) {
-            throw new Error(`Error al obtener usuario: ${response.statusText}`);
-        }
-        const user = await response.json();
-        return user;
+        //  NUEVA FUNCIÓN: Llama al endpoint para aceptar un ticket
+        const response = await fetchWithAuth(`${API_URL}/tech/accept/${ticketId}/${technicianId}`, {
+            method: 'PUT'
+        });
+        
+        // El back-end devuelve 200 OK si todo fue bien.
+        // fetchWithAuth ya devuelve el JSON parseado.
+        return response;
+
+    } catch (error) {
+        console.error('Error al aceptar el ticket:', error);
+        throw error;
+    }
+}
+
+export const getAvailableTicketsForTechnician = async (technicianId) => {
+    try {
+        const data = await fetchWithAuth(`${API_URL}/tech/available-tickets?technicianId=${technicianId}`);
+        return data;
     } catch (error) {
         console.error('Error en la llamada a la API:', error);
         throw error;
     }
 };
+
+export async function declineTicket(ticketId, technicianId) {
+    try {
+        const response = await fetchWithAuth(`${API_URL}/tech/decline-ticket/${ticketId}/${technicianId}`, {
+            method: 'POST'
+        });
+        return response;
+    } catch (error) {
+        console.error('Error al declinar el ticket:', error);
+        throw error;
+    }
+}
