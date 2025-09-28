@@ -1,7 +1,8 @@
 // TicketInformation.js
 
 import { getTicketById } from './Dashboard/dashboardService/ticketService.js';
-import { getAuthToken, getUserId } from './authService.js';
+// La siguiente línea ha sido removida para que el código no use directamente authService
+// import { getAuthToken, getUserId } from './authService.js';
 import { deleteTicket } from './CreateTicket/Service/CreateTicketService.js';
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -11,11 +12,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     const main = document.querySelector("main");
     const deleteButton = document.querySelector(".btn-delete");
 
-    const token = getAuthToken();
-    const userId = getUserId();
+    // Lógica adaptada para obtener el userId directamente de localStorage
+    const userId = localStorage.getItem('userId');
 
     // Verificamos si hay token o ID de ticket antes de proceder
-    if (!token || !userId || !ticketId) {
+    if (!userId || !ticketId) {
         console.error("Authentication or Ticket ID missing.");
         main.innerHTML = `
             <div class="row text-center g-0 noTickets">
