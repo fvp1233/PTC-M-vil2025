@@ -1,4 +1,4 @@
-import { getRecentTicketsByUser } from './Dashboard/dashboardService/ticketService.js';
+import { getRecentTicketsByUser } from '../Dashboard/dashboardService/ticketService.js';
 // La siguiente línea ha sido removida para que el código no use directamente authService
 // import { getAuthToken, getUserId } from './authService.js';
 

@@ -46,7 +46,7 @@ export async function createTicket(ticketData, imageUrl) {
 }
 
 export async function updateTicket(id, ticketData) {
-  const res = await fetchWithAuth(`${API_URL}/UpdateTicket/${id}`, {
+  const res = await fetchWithAuth(`${API_URL}/client/UpdateTicket/${id}`, {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(ticketData)
