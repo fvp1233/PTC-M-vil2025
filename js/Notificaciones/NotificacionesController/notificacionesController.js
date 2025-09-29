@@ -5,7 +5,7 @@ import {
     getSavedNotifications, 
     FormatearFecha,
     setupStompClient 
-} from './notificationService.js'; 
+} from '../NotificacionesService/notificacionesService.js'; 
 
 // Variables de estado y DOM
 let noNotifVista = null; // El div de "No tienes notificaciones"
