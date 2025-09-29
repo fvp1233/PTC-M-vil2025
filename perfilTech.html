@@ -111,7 +111,7 @@
       </header>
       <div class="acciones">
         <button class="cancelar" id="btnCerrarModalLogout">Cancelar</button>
-        <button class="confirmar">Cerrar Sesión</button>
+        <button class="confirmar" id="btnConfirmarLogout">Cerrar Sesión</button>
       </div>
     </article>
   </dialog>
@@ -140,8 +140,11 @@
     <a href="perfilTech.html"><img src="img/menu/perfil_active.png" alt=""></a>
   </div>
 
-  <script src="js/scriptPerfilTech.js"></script>
+  <script type="module" src="js/Usuarios/usuarioController/usuarioTechController.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.0/sockjs.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+  <script type="module" src="js/Notificaciones/NotificacionesController/notificacionesController.js"></script>
 </body>
 
 </html>

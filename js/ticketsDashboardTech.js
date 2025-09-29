@@ -1,4 +1,6 @@
-import { getAssignedTicketsByTech, getUserById } from "./DashboardTech/dashboardTechService/ticketTechService.js";
+
+import { getAssignedTicketsByTech, getUserById } from "../js/DashboardTech/dashboardTechService/ticketTechService.js";
+
 import { getUserId } from "./authService.js";
 
 // Funciones de utilidad que se mantienen

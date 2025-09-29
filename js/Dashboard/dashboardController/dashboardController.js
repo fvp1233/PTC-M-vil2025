@@ -1,11 +1,17 @@
-import { getRecentTicketsByUser } from '../dashboardService/ticketService.js';
-import { getAuthToken } from '../../authService.js';
+import { getRecentTicketsByUser } from "../dashboardService/ticketService.js";
 
 document.addEventListener('DOMContentLoaded', async () => {
-    const token = getAuthToken();
-    console.log('Token directo desde localStorage:', localStorage.getItem('jwt_token'));
+    console.log('🔄 Dashboard cargado');
+    console.log('📍 URL actual:', window.location.href);
+    console.log('🍪 Cookies en dashboard:', document.cookie);
     const loggedInUserId = localStorage.getItem('userId');
-    if (!token || !loggedInUserId) return;
+    //Si la cookie no existe, la petiicion a la api fallara y el usuario sera redirigido al login
+    if (!loggedInUserId) 
+        {
+            console.log("Id de usuario no encontrado")
+            window.location.href = 'inicioSesion.html'
+            return;
+        }
 
     function updateDate() {
         const dateElement = document.querySelector('.date p');

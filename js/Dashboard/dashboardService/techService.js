@@ -1,4 +1,4 @@
-import { fetchWithAuth } from "../../authService.js";
+import { fetchWithAuth } from "../../Login/AuthService/authService";
 
 const API_URL = 'http://localhost:8080/api';
 

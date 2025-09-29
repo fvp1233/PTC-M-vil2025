@@ -1,10 +1,6 @@
 import { getCategorias, getPrioridades, getTecnicosDisponibles, createTicket } from "../Service/CreateTicketService.js";
 import { uploadImageToFolder } from "../Service/imageService.js";
-import { getUserId } from "../../authService.js";
-import { getAuthToken } from "../../authService.js";
-
-console.log('Token desde authService:', getAuthToken());
-console.log('Token directo desde localStorage:', localStorage.getItem('jwt_token'));
+import { getUserId } from "../../Login/AuthService/authService.js";
 
 document.addEventListener('DOMContentLoaded', () => {
     console.log("entramos");
@@ -180,6 +176,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const minTickets = filtrados[0].ticketsAsignados;
             const candidatos = filtrados.filter(t => t.ticketsAsignados === minTickets);
             const elegido = candidatos[Math.floor(Math.random() * candidatos.length)];
+
+            console.log('Tecnico asignado', elegido);
+            console.log('Id del tecnico', elegido.id);
+
             return elegido.id;
         } catch (error) {
             console.error('Error al asignar técnico:', error);
@@ -197,7 +197,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const description = document.getElementById('description')?.value?.trim();
         const prioridadId = selectedButton ? selectedButton.dataset.priorityId : null;
         const imageFile = imageUploadInput?.files[0];
-        const userId = getUserId(); 
+        const userId = await getUserId(); 
+
+        if(!userId){
+            showNotification('Eerror', 'El id del usuario no se pudo encotrar');
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Crear Ticket';
+            return;
+        }
 
         if (!title || !categoriaId || !description || !prioridadId ) {
             showNotification('error', 'Por favor, completa todos los campos y selecciona una imagen.');
@@ -213,8 +220,10 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log("Comprobando si hay una imagen para subir");
             if(imageFile){
                 console.log("Archivo de imagen encontrado, sera subido a cloudinary");
-                uploadedImageUrl = (await uploadImageToFolder(imageFile, 'tickets')).url;
+                const uploadedResult = await uploadImageToFolder(imageFile, 'tickets');
                 console.log("URL de la imagen obtenida", uploadedImageUrl);
+                uploadedImageUrl = uploadedResult.url;
+                console.log(uploadedImageUrl);
             }
             const tecnicoId = await asignarTecnico(categoriaId);
 
@@ -228,15 +237,15 @@ document.addEventListener('DOMContentLoaded', () => {
             const ticketData = {
                 title,
                 description,
-                imageUrl: uploadedImageUrl,
                 percentage: 0,
                 userId: parseInt(userId),
                 category: { id: parseInt(categoriaId) },
                 priority: { id: parseInt(prioridadId) },
-                assignedTech: { id: parseInt(tecnicoId) }
+                assignedTech: { id: parseInt(tecnicoId) },
+                 imageUrl: uploadedImageUrl,
             };
 
-            const result = await createTicket(ticketData);
+            const result = await createTicket(ticketData, uploadedImageUrl);
             showNotification('success', 'Ticket creado correctamente.', result.ticketId);
 
             // Limpiar el formulario y el estado del botón

@@ -1,43 +1,52 @@
-import { fetchWithAuth } from "../../authService.js";
+import { fetchWithAuth } from "../../Login/AuthService/authService.js";
 
 const API_URL = 'http://localhost:8080/api';
 
 export async function getCategorias() {
   const response = await fetchWithAuth(`${API_URL}/categories`)
-  if(!response.ok){
-    throw new Error('No se pudieron obtener las categorias');
-  }
-  return response.json();
+ 
+  
+  return await response;
 }
 
-export async function getPrioridades() {
-  const response = await fetchWithAuth(`${API_URL}/priority`)
-  if(!response.ok){
-    throw new Error('No se pudieron obtener las prioridades');
+export const getPrioridades = async () => {
+    try {
+        // ✅ Para requests con configuración especial
+        const data = await fetchWithAuth(`${API_URL}/priority`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+              },
+        });
+
+        return data;
+        
+    } catch (error) {
+        console.error("Error fetching priorities:", error);
+        throw error;
+    }
   }
-  return response.json();
-}
 
 export async function getTecnicosDisponibles() {
   const response = await fetchWithAuth(`${API_URL}/GetTech`)
-  if(!response.ok){
-    throw new Error('No se pudieron obtener los tecnicos disponibles');
-  }
-  return response.json();
+  
+  return response;
 }
 
 
-export async function createTicket(ticketData) {
-  const res = await fetchWithAuth(`${API_URL}/PostTicket`, {
+export async function createTicket(ticketData, imageUrl) {
+  const payload = {...ticketData, imageUrl};
+  const res = await fetchWithAuth(`${API_URL}/client/PostTicket`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(ticketData)
+    body: JSON.stringify(payload)
   });
-  return res.json();
+
+  return res;
 }
 
 export async function updateTicket(id, ticketData) {
-  const res = await fetchWithAuth(`${API_URL}/UpdateTicket/${id}`, {
+  const res = await fetchWithAuth(`${API_URL}/client/UpdateTicket/${id}`, {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(ticketData)
@@ -79,4 +88,4 @@ export async function deleteTicket(id) {
         console.error('Error en la llamada a la API para eliminar ticket:', error);
         throw error;
     }
-}
+  }
