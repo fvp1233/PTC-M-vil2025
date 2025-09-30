@@ -2,7 +2,7 @@
 import { getUserId } from '../../Login/AuthService/authService.js';
 
 const API_BASE = 'http://localhost:8080';
-const SESSION_STORAGE_KEY = 'h2c_notifications'; // Clave para sessionStorage
+const STORAGE_KEY = 'h2c_notifications';
 
 // ---------------------------
 // Lógica de Datos (sessionStorage)
@@ -13,7 +13,7 @@ const SESSION_STORAGE_KEY = 'h2c_notifications'; // Clave para sessionStorage
  * @returns {Array<Object>} Lista de notificaciones guardadas.
  */
 export function getSavedNotifications() {
-    const saved = sessionStorage.getItem(SESSION_STORAGE_KEY);
+    const saved = localStorage.getItem(STORAGE_KEY);
     return saved ? JSON.parse(saved) : [];
 }
 
@@ -22,7 +22,7 @@ export function getSavedNotifications() {
  * @param {Array<Object>} notifications - La lista de notificaciones a guardar.
  */
 function saveNotifications(notifications) {
-    sessionStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(notifications));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(notifications));
 }
 
 /**

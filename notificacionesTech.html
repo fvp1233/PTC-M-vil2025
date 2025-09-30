@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Notificaciones</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/styleNotificaciones.css">
+</head>
+
+<body>
+    <div class="encabezado">
+        <img src="img/flechaIzquierda.png" alt="Flecha" class="flecha">
+        <h1>Notificaciones</h1>
+    </div>
+
+    <div class="contenido" id="no-notificaciones">
+        <img src="img/notificacionesVacias.png" alt="Notificacioness vacias" class="notificacionesVacias">
+        <h3>No tienes notificaciones</h3>
+        <p>Ya has visto todas las notificaciones. Cuando tengas nuevas las verás acá.</p>
+    </div>
+
+    <div class="container" id="notificaciones">
+        <!--Notificaciones inyectadas por js-->
+    </div>
+
+    <div class="menu">
+        <a href="baseConocimientoTech.html" class="base"><img src="img/menu/baseconocimiento_inactive.png" alt=""></a>
+        <a href="ticketsDashboardTech.html" class="ticket"><img src="img/menu/tickets_inactive.png" alt=""></a>
+        <a href="dashboardTech.html" class="dashboard"><img src="img/menu/dashboard_inactive.png" alt=""></a>
+        <a href="notificacionesTech.html" class="notificacionicon"><img src="img/menu/notificaciones_active.png" alt=""></a>
+        <a href="perfilTech.html" class="perfil"><img src="img/menu/perfil_inactive.png" alt=""></a>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.0/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    <script type="module" src="js/Notificaciones/NotificacionesController/notificacionesController.js"></script>
+</body>
+
+</html>
