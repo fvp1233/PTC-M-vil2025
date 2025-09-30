@@ -82,10 +82,12 @@ export function setupStompClient(onNotificationReceived) {
         stompClient.connect(headers, function (frame) {
             console.log(`Conexión WS exitosa. Suscribiéndose a: /user/queue/notifications para ${userId}`);
 
-            stompClient.subscribe(`/user/queue/notifications`, function (message) {
+            stompClient.subscribe("/user/queue/notifications", function (message) {
+                console.log("📨 Notificación recibida:", message); // 👈 Este log es clave
                 const newNotification = processNewNotification(message.body);
                 onNotificationReceived(newNotification);
             });
+
         }, function (error) {
             console.error('❌ Error de conexión STOMP:', error);
         });

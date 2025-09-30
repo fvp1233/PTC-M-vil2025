@@ -1,6 +1,6 @@
 // Contiene la lógica para interactuar con la API y formatear los datos.
 
-import { fetchWithAuth } from '../../authService.js';
+import { fetchWithAuth } from '../../Login/AuthService/authService.js';
 
 // La URL de la API local
 const API_URL = "http://localhost:8080/api";
@@ -13,11 +13,10 @@ const API_URL = "http://localhost:8080/api";
  */
 export const getRecentTicketsByUser = async (userId) => {
     try {
-        const response = await fetchWithAuth(`${API_URL}/GetRecentTicketsByUser/${userId}`);
-        if (!response.ok) {
-            throw new Error(`Error al obtener los tickets: ${response.statusText}`);
+        const data = await fetchWithAuth(`${API_URL}/client/GetRecentTicketsByUser/${userId}`);
+        if (!data || !Array.isArray(data)) {
+            throw new Error("La respuesta de tickets no es válida");
         }
-        const data = await response.json();
         return data;
     } catch (error) {
         console.error('Error en la llamada a la API:', error);

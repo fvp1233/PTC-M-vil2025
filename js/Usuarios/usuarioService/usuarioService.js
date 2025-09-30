@@ -57,7 +57,16 @@ export async function updateProfilePicture(userId, updatedUserData) {
 }
 
 export async function getTicketCountByUser(userId) {
-    const response = await fetchWithAuth(`${API_URL}/tickets/count/by-user/${userId}`);
-    const count = await response.json();
-    return count;
+    const response = await fetchWithAuth(`${API_URL}/client/count/by-user/${userId}`);
+
+    // Si fetchWithAuth ya devuelve el JSON, no hagas .json() otra vez
+    if (typeof response === 'number') return response;
+
+    // Si es un Response, entonces sí hacés .json()
+    if (response.ok) {
+        const count = await response.json();
+        return count;
+    } else {
+        throw new Error("Acceso denegado al recurso solicitado");
+    }
 }
