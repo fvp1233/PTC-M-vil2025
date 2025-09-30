@@ -85,9 +85,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
         console.log("Redirigiendo segun tu rol:", rol);
 
         const roleRoutes = {
-            'CLIENTE': 'dashboard.html',
-            'TECNICO': 'dashboardTech.html',
-            'ADMINISTRADOR': 'dashboardTech.html'
+            'CLIENTE': '../../../dashboard.html',
+            'TECNICO': '../../../dashboardTech.html',
+            'ADMINISTRADOR': '../Dashboard/dashboard.html'
         };
 
         const route = roleRoutes[rol] || '../Dashboard/dashboard.html';
