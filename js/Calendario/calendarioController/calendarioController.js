@@ -2,7 +2,7 @@
 // Contiene la lógica para manipular el DOM y manejar los eventos.
 
 // Importa las funciones del servicio de autenticación
-import { getAuthToken, getUserId } from '../../authService.js';
+import { getUserId } from '../../Login/AuthService/authService.js';
 
 // Importa las funciones del servicio del calendario
 import {
@@ -36,10 +36,22 @@ const contTickets = document.getElementById("ticket-info");
 async function loadTicketsAndRender() {
     console.log("Iniciando la carga de tickets...");
     try {
-        const userId = getUserId();
-        await getAuthToken();
+        const userId = await getUserId();
+        
+        // 🚨 CAMBIO CLAVE: Verificamos si se obtuvo un userId válido.
+        if (!userId) {
+            console.error("Error: No se pudo obtener el ID del usuario. Es posible que no esté autenticado.");
+            if (contTickets) {
+                contTickets.innerHTML = "<p>No se pudo cargar el calendario. Por favor, inicia sesión de nuevo.</p>";
+            }
+            renderCalendar(); // Renderiza el calendario vacío para que la interfaz se vea bien
+            return;
+        }
 
-        // Carga los tickets usando la API
+        console.log(`Usuario autenticado con ID: ${userId}`);
+
+        // Carga los tickets usando la API. Ya no necesitamos llamar a getAuthToken()
+        // ya que fetchWithAuth ya maneja la autenticación por medio de cookies.
         tickets = await getRecentTicketsByUser(userId);
         console.log("Tickets cargados desde la API:", tickets);
 

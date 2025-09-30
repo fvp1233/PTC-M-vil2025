@@ -5,7 +5,7 @@ import {
     getSavedNotifications, 
     FormatearFecha,
     setupStompClient 
-} from './notificationService.js'; 
+} from '../NotificacionesService/notificacionesService.js'; 
 
 // Variables de estado y DOM
 let noNotifVista = null; // El div de "No tienes notificaciones"
@@ -59,7 +59,7 @@ function RenderSavedNotifications() {
 function handleRealTimeNotification(newNotification) {
     const message = newNotification.message;
 
-    // 1. Mostrar el toast emergente (lógica UI)
+    // Mostrar el toast emergente
     if (typeof Swal !== 'undefined') {
         Swal.fire({
             toast: true,
@@ -70,21 +70,25 @@ function handleRealTimeNotification(newNotification) {
             timer: 5000
         });
     }
-    
-    // 2. Actualizar la lista en la interfaz (lógica UI)
+
+    // Verificamos que los elementos DOM existan antes de renderizar
+    if (!notifVista || !noNotifVista) {
+        console.warn("⚠️ Elementos DOM de notificaciones no disponibles. Solo se muestra el toast.");
+        return;
+    }
+
     const newElement = createNotificationElement(newNotification);
-    
-    // Insertar el nuevo elemento al principio de la lista
+
     if (notifVista.firstChild) {
         notifVista.insertBefore(newElement, notifVista.firstChild);
     } else {
         notifVista.appendChild(newElement);
     }
-    
-    // 3. Asegurarse de que la vista de lista esté visible
+
     noNotifVista.style.display = 'none';
     notifVista.style.display = 'flex';
 }
+
 
 
 // ---------------------------
@@ -107,3 +111,5 @@ document.addEventListener('DOMContentLoaded', () => {
     // El Controller llama al Service y le dice qué función usar para la UI.
     setupStompClient(handleRealTimeNotification);
 });
+
+window.handleRealTimeNotification = handleRealTimeNotification;

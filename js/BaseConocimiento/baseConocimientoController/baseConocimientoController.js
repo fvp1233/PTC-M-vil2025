@@ -1,5 +1,5 @@
 // Importa las funciones getAuthToken y getUserId del servicio de autenticación.
-import { getAuthToken, getUserId } from '../../authService.js';
+import { getUserId } from '../../Login/AuthService/authService.js';
 // Importa las funciones para interactuar con el servicio de soluciones de la base de conocimiento.
 import {
     getSolutions,
@@ -170,11 +170,23 @@ function attachLeerMasEventListeners() {
 
 // Función asincrónica para cargar soluciones desde la API.
 async function cargarSoluciones(page = currentPage, size = currentSize, categoryId = currentCategoryFilter) {
+    console.log("🧠 Ejecutando cargarSoluciones...");
     try {
         // Llama a la API para obtener las soluciones con los parámetros dados.
         const solutionsResponse = await getSolutions(page, size, categoryId);
+        console.log("📦 Respuesta de getSolutions:", solutionsResponse);
+
         // Extrae el contenido y la información de la paginación.
-        const solutions = solutionsResponse.content || solutionsResponse;
+        const solutions = Array.isArray(solutionsResponse.content)
+            ? solutionsResponse.content
+            : Array.isArray(solutionsResponse)
+                ? solutionsResponse
+                : [];
+
+        if (solutions.length === 0) {
+            console.warn("🚫 No se recibieron soluciones válidas");
+        }
+
         let totalPagesFromApi = solutionsResponse.totalPages || 1;
         let currentPageIndex = solutionsResponse.number || 0;
 
@@ -211,6 +223,7 @@ async function cargarSoluciones(page = currentPage, size = currentSize, category
         renderContent(enrichedSolutions);
         updatePaginationUI();
     } catch (error) {
+        console.error("💥 Error atrapado en cargarSoluciones:", error);
         // Maneja los errores de la API, mostrando un mensaje al usuario.
         if (contenidoVista) {
             contenidoVista.innerHTML = '<div>Error al cargar las soluciones. Por favor, intente de nuevo más tarde.</div>';
