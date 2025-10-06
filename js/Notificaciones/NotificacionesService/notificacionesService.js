@@ -1,8 +1,8 @@
 // Importamos la función de autenticación para obtener el ID de usuario
-import { getUserId } from './authService.js'; 
+import { getUserId } from '../../Login/AuthService/authService.js';
 
 const API_BASE = 'http://localhost:8080';
-const SESSION_STORAGE_KEY = 'h2c_notifications'; // Clave para sessionStorage
+const STORAGE_KEY = 'h2c_notifications';
 
 // ---------------------------
 // Lógica de Datos (sessionStorage)
@@ -13,7 +13,7 @@ const SESSION_STORAGE_KEY = 'h2c_notifications'; // Clave para sessionStorage
  * @returns {Array<Object>} Lista de notificaciones guardadas.
  */
 export function getSavedNotifications() {
-    const saved = sessionStorage.getItem(SESSION_STORAGE_KEY);
+    const saved = localStorage.getItem(STORAGE_KEY);
     return saved ? JSON.parse(saved) : [];
 }
 
@@ -22,7 +22,7 @@ export function getSavedNotifications() {
  * @param {Array<Object>} notifications - La lista de notificaciones a guardar.
  */
 function saveNotifications(notifications) {
-    sessionStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(notifications));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(notifications));
 }
 
 /**
@@ -36,14 +36,14 @@ export function processNewNotification(message) {
         // Usamos la hora actual como marca de tiempo (ISO)
         notificationDate: new Date().toISOString()
     };
-    
+
     // 1. Cargar las existentes y añadir la nueva al principio
     const existingNotifications = getSavedNotifications();
-    existingNotifications.unshift(newNotification); 
-    
+    existingNotifications.unshift(newNotification);
+
     // 2. Guardar la lista actualizada
     saveNotifications(existingNotifications);
-    
+
     return newNotification;
 }
 
@@ -77,19 +77,19 @@ export function setupStompClient(onNotificationReceived) {
         const socket = new SockJS(`${API_BASE}/ws`);
         const stompClient = Stomp.over(socket);
 
-        stompClient.connect({}, function (frame) {
+        const headers = {};
+
+        stompClient.connect(headers, function (frame) {
             console.log(`Conexión WS exitosa. Suscribiéndose a: /user/queue/notifications para ${userId}`);
 
-            stompClient.subscribe(`/user/queue/notifications`, function (message) {
-                // 1. Procesar y guardar el mensaje en la sesión
-                const newNotification = processNewNotification(message.body); 
-                
-                // 2. Llamar al Controller para que actualice la interfaz
+            stompClient.subscribe("/user/queue/notifications", function (message) {
+                console.log("📨 Notificación recibida:", message); // 👈 Este log es clave
+                const newNotification = processNewNotification(message.body);
                 onNotificationReceived(newNotification);
             });
+
         }, function (error) {
             console.error('❌ Error de conexión STOMP:', error);
-            // Opcional: Implementar lógica de reintento aquí
         });
     }).catch(error => {
         console.error('Error al obtener el userId para WS:', error);

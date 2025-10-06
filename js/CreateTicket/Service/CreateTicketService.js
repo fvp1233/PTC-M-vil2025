@@ -69,23 +69,21 @@ export const getTicketById = async (ticketId) => {
 };
 
 export async function deleteTicket(id) {
-    try {
-        const response = await fetchWithAuth(`http://localhost:8080/api/DeleteTicket/${id}`, {
-            method: 'DELETE'
-        });
+    const url = `${API_URL}/client/DeleteTicket/${id}`;
 
-        // Verificamos si la respuesta es exitosa (código 200-299)
+    try {
+        const response = await fetchWithAuth(url, { method: 'DELETE' });
+
         if (!response.ok) {
-            // Si no es exitosa, leemos el error y lo lanzamos.
             const errorText = await response.text();
-            throw new Error(`Error al eliminar el ticket: ${response.status} - ${errorText}`);
+            console.error(`❌ Error al eliminar ticket ${id}:`, errorText);
+            throw new Error(`Error ${response.status}: ${errorText}`);
         }
 
-        // Si la respuesta es exitosa, simplemente devolvemos true sin intentar leer el cuerpo
-        // Esto evita el error de "Unexpected end of JSON input"
-        return true; 
+        console.log(`🗑️ Ticket ${id} eliminado exitosamente.`);
+        return true;
     } catch (error) {
-        console.error('Error en la llamada a la API para eliminar ticket:', error);
+        console.error('❌ Error en la llamada a la API para eliminar ticket:', error);
         throw error;
     }
-  }
+}
