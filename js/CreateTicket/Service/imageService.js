@@ -1,6 +1,6 @@
 import { fetchWithAuth } from "../../Login/AuthService/authService.js";
 
-const IMAGE_API = 'http://localhost:8080/api/image';
+const IMAGE_API = 'https://ptchelpdesk-a73934db2774.herokuapp.com/api/image';
 
 
 export async function uploadImage(file) {

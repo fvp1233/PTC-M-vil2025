@@ -391,7 +391,7 @@ main {
   background-color: #d14a4a;
 }
 
-.status-en-proceso {
+.status-en-progreso {
   background-color: #f38d2c;
 }
 
@@ -549,6 +549,105 @@ main {
     vertical-align: top; /* Alinea el input con el texto superior si hay otros elementos */
 }
 
+/* 1. Contenedor de la Imagen */
+#ticket-img-container {
+    /* Establece un tamaño MÁXIMO para el contenedor de la imagen */
+    max-width: 50vh; /* AJUSTE: Limitamos el ancho máximo a 300px */
+    min-height: 20vh; /* Altura mínima para mostrar mensaje 'No hay imágenes' */
+    border-radius: 8px;
+    padding: 10px;
+    box-sizing: border-box;
+    display: flex; /* Para centrar la imagen o el mensaje */
+    align-items:center;
+    justify-content: center;
+    overflow: hidden; /* CRUCIAL: Oculta si algo se desborda, aunque la imagen se ajustará */
+    text-align: center;
+    
+    font-size: 14px;
+    font-style: italic;
+    margin: 0 auto; /* NUEVO: Centra el contenedor de la imagen dentro de su columna */
+}
+
+/* 2. Regla para la Imagen */
+.ticket-image {
+    /* La imagen se ajusta al 100% del ancho de su contenedor (#ticket-img-container) */
+    max-width: 100%; 
+    
+    /* Asegura que la altura se ajuste proporcionalmente */
+    height: auto;     
+    
+    /* Pequeño borde redondeado para la imagen */
+    border-radius: 6px;
+    
+    /* Asegúrate de que no haya margen por defecto */
+    display: block; 
+}
+
+/* ========================================================== */
+/* AJUSTES ESTÉTICOS ADICIONALES (Opcional)         */
+/* ========================================================== */
+
+/* Ajuste para que la sección de imagen quede bien espaciada */
+.ContentTicket.image-section {
+    padding-bottom: 20px;
+}
+
+/* Estilo para el botón de "FINALIZADO" */
+.btn-finalized {
+  width: 65%;
+  padding: 8px 0;
+  background-color: #56b881; /* Un color verde de éxito */
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin: 0 auto;
+  margin-bottom: 90px;
+  opacity: 0.8; /* Menor opacidad para indicar que está inactivo */
+  cursor: default;
+}
+
+/* Estilos temporales para que los botones se vean bien lado a lado en .ticket-actions */
+    .ticket-actions-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 65%;
+      margin: 0 auto;
+      margin-bottom: 90px;
+    }
+    .btn-update-progress {
+      width: 100%;
+      padding: 8px 0;
+      background-color: #bc3233; /* Azul para la actualización */
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+    /* Estilos para que el botón Finalizar también use 100% del ancho del grupo */
+    .btn-finalize-ticket {
+
+      width: 100%; 
+      padding: 8px 0;
+      background-color: #bc3233;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+    /* Ajuste para textarea */
+    .pasos-resolucion-input {
+      resize: vertical; /* Permite redimensionar solo verticalmente */
+    }
 
 
 

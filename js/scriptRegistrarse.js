@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:8080/api/users/register'; 
+const API_URL = 'https://ptchelpdesk-a73934db2774.herokuapp.com/api/users/register'; 
 
 //Función asíncrona que se encarga de enviar los datos del usuario al backend.
 

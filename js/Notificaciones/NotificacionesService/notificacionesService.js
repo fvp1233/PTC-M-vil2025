@@ -1,7 +1,7 @@
 // Importamos la función de autenticación para obtener el ID de usuario
 import { getUserId } from '../../Login/AuthService/authService.js';
 
-const API_BASE = 'http://localhost:8080';
+const API_BASE = 'https://ptchelpdesk-a73934db2774.herokuapp.com/';
 const STORAGE_KEY = 'h2c_notifications';
 
 // ---------------------------

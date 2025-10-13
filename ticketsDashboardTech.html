@@ -11,7 +11,7 @@
 
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
     rel="stylesheet">
-  <title>Tickets</title>
+  <title>Mis Tickets</title>
 </head>
 
 <body>
@@ -19,17 +19,13 @@
     <div class="container">
       <div class="row align-items-center">
         <div class="col-auto">
-
           <a href="dashboardTech.html"><img class="back" src="img/Left.png" alt=""></a>
-
         </div>
         <div class="col text-center">
           <h2 class="headerText m-0">Mis Tickets</h2>
         </div>
         <div class="col-auto calendar">
-
           <a href="calendarioTech.html"><img class="calendar" src="img/Calendar.png" alt=""></a>
-
         </div>
       </div>
     </div>
@@ -40,9 +36,8 @@
   <div class="container mt-3">
     <div class="ticketsFilter">
       <div class="row text-center g-0">
-        <div class="col"><button class="btn filter-btn btnfilter">Todo</button></div>
-
-        <div class="col"><button class="btn filter-btn btnfilter">Critica</button></div>
+        <div class="col"><button class="btn filter-btn btnfilter active">Todo</button></div>
+        <div class="col"><button class="btn filter-btn btnfilter">Crítica</button></div>
         <div class="col"><button class="btn filter-btn btnfilter">Alta</button></div>
         <div class="col"><button class="btn filter-btn btnfilter">Media</button></div>
         <div class="col"><button class="btn filter-btn btnfilter">Baja</button></div>
@@ -54,22 +49,17 @@
     <div class="row">
       <div class="col-auto textTicket">
         <strong>
-          <p>Tickets Pendientes</p>
+          <p>Tickets Asignados</p>
         </strong>
       </div>
     </div>
 
     <div class="row gx-0">
-      <div class="col-12">
-        <div class="card mx-auto" style="width: 97%;">
-        </div>
-      </div>
+      <div id="ticketsContainer" class="col-12"></div>
     </div>
   </main>
 
-
   <div class="menu">
-
     <a href="baseConocimientoTech.html"><img src="img/menu/baseconocimiento_inactive.png" alt=""></a>
     <a href="ticketsDashboardTech.html"><img src="img/menu/tickets_active.png" alt=""></a>
     <a href="dashboardTech.html"><img src="img/menu/dashboard_inactive.png" alt=""></a>
@@ -77,7 +67,7 @@
     <a href="perfilTech.html"><img src="img/menu/perfil_inactive.png" alt=""></a>
   </div>
  
-  <script type="module" src="js/DashboardTech/dashboardTechController/dashboardTechController.js"></script>
+  <script type="module" src="js/TicketDashboardTech/TicketDashboardTechController/TicketDashboardTechController.js"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
     crossorigin="anonymous"></script>

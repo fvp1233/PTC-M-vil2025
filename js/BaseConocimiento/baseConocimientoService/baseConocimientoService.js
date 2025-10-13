@@ -4,7 +4,7 @@
 import { fetchWithAuth, getUserId } from '../../Login/AuthService/authService.js';
 
 // Se define una constante para la URL base de la API, apuntando a un servidor local.
-const API_URL = 'http://localhost:8080/api';
+const API_URL = 'https://ptchelpdesk-a73934db2774.herokuapp.com/api';
 
 // Se exporta un mapa de categorías para asociar los IDs numéricos con sus nombres descriptivos.
 // Esto facilita la conversión de IDs a nombres legibles en la interfaz de usuario.
