@@ -1,6 +1,6 @@
 import { fetchWithAuth } from "../../Login/AuthService/authService";
 
-const API_URL = 'http://localhost:8080/api';
+const API_URL = 'https://ptchelpdesk-a73934db2774.herokuapp.com/api';
 
 export const getUserById = async (userId) => {
     try {

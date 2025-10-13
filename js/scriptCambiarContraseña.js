@@ -1,6 +1,6 @@
 // Archivo: scriptCambiarContraseña.js
 
-const API_URL = 'http://localhost:8080/api/users/change-password';
+const API_URL = 'https://ptchelpdesk-a73934db2774.herokuapp.com/api/users/change-password';
 
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.querySelector('.formChangePassword');

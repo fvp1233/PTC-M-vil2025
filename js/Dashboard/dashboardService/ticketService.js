@@ -1,6 +1,6 @@
 import { fetchWithAuth } from "../../Login/AuthService/authService.js";
 
-const API_URL = 'http://localhost:8080/api';
+const API_URL = 'https://ptchelpdesk-a73934db2774.herokuapp.com/api';
 
 // Obtiene todos los tickets de la API.
 export async function getTickets() {
@@ -68,3 +68,4 @@ export const getPrioridades = async () => {
         throw error;
     }
 };
+

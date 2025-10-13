@@ -2,7 +2,7 @@
 import { fetchWithAuth } from "../../Login/AuthService/authService.js";
 
 // 2. Definimos la URL base para los USUARIOS, coincidiendo con el @RequestMapping del backend
-const API_URL = "http://localhost:8080/api";
+const API_URL = "https://ptchelpdesk-a73934db2774.herokuapp.com/api";
 
 // 3. Obtener usuario por ID
 export async function getUserById(userId) {

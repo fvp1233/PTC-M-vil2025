@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
     crossorigin="anonymous">
+  <!-- Asegúrate de que esta ruta a tu CSS es correcta -->
   <link rel="stylesheet" href="css/TicketInformationTech.css">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
     rel="stylesheet">
@@ -13,124 +14,171 @@
 </head>
 
 <body>
-  <header>
-    <div class="container">
-      <div class="row align-items-center">
-        <div class="col-auto">
-          <a href="ticketsDashboardTech.html">
-            <img class="back" src="img/Left.png" alt="Volver al dashboard">
-          </a>
-        </div>
-        <div class="col text-center">
-          <h2 class="headerText m-0">Informacion del Ticket</h2>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <div class="imgFondo"></div>
-
-  <main>
-    <div class="row gx-0">
-      <div class="col-12">
-        <div class="card mx-auto" style="width: 95%;">
-          <div class="card-body">
-            <div class="d-flex flex-wrap align-items-start ticket-row">
-              <div class="ticket-col2">
-                <div class="date">
-                  <p id="ticket-day"></p>
-                  <p id="ticket-month-year"></p>
+    <header>
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-auto">
+                    <a href="ticketsDashboardTech.html">
+                        <img class="back" src="img/Left.png" alt="Volver al dashboard">
+                    </a>
                 </div>
-                <div class="description">
-                  <p id="ticket-title"></p>
+                <div class="col text-center">
+                    <h2 class="headerText m-0">Informacion del Ticket</h2>
                 </div>
-                <div class="id">
-                  <p id="ticket-id"></p>
-                </div>
-                <div class="ticket-status-banner status-pendiente" id="ticket-status"></div>
-              </div>
             </div>
-          </div>
         </div>
-      </div>
-    </div>
-    <div class="row gx-0">
-      <div class="col-12">
-        <div class="card mx-auto" style="width: 95%;">
-          <div class="card-body">
-            <div class="d-flex flex-wrap align-items-start ticket-row">
-              <div class="ticket-col2">
-                <div class="ContentTicket">
-                  <div class="Headers">
-                    <p>Descripción:</p>
-                  </div>
-                  <div class="Data">
-                    <p id="ticket-description"></p>
-                  </div>
+    </header>
+
+    <div class="imgFondo"></div>
+
+    <main>
+        <div class="row gx-0">
+            <div class="col-12">
+                <div class="card mx-auto" style="width: 95%;">
+                    <div class="card-body">
+                        <div class="d-flex flex-wrap align-items-start ticket-row">
+                            <div class="ticket-col2">
+                                <div class="date">
+                                    <p id="ticket-day"></p>
+                                    <p id="ticket-month-year"></p>
+                                </div>
+                                <div class="description">
+                                    <p id="ticket-title"></p>
+                                </div>
+                                <div class="id">
+                                    <p id="ticket-id"></p>
+                                </div>
+                                <!-- El estado del ticket se inserta aquí -->
+                                <div class="ticket-status-banner status-pendiente" id="ticket-status"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="ContentTicket">
-                  <div class="Headers">
-                    <p>Creado por:</p>
-                  </div>
-                  <div class="Data">
-                    <p id="ticket-creado-por"></p>
-                  </div>
-                </div>
-                <div class="ContentTicket">
-                  <div class="Headers">
-                    <p>Categoría:</p>
-                  </div>
-                  <div class="Data">
-                    <p id="ticket-categoria"></p>
-                  </div>
-                </div>
-                <div class="ContentTicket">
-                  <div class="Headers">
-                    <p>Fecha de creación:</p>
-                  </div>
-                  <div class="Data">
-                    <p id="ticket-created"></p>
-                  </div>
-                </div>
-                <div class="ContentTicket">
-                  <div class="Headers">
-                    <p>Fecha de resolución:</p>
-                  </div>
-                  <div class="Data">
-                    <p id="ticket-closed"></p>
-                  </div>
-                </div>
-                <div class="ContentTicket">
-                  <div class="Headers">
-                    <p>Pasos de resolución:</p>
-                  </div>
-                  <div class="Data"><input type="text" id="ticket-observations" class="pasos-resolucion-input"></div>
-                </div>
-              </div>
             </div>
-          </div>
         </div>
-      </div>
+
+        <div class="row gx-0">
+            <div class="col-12">
+                <div class="card mx-auto" style="width: 95%;">
+                    <div class="card-body">
+                        <div class="d-flex flex-wrap align-items-start ticket-row">
+                            <div class="ticket-col2">
+
+                                <div class="ContentTicket">
+                                    <div class="Headers">
+                                        <p>Descripción:</p>
+                                    </div>
+                                    <div class="Data">
+                                        <p id="ticket-description"></p>
+                                    </div>
+                                </div>
+
+                                <div class="ContentTicket">
+                                    <div class="Headers">
+                                        <p>Creado por:</p>
+                                    </div>
+                                    <div class="Data">
+                                        <p id="ticket-creado-por"></p>
+                                    </div>
+                                </div>
+
+                                <div class="ContentTicket">
+                                    <div class="Headers">
+                                        <p>Categoría:</p>
+                                    </div>
+                                    <div class="Data">
+                                        <p id="ticket-categoria"></p>
+                                    </div>
+                                </div>
+
+                                <div class="ContentTicket">
+                                    <div class="Headers">
+                                        <p>Fecha de creación:</p>
+                                    </div>
+                                    <div class="Data">
+                                        <p id="ticket-created"></p>
+                                    </div>
+                                </div>
+
+                                <div class="ContentTicket">
+                                    <div class="Headers">
+                                        <p>Fecha de resolución:</p>
+                                    </div>
+                                    <div class="Data">
+                                        <p id="ticket-closed"></p>
+                                    </div>
+                                </div>
+
+                                <!-- Contenedor para la imagen del ticket (Se rellena con JS) -->
+                                <div class="ContentTicket">
+                                    <div class="Headers">
+                                        <p>Imagen:</p>
+                                    </div>
+                                    <div class="Data">
+                                        <div id="ticket-img-container"></div>
+                                    </div>
+                                </div>
+
+                                <!-- INICIO: SECCIÓN EDITABLE QUE SE OCULTA AL ESTAR COMPLETADO -->
+                                <div id="editable-progress-content">
+                                    <!-- Nuevo campo de Progreso/Porcentaje -->
+                                    <div class="ContentTicket" id="progress-section">
+                                        <div class="Headers">
+                                            <p>Progreso actual:</p>
+                                        </div>
+                                        <div class="Data d-flex align-items-center gap-2">
+                                            <input type="range" min="0" max="100" value="0" class="form-range"
+                                                id="ticket-percentage-input" style="flex-grow: 1;">
+                                            <span id="ticket-percentage-value" class="font-weight-bold"
+                                                style="min-width: 30px;">0%</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Pasos de resolución (Informe Técnico) -->
+                                    <div class="ContentTicket" style="padding-bottom: 5px;">
+                                        <div class="Headers">
+                                            <p>Pasos de resolución (Informe Técnico):</p>
+                                        </div>
+                                        <div class="Data">
+                                            <textarea id="ticket-observations" class="pasos-resolucion-input" rows="5"
+                                                placeholder="Escribe aquí el informe de la solución o notas de progreso."></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- FIN: SECCIÓN EDITABLE -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Se agrupan los botones para un mejor estilo -->
+        <div class="ticket-actions">
+            <div class="ticket-actions-group">
+                <!-- Nuevo Botón para actualizar solo el progreso y notas -->
+                <button id="update-progress-btn" class="btn-update-progress">ACTUALIZAR PROGRESO</button>
+                <!-- Botón de Finalización (Se usa una nueva clase para diferenciar) -->
+                <button id="finalize-ticket-btn" class="btn-finalize-ticket">FINALIZAR TICKET</button>
+            </div>
+        </div>
+    </main>
+
+    <div class="menu">
+        <a href="#"><img src="img/menu/baseconocimiento_inactive.png" alt="Base de Conocimiento"></a>
+        <a href="#"><img src="img/menu/tickets_active.png" alt="Tickets"></a>
+        <a href="dashboard.html"><img src="img/menu/dashboard_inactive.png" alt="Dashboard"></a>
+        <a href="notificaciones.html"><img src="img/menu/notificaciones_inactive.png" alt="Notificaciones"></a>
+        <a href="perfil.html"><img src="img/menu/perfil_inactive.png" alt="Perfil"></a>
     </div>
 
-    <div class="ticket-actions">
-      <button class="btn-edit-ticket">FINALIZAR TICKET</button>
-    </div>
-  </main>
-  <div class="menu">
-    <a href="#"><img src="img/menu/baseconocimiento_inactive.png" alt=""></a>
-    <a href="#"><img src="img/menu/tickets_inactive.png" alt=""></a>
-    <a href="dashboard.html"><img src="img/menu/dashboard_activo.png" alt=""></a>
-    <a href="notificaciones.html"><img src="img/menu/notificationes_inactivo.png" alt=""></a>
-    <a href="perfil.html"><img src="img/menu/perfil_inactive.png" alt=""></a>
-  </div>
-
-  <script src="js/TicketInformationTech.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
-    crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.0/sockjs.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
-  <script type="module" src="js/Notificaciones/NotificacionesController/notificacionesController.js"></script>
+    <!-- Scripts -->
+    <!-- SweetAlert2 debe ir antes del script principal para que las funciones lo reconozcan -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="js/TicketInformationTech.js" type="module"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.0/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 </body>
-
 </html>
