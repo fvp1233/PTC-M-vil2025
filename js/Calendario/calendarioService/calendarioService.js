@@ -3,7 +3,7 @@
 import { fetchWithAuth } from '../../Login/AuthService/authService.js';
 
 // La URL de la API local
-const API_URL = "http://localhost:8080/api";
+const API_URL = "https://ptchelpdesk-a73934db2774.herokuapp.com/api";
 
 /**
  * Obtiene los tickets recientes de un usuario a través de la API.

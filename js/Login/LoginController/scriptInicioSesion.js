@@ -1,6 +1,6 @@
 import { me } from "../AuthService/authService.js";
 
-const API_URL = 'http://localhost:8080/api/users/login';
+const API_URL = 'https://ptchelpdesk-a73934db2774.herokuapp.com/api/users/login';
 
 document.addEventListener('DOMContentLoaded', (event) => {
     // Obtén los elementos del DOM

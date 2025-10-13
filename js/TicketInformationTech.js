@@ -2,7 +2,7 @@ import { fetchWithAuth } from './Login/AuthService/authService.js';
 import { getUserId } from './Login/AuthService/authService.js';
 
 // URL de la API base, se puede centralizar en un archivo de configuración
-const API_BASE_URL = "http://localhost:8080/api";
+const API_BASE_URL = "https://ptchelpdesk-a73934db2774.herokuapp.com/api";
 
 // Variables globales para elementos del DOM
 let finalizeButton;
