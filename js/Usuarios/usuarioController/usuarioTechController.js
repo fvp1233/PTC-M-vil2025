@@ -112,7 +112,7 @@ if (btnConfirmarLogout) {
 
         localStorage.removeItem("jwt_token");
         localStorage.removeItem("userId");
-        window.location.href = '../Interfaces/inicioSesion.html';
+        window.location.href = '../inicioSesion.html';
     });
 }
 
