@@ -115,11 +115,14 @@ export async function fetchWithAuth(url, options = {}) {
             throw new Error(errorMessage);
         }
 
-        // Devolver el JSON parseado si es JSON, sino la respuesta
+        // ✅ SOLUCIÓN: Devolver datos parseados correctamente según el tipo de contenido
         if (isJson) {
             return await response.json();
         } else {
-            return response;
+            // Para respuestas no-JSON (como DELETE que puede retornar texto plano)
+            const text = await response.text();
+            // Si el texto está vacío, retornamos un objeto con status ok
+            return text ? text : { ok: true, status: response.status };
         }
 
     } catch (error) {
