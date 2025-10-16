@@ -1,8 +1,6 @@
 // TicketInformation.js
 
 import { getTicketById } from './Dashboard/dashboardService/ticketService.js';
-// La siguiente línea ha sido removida para que el código no use directamente authService
-// import { getAuthToken, getUserId } from './authService.js';
 import { deleteTicket } from './CreateTicket/Service/CreateTicketService.js';
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -12,10 +10,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     const main = document.querySelector("main");
     const deleteButton = document.querySelector(".btn-delete");
 
-    // Lógica adaptada para obtener el userId directamente de localStorage
     const userId = localStorage.getItem('userId');
 
-    // Verificamos si hay token o ID de ticket antes de proceder
     if (!userId || !ticketId) {
         console.error("Authentication or Ticket ID missing.");
         main.innerHTML = `
@@ -29,10 +25,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                 </div>
             </div>
         `;
-        return; // Detenemos la ejecución aquí si falta información crucial
+        return;
     }
     
-    // Configurar los event listeners al inicio para que estén listos
     const editButton = document.querySelector(".btn-edit-ticket");
     if (editButton) {
         editButton.addEventListener("click", () => {
@@ -42,30 +37,96 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (deleteButton) {
         deleteButton.addEventListener('click', async () => {
-            const confirmDeletion = confirm('¿Estás seguro de que deseas eliminar este ticket? Esta acción no se puede deshacer.');
-            if (confirmDeletion) {
+            // 🎨 Modal de confirmación con SweetAlert2
+            const result = await Swal.fire({
+                title: '¿Eliminar ticket?',
+                html: `
+                    <p style="color: #666; margin: 10px 0;">Esta acción no se puede deshacer.</p>
+                    <p style="color: #666;">¿Estás seguro de que deseas eliminar el ticket <strong>#${ticketId}</strong>?</p>
+                `,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar',
+                reverseButtons: true,
+                focusCancel: true,
+                customClass: {
+                    popup: 'animated-popup',
+                    confirmButton: 'btn-delete-confirm',
+                    cancelButton: 'btn-cancel'
+                }
+            });
+
+            // Si el usuario confirmó la eliminación
+            if (result.isConfirmed) {
+                // Mostrar loading mientras se elimina
+                Swal.fire({
+                    title: 'Eliminando ticket...',
+                    html: 'Por favor espera un momento',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+
                 try {
                     await deleteTicket(ticketId);
                     
-                    // Mostramos una alerta personalizada
-                    alert("Ticket eliminado correctamente.");
+                    // ✅ Éxito
+                    await Swal.fire({
+                        icon: 'success',
+                        title: '¡Ticket eliminado!',
+                        text: 'El ticket ha sido eliminado correctamente.',
+                        confirmButtonColor: '#28a745',
+                        timer: 2000,
+                        timerProgressBar: true
+                    });
                     
-                    // Redirigimos inmediatamente después de que el usuario haga clic en OK
+                    // Redirigir al dashboard
                     window.location.href = 'ticketsDashboard.html';
+                    
                 } catch (error) {
                     console.error('Error al eliminar ticket:', error);
-                    alert("Ocurrió un error al eliminar el ticket. Por favor, inténtelo de nuevo.");
+                    
+                    // ❌ Error específico según el tipo
+                    let errorTitle = 'Error al eliminar';
+                    let errorMessage = 'Ocurrió un error inesperado. Por favor, inténtalo de nuevo.';
+                    let errorIcon = 'error';
+
+                    if (error.message.includes('permisos')) {
+                        errorTitle = 'Sin permisos';
+                        errorMessage = 'No tienes permisos para eliminar este ticket. Solo puedes eliminar tus propios tickets.';
+                        errorIcon = 'warning';
+                    } else if (error.message.includes('Sesión')) {
+                        errorTitle = 'Sesión expirada';
+                        errorMessage = 'Tu sesión ha expirado. Serás redirigido al inicio de sesión.';
+                        errorIcon = 'warning';
+                    }
+
+                    await Swal.fire({
+                        icon: errorIcon,
+                        title: errorTitle,
+                        text: errorMessage,
+                        confirmButtonColor: '#3085d6'
+                    });
+
+                    // Si la sesión expiró, redirigir al login
+                    if (error.message.includes('Sesión')) {
+                        window.location.href = 'inicioSesion.html';
+                    }
                 }
             }
         });
     }
 
-    // El resto de la lógica de carga de datos se ejecuta solo si no hay una acción de eliminación pendiente
+    // Cargar información del ticket
     try {
         const ticket = await getTicketById(ticketId);
 
         if (!ticket) {
-            // Manejamos el caso de que el ticket no exista al inicio de la carga
             throw new Error("Ticket not found.");
         }
         
