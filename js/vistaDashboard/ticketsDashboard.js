@@ -89,7 +89,7 @@ function renderTickets(tickets) {
             <div class="date"><strong><p>${mes},${año}</p></strong></div>
           </div>
           <div class="ticket-col2">
-            <div class="description"><p>${ticket.description}</p></div>
+            <div class="description"><p>${ticket.title}</p></div>
             <div class="id"><p>#${ticket.ticketId}</p></div>
             <div class="TicketStatus">
               <span class="badge ${estadoClase}">${ticket.status.displayName.charAt(0).toUpperCase() + ticket.status.displayName.slice(1)}</span>

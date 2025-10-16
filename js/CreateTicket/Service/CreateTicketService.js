@@ -51,7 +51,7 @@ export async function updateTicket(id, ticketData) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(ticketData)
   });
-  return res.text(); // Devuelve el toString del ticket
+  return res; // Devuelve el toString del ticket
 }
 
 export const getTicketById = async (ticketId) => {
@@ -69,16 +69,11 @@ export const getTicketById = async (ticketId) => {
 };
 
 export async function deleteTicket(id) {
-    const url = `${API_URL}/client/DeleteTicket/${id}`;
+     const url = `${API_URL}/client/DeleteTicket/${id}`;
 
     try {
-        const response = await fetchWithAuth(url, { method: 'DELETE' });
-
-        if (!response.ok) {
-            const errorText = await response.text();
-            console.error(`❌ Error al eliminar ticket ${id}:`, errorText);
-            throw new Error(`Error ${response.status}: ${errorText}`);
-        }
+        //  fetchWithAuth ya maneja todo, solo necesitamos llamarlo
+        const result = await fetchWithAuth(url, { method: 'DELETE' });
 
         console.log(`🗑️ Ticket ${id} eliminado exitosamente.`);
         return true;

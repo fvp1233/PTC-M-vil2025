@@ -33,6 +33,55 @@ const registerUser = async (userData) => {
     }
 };
 
+// Selecciona el campo de teléfono
+const phoneInput = document.querySelector('input[name="user-phone"]');
+
+// Función para aplicar la máscara de teléfono
+const applyPhoneMask = (value) => {
+    // Remueve todo lo que no sea número
+    const numbers = value.replace(/\D/g, '');
+    
+    // Limita a 8 dígitos
+    const limited = numbers.slice(0, 8);
+    
+    // Aplica el formato ####-####
+    if (limited.length <= 4) {
+        return limited;
+    } else {
+        return limited.slice(0, 4) + '-' + limited.slice(4);
+    }
+};
+
+// Añade el evento 'input' para aplicar la máscara mientras el usuario escribe
+phoneInput.addEventListener('input', (e) => {
+    const cursorPosition = e.target.selectionStart;
+    const oldValue = e.target.value;
+    const newValue = applyPhoneMask(oldValue);
+    
+    e.target.value = newValue;
+    
+    // Ajusta la posición del cursor
+    let newCursorPosition = cursorPosition;
+    
+    // Si acabamos de agregar el guion (transición de 4 a 5 caracteres visibles)
+    if (newValue.length === 5 && newValue[4] === '-' && cursorPosition === 5) {
+        newCursorPosition = 6; // Mueve el cursor después del guion y del quinto número
+    } else if (cursorPosition === 5 && newValue[4] === '-') {
+        // Si el cursor está justo después del 4to número y hay guion
+        newCursorPosition = 6;
+    }
+    
+    e.target.setSelectionRange(newCursorPosition, newCursorPosition);
+});
+
+// Evita que se pegue texto que no sea números
+phoneInput.addEventListener('paste', (e) => {
+    e.preventDefault();
+    const pastedText = (e.clipboardData || window.clipboardData).getData('text');
+    const numbers = pastedText.replace(/\D/g, '');
+    e.target.value = applyPhoneMask(numbers);
+});
+
 // Selecciona el formulario HTML con la clase 'frmLogin' y lo almacena en una variable.
 const registrationForm = document.querySelector('.frmLogin');
 
@@ -48,13 +97,24 @@ registrationForm.addEventListener('submit', async (e) => {
     const email = registrationForm.querySelector('input[name="email"]').value;
     const phone = registrationForm.querySelector('input[name="user-phone"]').value;
 
+    // Valida que el teléfono tenga el formato completo (9 caracteres incluyendo el guion)
+    if (phone.length !== 9) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Teléfono Incompleto',
+            text: 'Por favor ingresa un número de teléfono completo (8 dígitos).',
+            confirmButtonText: 'Aceptar'
+        });
+        return;
+    }
+
     // Crea un objeto JavaScript con los datos del usuario, listo para ser enviado a la API.
     // 'password', 'isActive', 'rol', 'companyId', y 'category' son valores fijos.
     const userData = {
         name: name,
         username: username,
         email: email,
-        phone: phone,
+        phone: phone.replace('-', ''), // Envía el teléfono sin el guion
         password: "UnaContrasenaQueCumplaConElReglamento1!",
         isActive: 1, 
         rol: { rolId: 1 }, 
