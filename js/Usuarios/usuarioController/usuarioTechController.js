@@ -2,8 +2,9 @@
 
 import {
     getUserById,
-    updateUsername
-} from '../usuarioService/usuarioService.js';
+    updateUsername,
+    getCompletedTicketCountByTech
+} from '../usuarioService/usuarioTechService.js';
 
 import {
     uploadImageToFolder
@@ -36,12 +37,30 @@ async function CargarDatos() {
             return;
         }
 
-        currentUser = await getUserById(storedUserId);
+        const currentUser = await getUserById(storedUserId);
 
         if (currentUser) {
-            userId = currentUser.id;
+            const userId = currentUser.id;
             CargarUsuario(currentUser);
-            console.log("Datos del usuario cargados:", currentUser);
+
+            // ✅ Obtener el conteo de tickets solucionados
+            const count = await getCompletedTicketCountByTech(userId);
+
+            // ✅ Mostrar en el HTML
+            const contadorElemento = document.getElementById('tickets-solucionados');
+            if (contadorElemento) {
+                contadorElemento.textContent = `Tickets solucionados: ${count}`;
+            }
+
+            // ✅ Log extendido
+            console.log("Datos del usuario cargados:", {
+                id: currentUser.id,
+                name: currentUser.name,
+                username: currentUser.username,
+                email: currentUser.email,
+                phone: currentUser.phone,
+                ticketsSolucionados: count // 👈 Aquí se muestra el número de tickets
+            });
         } else {
             console.error("No se encontraron datos de usuario para el ID proporcionado.");
         }
@@ -49,7 +68,6 @@ async function CargarDatos() {
         console.error('Error al cargar el usuario:', error);
     }
 }
-
 // Función para actualizar la interfaz de usuario con los datos del usuario
 function CargarUsuario(user) {
     if (!user) {
