@@ -2,6 +2,22 @@ import { getCategorias, getPrioridades, getTecnicosDisponibles, createTicket } f
 import { uploadImageToFolder } from "../Service/imageService.js";
 import { getUserId } from "../../Login/AuthService/authService.js";
 
+async function crearNotificacion(userId, ticketId, message) {
+    try {
+        await fetch('/api/notificaciones', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                userId,
+                ticketId,
+                message
+            })
+        });
+    } catch (error) {
+        console.error('Error al enviar notificación:', error);
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     console.log("entramos");
     const ticketForm = document.getElementById('ticketForm');
@@ -16,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const uploadFromGalleryBtn = document.getElementById('uploadFromGalleryBtn');
     const takePictureBtn = document.getElementById('takePictureBtn');
     const submitBtn = document.getElementById('submitTicketBtn');
-    
+
     let selectedButton = null;
 
     // --- Funciones de Utilidad ---
@@ -55,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => customNotification.classList.add('d-none'), 400);
         }, 5000);
     }
-    
+
     // --- Funciones del Modal ---
     function openModal() {
         if (customModal) {
@@ -133,7 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const file = event.target.files[0];
         const allowedMimeTypes = ['image/jpeg', 'image/jpg', 'image/png']
 
-        if(!file || !allowedMimeTypes.includes(file.type)){
+        if (!file || !allowedMimeTypes.includes(file.type)) {
             if (imagesPreviewContainer) imagesPreviewContainer.innerHTML = '';
             showNotification('error', 'Por favor, selecciona un archivo de imagen válido.');
             return;
@@ -170,7 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
     async function asignarTecnico(categoriaId) {
         try {
             const tecnicos = await getTecnicosDisponibles();
-            const filtrados = tecnicos.filter(t =>t.category && t.category.id === Number(categoriaId));
+            const filtrados = tecnicos.filter(t => t.category && t.category.id === Number(categoriaId));
             if (filtrados.length === 0) return null;
             filtrados.sort((a, b) => a.ticketsAsignados - b.ticketsAsignados);
             const minTickets = filtrados[0].ticketsAsignados;
@@ -197,16 +213,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const description = document.getElementById('description')?.value?.trim();
         const prioridadId = selectedButton ? selectedButton.dataset.priorityId : null;
         const imageFile = imageUploadInput?.files[0];
-        const userId = await getUserId(); 
+        const userId = await getUserId();
 
-        if(!userId){
+
+        if (!userId) {
             showNotification('Eerror', 'El id del usuario no se pudo encotrar');
             submitBtn.disabled = false;
             submitBtn.textContent = 'Crear Ticket';
             return;
         }
 
-        if (!title || !categoriaId || !description || !prioridadId ) {
+        if (!title || !categoriaId || !description || !prioridadId) {
             showNotification('error', 'Por favor, completa todos los campos y selecciona una imagen.');
             return;
         }
@@ -218,7 +235,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             let uploadedImageUrl = null;
             console.log("Comprobando si hay una imagen para subir");
-            if(imageFile){
+            if (imageFile) {
                 console.log("Archivo de imagen encontrado, sera subido a cloudinary");
                 const uploadedResult = await uploadImageToFolder(imageFile, 'tickets');
                 console.log("URL de la imagen obtenida", uploadedImageUrl);
@@ -242,7 +259,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 category: { id: parseInt(categoriaId) },
                 priority: { id: parseInt(prioridadId) },
                 assignedTech: { id: parseInt(tecnicoId) },
-                 imageUrl: uploadedImageUrl,
+                imageUrl: uploadedImageUrl,
             };
 
             const result = await createTicket(ticketData, uploadedImageUrl);
@@ -264,7 +281,7 @@ document.addEventListener('DOMContentLoaded', () => {
             submitBtn.textContent = 'Crear Ticket';
         }
     });
-    
+
     // Iniciar la carga de datos iniciales al cargar la página
     cargarDatosIniciales();
 });
