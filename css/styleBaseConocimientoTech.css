@@ -236,7 +236,7 @@ h5 {
     background-color: #FBF6F6;
     display: flex;
     justify-content: center;
-    z-index: 999;
+    z-index: 1001;
 }
 
 
@@ -337,7 +337,7 @@ form button {
 .add {
     background-color: #6A040F;
     position: fixed;
-    bottom: 8rem;
+    bottom: 5rem;
     right: 25px;
     color: white;
     border: none;
@@ -349,7 +349,7 @@ form button {
     justify-content: center;
     align-items: center;
     transition: transform 0.4s;
-    z-index: 1001; 
+    z-index: 1000; 
 }
 
 form input,

@@ -45,17 +45,41 @@ export async function saveSolution(solutionId, solutionData) {
     const url = isUpdating ? `${API_URL}/UpdateSolution/${solutionId}` : `${API_URL}/PostSolution`;
     const method = isUpdating ? 'PATCH' : 'POST';
 
-    if (!isUpdating) {
-        solutionData.userId = getUserId();
+    // ✅ CORRECCIÓN: Obtener userId siempre (tanto al crear como al editar)
+    try {
+        const userId = await getUserId(); // ← await para esperar la Promise
+        console.log("🧠 userId obtenido:", userId);
+        console.log("🔄 Modo:", isUpdating ? "EDITAR" : "CREAR");
+        
+        // Verificar si userId es un objeto con propiedad id, o es el id directamente
+        if (userId && typeof userId === 'object' && userId.id) {
+            solutionData.userId = userId.id;
+        } else if (userId && typeof userId === 'number') {
+            solutionData.userId = userId;
+        } else {
+            throw new Error('No se pudo obtener el ID del usuario');
+        }
+        
+        console.log("🧠 userId asignado a solutionData:", solutionData.userId);
+    } catch (error) {
+        console.error("❌ Error obteniendo userId:", error);
+        throw new Error('No se pudo obtener el usuario autenticado');
     }
 
+    console.log("📤 Datos a enviar:", JSON.stringify(solutionData, null, 2));
+
     try {
-        const response = await fetchWithAuth(url, {
+        // ✅ Usar fetch directamente para tener control total del Response
+        const response = await fetch(url, {
             method,
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include', // Para enviar cookies
             body: JSON.stringify(solutionData),
         });
 
+        // Manejar errores HTTP
         if (!response.ok) {
             let errorText = 'Error al guardar la solución.';
             const contentType = response.headers.get("content-type");
@@ -64,16 +88,20 @@ export async function saveSolution(solutionId, solutionData) {
                 const errorData = await response.json();
                 errorText = errorData.error || errorData.message || errorText;
             } else {
-                errorText = response.statusText || errorText;
+                const textError = await response.text();
+                errorText = textError || response.statusText || errorText;
             }
 
             throw new Error(errorText);
         }
 
+        // Manejar respuestas sin contenido (204 No Content)
         if (response.status === 204 || response.headers.get('content-length') === '0') {
+            console.log("✅ Solución guardada (sin contenido de respuesta)");
             return null;
         }
 
+        // Parsear y retornar el JSON de la respuesta exitosa
         const data = await response.json();
         console.log("✅ Solución guardada:", data);
         return data;
