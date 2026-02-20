@@ -3,12 +3,17 @@
 import {
     getUserById,
     updateUsername,
+    updateProfilePicture,
     getCompletedTicketCountByTech
 } from '../usuarioService/usuarioTechService.js';
 
 import {
     uploadImageToFolder
 } from '../../CreateTicket/Service/imageService.js';
+
+import {
+    logout
+} from '../../Login/AuthService/authService.js';
 
 const nombre = document.getElementById('nombre');
 const usuario = document.getElementById('usuario');
@@ -37,29 +42,25 @@ async function CargarDatos() {
             return;
         }
 
-        const currentUser = await getUserById(storedUserId);
+        currentUser = await getUserById(storedUserId); // ✅ sin const
 
         if (currentUser) {
-            const userId = currentUser.id;
+            userId = currentUser.id;
             CargarUsuario(currentUser);
 
-            // ✅ Obtener el conteo de tickets solucionados
             const count = await getCompletedTicketCountByTech(userId);
-
-            // ✅ Mostrar en el HTML
             const contadorElemento = document.getElementById('tickets-solucionados');
             if (contadorElemento) {
                 contadorElemento.textContent = `Tickets solucionados: ${count}`;
             }
 
-            // ✅ Log extendido
             console.log("Datos del usuario cargados:", {
                 id: currentUser.id,
                 name: currentUser.name,
                 username: currentUser.username,
                 email: currentUser.email,
                 phone: currentUser.phone,
-                ticketsSolucionados: count // 👈 Aquí se muestra el número de tickets
+                ticketsSolucionados: count
             });
         } else {
             console.error("No se encontraron datos de usuario para el ID proporcionado.");
@@ -68,6 +69,7 @@ async function CargarDatos() {
         console.error('Error al cargar el usuario:', error);
     }
 }
+
 // Función para actualizar la interfaz de usuario con los datos del usuario
 function CargarUsuario(user) {
     if (!user) {
@@ -178,9 +180,11 @@ function abrirModalEditar(id, userObj) {
 // --- LÓGICA DE ACTUALIZACIÓN ---
 // Manejador del formulario para enviar la actualización del nombre de usuario
 const frmEditarUsuario = document.getElementById("frmEditarUsuario");
+
 if (frmEditarUsuario) {
     frmEditarUsuario.addEventListener("submit", async e => {
         e.preventDefault();
+
         const usernameInput = document.getElementById("username");
         const newUsername = usernameInput.value.trim();
 
@@ -198,51 +202,50 @@ if (frmEditarUsuario) {
             Swal.fire({
                 icon: "error",
                 title: "Error",
-                text: "Error: No se pudo identificar al usuario para actualizar.",
+                text: "No se pudo identificar al usuario para actualizar.",
             });
             return;
         }
 
         try {
-            // Clonamos el objeto currentUser para no modificar el original
-            const updatedUserData = { ...currentUser };
-            
-            // Actualizamos solo el campo 'username' en el objeto clonado
-            updatedUserData.username = newUsername;
+            const updatedUserData = {
+                username: newUsername,
+                email: currentUser.email || '',
+                phone: currentUser.phone || '',
+                name: currentUser.name || '',
+                profilePictureUrl: currentUser.profilePictureUrl || '',
+                isActive: currentUser.isActive !== undefined ? currentUser.isActive : true
+            };
 
-            // EL CAMBIO CRUCIAL: Eliminamos el 'id' del cuerpo de la petición
-            // Ya que el backend lo espera en la URL
-            delete updatedUserData.id;
+            const result = await updateUsername(currentUser.id, updatedUserData);
 
-            // Enviamos el objeto actualizado, sin el id
-            await updateUsername(currentUser.id, updatedUserData);
+            console.log("✅ Usuario actualizado:", result);
 
             Swal.fire({
-                position: "center",
-                icon: "success",
-                text: "El usuario fue actualizado correctamente",
-                showConfirmButton: false,
-                timer: 1800,
-                width: "90%",
+                icon: 'info',
+                title: 'Usuario actualizado',
+                text: 'Tu nombre de usuario ha cambiado. Por seguridad, por favor inicia sesión nuevamente.',
+                confirmButtonText: 'Aceptar'
+            }).then(() => {
+                logout(); // Limpia token y datos del usuario
+                window.location.href = 'inicioSesion.html'; // Redirige al login
             });
 
             modalEditar.close();
-            
-            // Actualizamos la interfaz de usuario con el nuevo nombre de usuario
-            // del objeto original
-            currentUser.username = newUsername;
-            CargarUsuario(currentUser);
 
         } catch (error) {
-            console.error('Error al enviar la solicitud de actualización:', error);
+            console.error("❌ Error al actualizar el usuario:", error);
+
             Swal.fire({
                 icon: "error",
                 title: "Error de conexión",
-                text: "Hubo un error de conexión al actualizar.",
+                text: error.message || "Hubo un problema al actualizar el usuario.",
             });
         }
     });
 }
+
+
 
 
 // --- Lógica para la edición de la foto de perfil con el servicio de Cloudinary ---
@@ -265,7 +268,7 @@ document.body.addEventListener('click', (e) => {
     }
 });
 
-// Evento `change` del input de archivo, se dispara cuando se selecciona un archivo
+// Evento `change` del input de archivo
 fileInput.addEventListener('change', (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -273,7 +276,7 @@ fileInput.addEventListener('change', (e) => {
     }
 });
 
-// Función para subir la imagen usando tu servicio `imageService.js`
+// ✅ Función para subir la imagen y actualizar en backend
 async function uploadImage(file) {
     Swal.fire({
         title: 'Subiendo imagen...',
@@ -286,67 +289,45 @@ async function uploadImage(file) {
 
     try {
         const data = await uploadImageToFolder(file, 'usuarios');
-        const newPhotoUrl = data.secure_url;
+        const newPhotoUrl = data.url || data.secure_url;
 
         console.log('URL de la nueva foto:', newPhotoUrl);
 
         editarFotoOverlay.classList.remove('visible');
         overlayVisible = false;
 
-        await updateProfilePicture(newPhotoUrl);
-
-    } catch (error) {
-        Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: `No se pudo subir la imagen: ${error.message}`,
-        });
-        console.error('Error al subir la imagen a Cloudinary:', error);
-    }
-}
-
-// Función para actualizar la URL de la foto de perfil en tu API
-async function updateProfilePicture(photoUrl) {
-    if (!currentUser || !currentUser.id) {
-        console.error("No hay un usuario o ID de usuario para actualizar la foto.");
-        Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'No se pudo actualizar la foto. ID de usuario no encontrado.',
-        });
-        return;
-    }
-
-    try {
-        const res = await fetch(`http://localhost:8080/api/users/${currentUser.id}/profile-picture`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('jwt_token')}`
-            },
-            body: JSON.stringify({ profilePictureUrl: photoUrl }),
-        });
-
-        if (res.ok) {
-            currentUser.profilePictureUrl = photoUrl;
-            fotoPerfil.src = photoUrl;
-            Swal.fire({
-                icon: 'success',
-                title: '¡Listo!',
-                text: 'Foto de perfil actualizada correctamente.',
-                showConfirmButton: false,
-                timer: 1800
-            });
-        } else {
-            const errorText = await res.text();
-            throw new Error(`Error al actualizar la foto en la API: ${res.statusText} - ${errorText}`);
+        if (!currentUser || !currentUser.id) {
+            throw new Error("No hay datos de usuario cargados.");
         }
+
+        const updatedUserData = {
+            username: currentUser.username,
+            email: currentUser.email,
+            phone: currentUser.phone,
+            name: currentUser.name,
+            profilePictureUrl: newPhotoUrl,
+            isActive: currentUser.isActive
+        };
+
+        const result = await updateProfilePicture(currentUser.id, updatedUserData);
+
+        currentUser.profilePictureUrl = newPhotoUrl;
+        fotoPerfil.src = newPhotoUrl;
+
+        Swal.fire({
+            icon: 'success',
+            title: '¡Listo!',
+            text: 'Foto de perfil actualizada correctamente.',
+            showConfirmButton: false,
+            timer: 1800
+        });
+
     } catch (error) {
-        console.error('Error al actualizar la foto de perfil en la API:', error);
+        console.error('❌ Error al actualizar la foto:', error);
         Swal.fire({
             icon: 'error',
             title: 'Error',
-            text: 'No se pudo actualizar la foto en la base de datos.',
+            text: error.message || 'No se pudo actualizar la foto.',
         });
     }
 }

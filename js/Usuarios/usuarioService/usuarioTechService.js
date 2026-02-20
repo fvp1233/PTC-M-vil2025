@@ -24,14 +24,34 @@ export async function updateUsername(userId, data) {
         console.log('Datos que se enviarán al backend:', data);
 
         const result = await fetchWithAuth(`${API_URL}/users/${userId}`, {
-            method: 'PUT',
+            method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data),
         });
 
+
         return result; // ✅ Ya es JSON
     } catch (error) {
         console.error("Error en updateUsername:", error);
+        throw error;
+    }
+}
+
+export async function updateProfilePicture(userId, updatedUserData) {
+    try {
+        console.log('🖼️ DTO para foto de perfil:', updatedUserData);
+
+        const result = await fetchWithAuth(`${API_URL}/users/${userId}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(updatedUserData),
+        });
+
+        console.log("✅ Foto de perfil actualizada:", result);
+        return result;
+
+    } catch (error) {
+        console.error("❌ Error al actualizar la foto de perfil:", error);
         throw error;
     }
 }

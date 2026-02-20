@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const editButton = document.querySelector(".btn-edit-ticket");
     if (editButton) {
         editButton.addEventListener("click", () => {
-            window.location.href = `ActualizarTicket.html?id=${ticketId}`;
+            window.location.href = `actualizarTicket.html?id=${ticketId}`;
         });
     }
 
